@@ -1,0 +1,44 @@
+$ wf cost <session>
+Cost by root turn (subagent calls included in the turn that spawned them)
+
+ #  start  calls  input  cache read  cache write  output  reasoning  turn cost  running total
+--  -----  -----  -----  ----------  -----------  ------  ---------  ---------  -------------
+ 1  16:50      2     8k         29k            0     400         80       $0.1           $0.1
+ 2  16:51      9    95k        356k            0      5k         2k       $0.6           $0.7
+ 3  16:57      1     3k         81k            0     372         12       $0.1           $0.7
+ 4  16:59      6    17k        548k            0      2k         1k       $0.3           $1.1
+ 5  17:02      6     8k        604k            0      1k        396       $0.3           $1.3
+ 6  17:05      3     2k        318k            0      1k        321       $0.2           $1.5
+ 7  17:08     60   187k        6.8M            0     49k        28k       $4.4           $6.0
+ 8  17:35     40    29k        6.7M            0     15k         4k       $3.1           $9.1
+ 9  17:59     17    15k        3.1M            0      7k         1k       $1.5          $10.5
+10  18:04      9     5k        1.7M            0      2k        549       $0.7          $11.2
+11  18:28     16    47k        3.2M            0      4k         2k       $1.5          $12.8
+
+Where the money went
+
+token type      cost  share
+--------------  ----  -----
+uncached input  $1.7    13%
+cache read      $9.4    73%
+cache write     $0.0     0%
+output          $1.8    14%
+
+model         cost  share
+-----------  -----  -----
+gpt-5.6-sol  $12.8   100%
+
+thread         cost  share
+------------  -----  -----
+root          $11.0    86%
+Kant agent-1   $1.8    14%
+
+Most expensive calls
+
+at     thread        model        context  output  cost
+-----  ------------  -----------  -------  ------  ----
+17:20  Kant agent-1  gpt-5.6-sol     143k      7k  $0.2
+18:32  root          gpt-5.6-sol     202k     380  $0.2
+17:22  Kant agent-1  gpt-5.6-sol     152k      6k  $0.2
+17:24  root          gpt-5.6-sol     137k      6k  $0.2
+16:51  root          gpt-5.6-sol      51k     282  $0.2

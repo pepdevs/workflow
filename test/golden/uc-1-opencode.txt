@@ -1,0 +1,40 @@
+$ wf summary <session>
+Session       opencode ses_45ef79cbeb31a9b68c63acf4cf
+Title         <text>
+Directory     <path>
+Repository    unknown (session directory missing)
+Start commit  unknown (clone unavailable)
+Version       1.18.31
+Launched      -
+Threads       6 (1 root, 5 subagents)
+Turns         14 in the root thread, 5 in subagents
+Model calls   160
+Tool calls    245, 3 failed
+Models        stealth/union-alpha (99), glm-5.3-flash (61)
+Tokens        input 2.0M · cache read 8.6M (81% of input) · cache write 0 (1h 0) · output 65k (reasoning 31k)
+Context       peak 140k in the root thread, 49k in subagents · 0 of 160 calls above 200k, costing $0.0 (0%) · 0 compactions
+Cost          computed $0.3 · reported by harness $0.0 · 99 of 160 calls unpriced
+Turn time     26:23:57 wall in root turns; across all threads: model 0:52:25, tools 25:12:35, waiting on subagents 14:22:50, waiting on user 0:18:10
+Skills        clarify [tool] ×1, writing-style [tool] ×1, git [tool] ×1, delegate [tool] ×1, principle-type-system-discipline [tool] ×1, principle-fix-root-causes [tool] ×1
+Incidents     model_unavailable ×2, interrupted ×1
+
+$ wf summary <session> --size
+Session        opencode ses_45ef79cbeb31a9b68c63acf4cf
+Title          <text>
+Directory      <path>
+Repository     unknown (session directory missing)
+Start commit   unknown (clone unavailable)
+Code and docs  unknown
+Version        1.18.31
+Launched       -
+Threads        6 (1 root, 5 subagents)
+Turns          14 in the root thread, 5 in subagents
+Model calls    160
+Tool calls     245, 3 failed
+Models         stealth/union-alpha (99), glm-5.3-flash (61)
+Tokens         input 2.0M · cache read 8.6M (81% of input) · cache write 0 (1h 0) · output 65k (reasoning 31k)
+Context        peak 140k in the root thread, 49k in subagents · 0 of 160 calls above 200k, costing $0.0 (0%) · 0 compactions
+Cost           computed $0.3 · reported by harness $0.0 · 99 of 160 calls unpriced
+Turn time      26:23:57 wall in root turns; across all threads: model 0:52:25, tools 25:12:35, waiting on subagents 14:22:50, waiting on user 0:18:10
+Skills         clarify [tool] ×1, writing-style [tool] ×1, git [tool] ×1, delegate [tool] ×1, principle-type-system-discipline [tool] ×1, principle-fix-root-causes [tool] ×1
+Incidents      model_unavailable ×2, interrupted ×1

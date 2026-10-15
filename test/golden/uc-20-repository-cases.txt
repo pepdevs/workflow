@@ -1,0 +1,12 @@
+$ wf export (one session per case)
+catalog clone: "repo"
+repository outside the catalog: "other"
+repository without a remote: "local"
+worktree listed by its clone: "repo"
+worktree before removal: "repo"
+worktree after removal: "repo"
+removed directory with a logged repository URL: "logged"
+directory outside Git: null
+missing directory without evidence: null
+redacted logged repository: null
+placeholder model rows: 1, sessions under null: 0

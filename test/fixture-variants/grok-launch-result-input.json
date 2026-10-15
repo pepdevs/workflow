@@ -1,0 +1,4 @@
+{
+  "prompt": "[wf run skill=implement parent=grok:parent-id]\nUse the installed implement skill for this task.\n\nCount to three.",
+  "reply": "Done. <!-- workflow-result: {\"schema\":1,\"status\":\"complete\",\"pullRequest\":\"https://github.com/fixture/workflow/pull/12\",\"headSha\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"} -->"
+}

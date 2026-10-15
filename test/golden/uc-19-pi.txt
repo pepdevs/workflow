@@ -1,0 +1,25 @@
+$ wf files <session>
+Session    pi bab8cde5-cd5d-4886-aa1f-58e007677dbb
+Directory  <text>
+Reads      3 calls, 3 files, 5 tokens; root thread 5, 0% of peak context 21k
+Repeats    0 reads of 0 files, 0 tokens; 0 after a compaction
+
+Files read
+#  path                                reads  turns  lines  words  tokens  edited  after compaction
+-  ----------------------------------  -----  -----  -----  -----  ------  ------  ----------------
+1  ...                                     1  1          1      1       2
+2  skills/git/SKILL.md                     1  1          1      1       2
+3  skills/record-improvement/SKILL.md      1  1          1      1       2
+
+Skills and instructions
+#  path                                thread  reads  turns  lines  words  tokens
+-  ----------------------------------  ------  -----  -----  -----  -----  ------
+1  skills/record-improvement/SKILL.md  root        1  1          1      1       2
+2  skills/git/SKILL.md                 root        1  1          1      1       2
+
+Largest reads
+#  turn  thread  path                                range  lines  words  tokens
+-  ----  ------  ----------------------------------  -----  -----  -----  ------
+1     1  root    skills/record-improvement/SKILL.md             1      1       2
+2     1  root    ...                                            1      1       2
+3     1  root    skills/git/SKILL.md                            1      1       2

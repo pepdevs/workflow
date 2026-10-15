@@ -1,0 +1,18 @@
+$ wf files <session>
+Session    opencode ses_45ef79cbeb31a9b68c63acf4cf
+Directory  <path>
+Reads      1 call, 1 file, 2 tokens; root thread 2, 0% of peak context 140k
+Repeats    0 reads of 0 files, 0 tokens; 0 after a compaction
+
+Files read
+#  path  reads  turns  lines  words  tokens  edited  after compaction
+-  ----  -----  -----  -----  -----  ------  ------  ----------------
+1  ...       1  8          1      1       2
+
+Skills and instructions
+none read
+
+Largest reads
+#  turn  thread  path  range  lines  words  tokens
+-  ----  ------  ----  -----  -----  -----  ------
+1     8  root    ...              1      1       2

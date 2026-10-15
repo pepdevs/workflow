@@ -1,0 +1,40 @@
+$ wf summary <session>
+Session       pi bab8cde5-cd5d-4886-aa1f-58e007677dbb
+Title         -
+Directory     <text>
+Repository    unknown (session directory missing)
+Start commit  unknown (clone unavailable)
+Version       -
+Launched      -
+Threads       1 (1 root, 0 subagents)
+Turns         2 in the root thread, 0 in subagents
+Model calls   31
+Tool calls    32, 0 failed
+Models        glm-5.3-flash (31)
+Tokens        input 22k · cache read 433k (95% of input) · cache write 0 (1h 0) · output 5k (reasoning 2k)
+Context       peak 21k in the root thread · 0 of 31 calls above 200k, costing $0.0 (0%) · 0 compactions
+Cost          computed <$0.1 · reported by harness <$0.1 · 0 of 31 calls unpriced
+Turn time     0:02:40 wall in root turns; across all threads: model 0:02:13, tools 0:00:32, waiting on subagents 0:00:00, waiting on user 0:00:00
+Skills        record-improvement [file_read] ×1, git [file_read] ×1
+Incidents     -
+
+$ wf summary <session> --size
+Session        pi bab8cde5-cd5d-4886-aa1f-58e007677dbb
+Title          -
+Directory      <text>
+Repository     unknown (session directory missing)
+Start commit   unknown (clone unavailable)
+Code and docs  unknown
+Version        -
+Launched       -
+Threads        1 (1 root, 0 subagents)
+Turns          2 in the root thread, 0 in subagents
+Model calls    31
+Tool calls     32, 0 failed
+Models         glm-5.3-flash (31)
+Tokens         input 22k · cache read 433k (95% of input) · cache write 0 (1h 0) · output 5k (reasoning 2k)
+Context        peak 21k in the root thread · 0 of 31 calls above 200k, costing $0.0 (0%) · 0 compactions
+Cost           computed <$0.1 · reported by harness <$0.1 · 0 of 31 calls unpriced
+Turn time      0:02:40 wall in root turns; across all threads: model 0:02:13, tools 0:00:32, waiting on subagents 0:00:00, waiting on user 0:00:00
+Skills         record-improvement [file_read] ×1, git [file_read] ×1
+Incidents      -

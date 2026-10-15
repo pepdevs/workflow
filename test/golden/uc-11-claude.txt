@@ -1,0 +1,2 @@
+$ wf stop <session>
+No running process writes claude d87437e1-d40c-4c63-aa05-9f9c3b05b112.

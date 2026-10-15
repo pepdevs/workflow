@@ -1,0 +1,2 @@
+$ wf stop <session>
+No running process writes codex 623fe08c-f089-4457-ab98-839fdfaf83f1.

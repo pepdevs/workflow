@@ -1,0 +1,6 @@
+$ wf time <session>
+#  start     wall    model  model share    tools  agent tools  waiting on user  call start
+-  -----  -------  -------  -----------  -------  -----------  ---------------  ------------
+1  17:15  2:17:18  0:03:05           2%  0:01:32      2:13:09          0:00:00  API duration
+
+Time between turns (the person's time): total 0:00:00, longest 0:00:00

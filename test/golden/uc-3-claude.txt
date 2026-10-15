@@ -1,0 +1,6 @@
+$ wf turns <session>
+#  start  trigger  prompt  models         calls  tools  subagents  cost  +subagents     wall  outcome      skills
+-  -----  -------  ------  -------------  -----  -----  ---------  ----  ----------  -------  -----------  -------------------------
+1  01:18  command  /model                     0      0          0  $0.0        $0.0  0:00:00  unknown
+2  01:20  prompt   <text>  claude-opus-5     53     70          1  $7.9        $9.3  2:33:41  interrupted  clarify,run-plan,delegate
+3  03:54  prompt   <text>  claude-opus-5     10      9          0  $1.2        $1.2  0:01:22  completed    git

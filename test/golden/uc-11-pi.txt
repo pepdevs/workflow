@@ -1,0 +1,2 @@
+$ wf stop <session>
+No running process writes pi bab8cde5-cd5d-4886-aa1f-58e007677dbb.

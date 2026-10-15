@@ -1,0 +1,48 @@
+$ wf cost <session>
+Cost by root turn (subagent calls included in the turn that spawned them)
+
+ #  start  calls  input  cache read  cache write  output  reasoning  turn cost  running total
+--  -----  -----  -----  ----------  -----------  ------  ---------  ---------  -------------
+ 1  16:34     19   216k        220k            0      3k          0       $0.0           $0.0
+ 2  16:44      1      0           0            0       0          0       $0.0           $0.0
+ 3  16:48     13   117k        421k            0     13k        11k      <$0.1          <$0.1
+ 4  17:17      2    53k         52k            0      2k         1k      <$0.1          <$0.1
+ 5  17:18      1    54k           0            0      3k         2k      <$0.1           $0.1
+ 6  17:21      1    57k           0            0      5k         4k      <$0.1           $0.1
+ 7  17:24      1    58k          4k            0     389        147      <$0.1           $0.1
+ 8  17:25      1    62k           0            0      3k         3k      <$0.1           $0.1
+ 9  17:26      1    65k           0            0     747        430      <$0.1           $0.1
+10  23:29     21   355k        644k            0      7k          0       $0.0           $0.1
+11  23:37     17   220k        470k            0      4k          0       $0.0           $0.1
+12  00:44     12   317k        692k            0      3k          0       $0.0           $0.1
+13  01:04     29   215k        1.1M            0      6k          0       $0.0           $0.1
+14  15:20     41   247k        5.0M            0     18k        10k       $0.2           $0.3
+
+Where the money went
+
+token type       cost  share
+--------------  -----  -----
+uncached input   $0.1    36%
+cache read       $0.2    56%
+cache write      $0.0     0%
+output          <$0.1     7%
+
+model                cost  share
+-------------------  ----  -----
+glm-5.3-flash        $0.3   100%
+stealth/union-alpha  $0.0     0%
+
+thread   cost  share
+-------  ----  -----
+root     $0.3   100%
+explore  $0.0     0%
+
+Most expensive calls
+
+at     thread  model          context  output   cost
+-----  ------  -------------  -------  ------  -----
+02:08  root    glm-5.3-flash     118k      1k  <$0.1
+15:20  root    glm-5.3-flash     103k     689  <$0.1
+17:24  root    glm-5.3-flash      57k      5k  <$0.1
+17:27  root    glm-5.3-flash      62k      3k  <$0.1
+17:28  root    glm-5.3-flash      65k     747  <$0.1

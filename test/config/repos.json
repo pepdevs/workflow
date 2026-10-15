@@ -1,0 +1,18 @@
+{
+  "fixture/repo": {
+    "path": "test/fixtures/repo.bundle",
+    "categories": {
+      "data": [
+        "notes/**"
+      ]
+    },
+    "domains": {
+      "application": [
+        "src/**"
+      ],
+      "verification": [
+        "test/**"
+      ]
+    }
+  }
+}

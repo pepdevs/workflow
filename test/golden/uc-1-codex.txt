@@ -1,0 +1,40 @@
+$ wf summary <session>
+Session       codex 623fe08c-f089-4457-ab98-839fdfaf83f1
+Title         -
+Directory     <text>
+Repository    unknown (session directory missing)
+Start commit  unknown (harness SHA c8c2fc21734e65660d8ac634567ba028d2e94356: clone unavailable)
+Version       0.154.0
+Launched      -
+Threads       2 (1 root, 1 subagents)
+Turns         11 in the root thread, 1 in subagents
+Model calls   169
+Tool calls    105, 2 failed
+Models        gpt-5.6-sol (169)
+Tokens        input 414k · cache read 23.4M (98% of input) · cache write 0 (1h 0) · output 88k (reasoning 40k)
+Context       peak 203k in the root thread, 152k in subagents · 11 of 169 calls above 200k, costing $1.1 (8%) · 0 compactions
+Cost          computed $12.8 · reported by harness - · 0 of 169 calls unpriced
+Turn time     0:53:50 wall in root turns; across all threads: model 0:32:49, tools 0:22:59, waiting on subagents 0:10:39, waiting on user 0:00:00
+Skills        git [file_read] ×2, clarify [mention] ×1, clarify [file_read] ×1, openai-docs [file_read] ×1, f [file_read] ×1, principle-migrate-callers-then-delete-legacy-apis [file_read] ×1, principle-foundational-thinking [file_read] ×1
+Incidents     interrupted ×1
+
+$ wf summary <session> --size
+Session        codex 623fe08c-f089-4457-ab98-839fdfaf83f1
+Title          -
+Directory      <text>
+Repository     unknown (session directory missing)
+Start commit   unknown (harness SHA c8c2fc21734e65660d8ac634567ba028d2e94356: clone unavailable)
+Code and docs  unknown
+Version        0.154.0
+Launched       -
+Threads        2 (1 root, 1 subagents)
+Turns          11 in the root thread, 1 in subagents
+Model calls    169
+Tool calls     105, 2 failed
+Models         gpt-5.6-sol (169)
+Tokens         input 414k · cache read 23.4M (98% of input) · cache write 0 (1h 0) · output 88k (reasoning 40k)
+Context        peak 203k in the root thread, 152k in subagents · 11 of 169 calls above 200k, costing $1.1 (8%) · 0 compactions
+Cost           computed $12.8 · reported by harness - · 0 of 169 calls unpriced
+Turn time      0:53:50 wall in root turns; across all threads: model 0:32:49, tools 0:22:59, waiting on subagents 0:10:39, waiting on user 0:00:00
+Skills         git [file_read] ×2, clarify [mention] ×1, clarify [file_read] ×1, openai-docs [file_read] ×1, f [file_read] ×1, principle-migrate-callers-then-delete-legacy-apis [file_read] ×1, principle-foundational-thinking [file_read] ×1
+Incidents      interrupted ×1

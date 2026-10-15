@@ -1,0 +1,23 @@
+$ wf tools <session>
+category          calls  share  failed      time  tool names
+----------------  -----  -----  ------  --------  ----------
+file_read            91    37%       1   0:00:38  read
+search               57    23%       0   0:01:37  grep,glob
+shell/read           17     7%       0  10:45:59  bash
+shell/script         14     6%       0   0:07:36  bash
+shell/vcs            14     6%       1   0:00:43  bash
+file_write           14     6%       0   0:00:00  write,edit
+skill                 6     2%       0   0:04:24  skill
+planning              6     2%       0   0:00:00  todowrite
+shell/search          6     2%       0  14:09:50  bash
+agent                 5     2%       1  14:22:50  task
+user_interaction      4     2%       0   0:18:10  question
+shell/agent_cli       4     2%       0   0:00:06  bash
+shell/workflow        2     1%       0   0:00:03  bash
+shell/filesystem      2     1%       0   0:01:16  bash
+shell/build_test      1     0%       0   0:00:20  bash
+shell/process         1     0%       0   0:00:00  bash
+shell/forge           1     0%       0   0:00:03  bash
+
+Top shell programs: ls 15, node 14, git 14, grep 6, opencode 4, workflow 2, ln 2, cat 1, npm 1, pgrep 1
+Failing shell programs: git 1

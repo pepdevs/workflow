@@ -1,0 +1,35 @@
+recorded
+$ wf summary <session> --size
+Directory      <worktree>
+Repository     fixture/repo (directory)
+Start commit   <commit> (harness SHA)
+Code and docs  52 tokens
+$ wf ls codex --size
+start (UTC)  harness  id        role  directory  title or first prompt    models       turns   cost     wall  code and docs tokens
+-----------  -------  --------  ----  ---------  -----------------------  -----------  -----  -----  -------  --------------------
+02-24 16:50  codex    623fe08c  -     worktree   Repository size fixture  gpt-5.6-sol     11  $12.8  0:53:50                    52
+1 of 1 matching sessions. Pass an id to summary, turns, cost, tools, time or files.
+
+estimated
+$ wf summary <session> --size
+Directory      <worktree>
+Repository     fixture/repo (directory)
+Start commit   <commit> (branch at start, est.)
+Code and docs  52 tokens est.
+$ wf ls codex --size
+start (UTC)  harness  id        role  directory  title or first prompt    models       turns   cost     wall  code and docs tokens
+-----------  -------  --------  ----  ---------  -----------------------  -----------  -----  -----  -------  --------------------
+02-24 16:50  codex    623fe08c  -     worktree   Repository size fixture  gpt-5.6-sol     11  $12.8  0:53:50               52 est.
+1 of 1 matching sessions. Pass an id to summary, turns, cost, tools, time or files.
+
+missing object
+$ wf summary <session> --size
+Directory      <worktree>
+Repository     fixture/repo (directory)
+Start commit   unknown (harness SHA aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: commit absent from clone)
+Code and docs  unknown
+$ wf ls codex --size
+start (UTC)  harness  id        role  directory  title or first prompt    models       turns   cost     wall  code and docs tokens
+-----------  -------  --------  ----  ---------  -----------------------  -----------  -----  -----  -------  --------------------
+02-24 16:50  codex    623fe08c  -     worktree   Repository size fixture  gpt-5.6-sol     11  $12.8  0:53:50               unknown
+1 of 1 matching sessions. Pass an id to summary, turns, cost, tools, time or files.

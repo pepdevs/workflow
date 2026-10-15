@@ -1,0 +1,40 @@
+$ wf summary <session>
+Session       claude-code d87437e1-d40c-4c63-aa05-9f9c3b05b112
+Title         <text>
+Directory     <text>
+Repository    unknown (session directory missing)
+Start commit  unknown (clone unavailable)
+Version       2.1.263
+Launched      -
+Threads       2 (1 root, 1 subagents)
+Turns         3 in the root thread, 1 in subagents
+Model calls   92
+Tool calls    116, 5 failed
+Models        claude-opus-5 (92)
+Tokens        input 184 · cache read 10.4M (97% of input) · cache write 362k (1h 288k) · output 78k (reasoning 32k)
+Context       peak 207k in the root thread, 74k in subagents · 11 of 92 calls above 200k, costing $1.3 (12%) · 0 compactions
+Cost          computed $10.5 · reported by harness $11.3 · 0 of 92 calls unpriced
+Turn time     2:35:03 wall in root turns; across all threads: model 0:21:11, tools 0:20:41, waiting on subagents 0:00:01, waiting on user 1:59:11
+Skills        clarify [tool] ×1, run-plan [file_read] ×1, delegate [file_read] ×1, git [tool] ×1
+Incidents     interrupted ×1
+
+$ wf summary <session> --size
+Session        claude-code d87437e1-d40c-4c63-aa05-9f9c3b05b112
+Title          <text>
+Directory      <text>
+Repository     unknown (session directory missing)
+Start commit   unknown (clone unavailable)
+Code and docs  unknown
+Version        2.1.263
+Launched       -
+Threads        2 (1 root, 1 subagents)
+Turns          3 in the root thread, 1 in subagents
+Model calls    92
+Tool calls     116, 5 failed
+Models         claude-opus-5 (92)
+Tokens         input 184 · cache read 10.4M (97% of input) · cache write 362k (1h 288k) · output 78k (reasoning 32k)
+Context        peak 207k in the root thread, 74k in subagents · 11 of 92 calls above 200k, costing $1.3 (12%) · 0 compactions
+Cost           computed $10.5 · reported by harness $11.3 · 0 of 92 calls unpriced
+Turn time      2:35:03 wall in root turns; across all threads: model 0:21:11, tools 0:20:41, waiting on subagents 0:00:01, waiting on user 1:59:11
+Skills         clarify [tool] ×1, run-plan [file_read] ×1, delegate [file_read] ×1, git [tool] ×1
+Incidents      interrupted ×1

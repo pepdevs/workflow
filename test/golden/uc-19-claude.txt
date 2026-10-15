@@ -1,0 +1,32 @@
+$ wf files <session>
+Session    claude-code d87437e1-d40c-4c63-aa05-9f9c3b05b112
+Directory  <text>
+Reads      12 calls, 3 files, 20 tokens; root thread 11, 0% of peak context 207k
+Repeats    8 reads of 1 file, 13 tokens; 0 after a compaction
+
+Files read
+#  path                      reads  turns  lines  words  tokens  edited  after compaction
+-  ------------------------  -----  -----  -----  -----  ------  ------  ----------------
+1  ...                          10  2×9,3     10     10      16
+2  skills/delegate/SKILL.md      1  2          1      1       2
+3  skills/run-plan/SKILL.md      1  2          1      1       2
+
+Skills and instructions
+#  path                      thread  reads  turns  lines  words  tokens
+-  ------------------------  ------  -----  -----  -----  -----  ------
+1  skills/run-plan/SKILL.md  root        1  2          1      1       2
+2  skills/delegate/SKILL.md  root        1  2          1      1       2
+
+Largest reads
+ #  turn  thread  path                      range  lines  words  tokens
+--  ----  ------  ------------------------  -----  -----  -----  ------
+ 1     2  root    ...                                  1      1       2
+ 2     2  root    skills/run-plan/SKILL.md             1      1       2
+ 3     2  root    skills/delegate/SKILL.md             1      1       2
+ 4     2  root    ...                                  1      1       2
+ 5     2  root    ...                                  1      1       2
+ 6     2  Plan    ...                                  1      1       2
+ 7     2  root    ...                                  1      1       2
+ 8     2  Plan    ...                                  1      1       2
+ 9     2  Plan    ...                                  1      1       2
+10     2  Plan    ...                                  1      1       2

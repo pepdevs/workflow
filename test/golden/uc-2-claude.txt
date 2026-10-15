@@ -1,0 +1,36 @@
+$ wf cost <session>
+Cost by root turn (subagent calls included in the turn that spawned them)
+
+#  start  calls  input  cache read  cache write  output  reasoning  turn cost  running total
+-  -----  -----  -----  ----------  -----------  ------  ---------  ---------  -------------
+1  01:18      0      0           0            0       0          0       $0.0           $0.0
+2  01:20     82    164        8.3M         355k     74k        31k       $9.3           $9.3
+3  03:54     10     20        2.0M           6k      5k        840       $1.2          $10.5
+
+Where the money went
+
+token type       cost  share
+--------------  -----  -----
+uncached input  <$0.1     0%
+cache read       $5.2    50%
+cache write      $3.3    32%
+output           $2.0    19%
+
+model           cost  share
+-------------  -----  -----
+claude-opus-5  $10.5   100%
+
+thread        cost  share
+------------  ----  -----
+root          $9.1    87%
+Plan: <text>  $1.4    13%
+
+Most expensive calls
+
+at     thread  model          context  output  cost
+-----  ------  -------------  -------  ------  ----
+02:58  root    claude-opus-5     134k      3k  $1.2
+03:48  root    claude-opus-5     189k     10k  $0.4
+03:05  root    claude-opus-5     152k      8k  $0.3
+03:41  root    claude-opus-5     185k      4k  $0.3
+01:21  root    claude-opus-5      47k     789  $0.3
