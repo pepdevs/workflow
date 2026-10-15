@@ -1,0 +1,34 @@
+$ wf cost <session>
+Cost by root turn (subagent calls included in the turn that spawned them)
+
+#  start  calls  input  cache read  cache write  output  reasoning  turn cost  running total
+-  -----  -----  -----  ----------  -----------  ------  ---------  ---------  -------------
+1  17:15    101    91k        7.4M         411k     54k        19k       $6.4           $6.4
+
+Where the money went
+
+token type          cost  share
+------------------  ----  -----
+uncached input      $0.0     0%
+cache read          $0.0     0%
+cache write         $0.0     0%
+output              $0.0     0%
+reported aggregate  $6.4   100%
+
+model        cost  share
+-----------  ----  -----
+gpt-5.6-sol  $6.4   100%
+
+thread             cost  share
+-----------------  ----  -----
+copilot-o9-fixes   $3.2    50%
+copilot-o9-review  $1.8    27%
+root               $1.5    23%
+
+Most expensive calls and turn aggregates
+
+at     thread             model          context  output  cost
+-----  -----------------  -----------  ---------  ------  ----
+20:10  copilot-o9-fixes   gpt-5.6-sol    unknown     27k  $3.2
+20:10  copilot-o9-review  gpt-5.6-sol    unknown     19k  $1.8
+20:10  root               gpt-5.6-sol  109k est.      8k  $1.5

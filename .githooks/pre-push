@@ -1,0 +1,3 @@
+#!/bin/sh
+# Blocks a push when type checking or a test fails. Enable with `npm run setup`.
+exec npm run -s check

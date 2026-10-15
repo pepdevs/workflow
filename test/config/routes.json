@@ -1,0 +1,38 @@
+{
+  "note": "Deterministic test routing examples; not operator preferences.",
+  "paceMargin": 10,
+  "providers": {
+    "codex": "openai",
+    "claude": "anthropic",
+    "grok": "xai"
+  },
+  "skills": {
+    "evaluate": [
+      "codex gpt-6.1-sol",
+      "claude claude-opus-5-5",
+      "pi zai/glm-5.3"
+    ],
+    "critique": [
+      "claude claude-opus-5-5",
+      "codex gpt-6.1-sol"
+    ],
+    "implement": [
+      "codex gpt-6.1-sol",
+      "pi xai/grok-4.6",
+      "grok grok-4.6",
+      "claude claude-sonnet-5-5"
+    ]
+  },
+  "default": [
+    "claude claude-sonnet-5-5",
+    "codex gpt-6.1-sol",
+    "pi zai/glm-5.3-flash"
+  ],
+  "retired": [
+    "gpt-6-sol",
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "claude-haiku-4-5",
+    "grok-4.7"
+  ]
+}

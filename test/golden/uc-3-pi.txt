@@ -1,0 +1,5 @@
+$ wf turns <session>
+#  start  trigger  prompt  models         calls  tools  subagents   cost  +subagents     wall  outcome    skills
+-  -----  -------  ------  -------------  -----  -----  ---------  -----  ----------  -------  ---------  ----------------------
+1  16:44  prompt   <text>  glm-5.3-flash     20     22          0  <$0.1       <$0.1  0:01:45  completed  record-improvement,git
+2  16:46  prompt   <text>  glm-5.3-flash     11     10          0  <$0.1       <$0.1  0:00:54  completed

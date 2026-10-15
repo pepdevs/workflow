@@ -1,0 +1,81 @@
+{
+  "usdPerEur": 1.25,
+  "note": "Invented test plans, prices, billing dates and exchange rate. These are not operator subscriptions.",
+  "plans": [
+    {
+      "name": "Example OpenAI Basic",
+      "monthly": 20,
+      "currency": "USD",
+      "from": "2000-01-01",
+      "to": "2026-09-01T00:00Z",
+      "providers": [
+        "openai"
+      ]
+    },
+    {
+      "name": "Example OpenAI Pro",
+      "monthly": 100,
+      "currency": "USD",
+      "from": "2026-09-01T00:00Z",
+      "to": null,
+      "providers": [
+        "openai"
+      ],
+      "plan": "prolite"
+    },
+    {
+      "name": "Example OpenAI Shared",
+      "monthly": 15,
+      "currency": "EUR",
+      "from": "2000-01-01",
+      "to": null,
+      "providers": [
+        "openai-codex",
+        "openai"
+      ],
+      "plan": "plus"
+    },
+    {
+      "name": "Example Anthropic",
+      "monthly": 25,
+      "currency": "EUR",
+      "from": "2000-01-01",
+      "to": null,
+      "providers": [
+        "anthropic"
+      ]
+    },
+    {
+      "name": "Example Zai Basic",
+      "monthly": 10,
+      "currency": "USD",
+      "from": "2000-01-01",
+      "to": "2026-09-05",
+      "providers": [
+        "zai-coding-plan",
+        "zai"
+      ]
+    },
+    {
+      "name": "Example Zai Pro",
+      "monthly": 50,
+      "currency": "USD",
+      "from": "2026-09-05",
+      "to": null,
+      "providers": [
+        "zai-coding-plan",
+        "zai"
+      ]
+    },
+    {
+      "name": "Example Xai",
+      "monthly": 40,
+      "currency": "USD",
+      "from": "2000-01-01",
+      "to": null,
+      "providers": [
+        "xai"
+      ]
+    }
+  ]
+}

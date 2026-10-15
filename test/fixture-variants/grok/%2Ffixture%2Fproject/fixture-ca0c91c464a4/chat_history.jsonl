@@ -1,0 +1,9 @@
+{"type":"system","content":"<text>"}
+{"type":"user","content":[{"type":"<text>","text":"<text>"}]}
+{"type":"user","content":[{"type":"<text>","text":"<text>"}],"synthetic_reason":"system_reminder"}
+{"type":"user","content":[{"type":"<text>","text":"<text>"}],"prompt_index":0}
+{"type":"reasoning","id":"fixture-21ff2802b11c","summary":[{"type":"summary_text","text":"<text>"}],"encrypted_content":"<text>","status":"completed"}
+{"type":"assistant","content":"<text>","model_id":"grok-4.7-build","model_fingerprint":"fp_a590ccc106bcea0f","reasoning_effort":"high"}
+{"type":"user","content":[{"type":"<text>","text":"<text>"}],"prompt_index":1}
+{"type":"reasoning","id":"fixture-5986fd72c58f","summary":[{"type":"summary_text","text":"<text>"}],"encrypted_content":"<text>","status":"completed"}
+{"type":"assistant","content":"<text>","model_id":"grok-4.7-build","model_fingerprint":"fp_a590ccc106bcea0f","reasoning_effort":"high"}

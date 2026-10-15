@@ -1,0 +1,4 @@
+{
+  "note": "Aliases wf files shows in place of a path prefix, beside the skill and session folders each harness names. ~ is the home folder on Linux, macOS or Windows, * is one folder name, and {session} is the session id. Add a prefix under a new or existing alias.",
+  "aliases": {}
+}

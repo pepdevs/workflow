@@ -1,0 +1,40 @@
+$ wf summary <session>
+Session       grok fixture-a33254bd3946
+Title         <text>
+Directory     /fixture/project
+Repository    unknown (custom log root)
+Start commit  unknown (clone unavailable)
+Version       -
+Launched      -
+Threads       29 (1 root, 28 subagents)
+Turns         9 in the root thread, 4 in subagents
+Model calls   943
+Tool calls    701, 14 failed
+Models        grok-4.6 (943)
+Tokens        input 9.7M · cache read 123.6M (93% of input) · cache write 0 (1h 0) · output 1.3M (reasoning 1.2M)
+Context       peak 234k est. at 2002-02-25T01:05 in the root thread, 310k est. at 2002-02-23T20:19 in subagents · budget classification unknown for 943 calls · 0 compactions
+Cost          computed $98.2 est. · reported by harness $19.4 · 0 of 12 calls unpriced
+Turn time     5:01:01 wall in root turns; across all threads: model 7:01:21, tools 0:02:12, waiting on subagents 4:29:07, waiting on user 0:00:00
+Skills        writing-style [file_read] ×2, execute-plan [file_read] ×1, design [file_read] ×1, git [file_read] ×1, resume-claude [file_read] ×1, gh-stack [file_read] ×1
+Incidents     incomplete child coverage ×24
+
+$ wf summary <session> --size
+Session        grok fixture-a33254bd3946
+Title          <text>
+Directory      /fixture/project
+Repository     unknown (custom log root)
+Start commit   unknown (clone unavailable)
+Code and docs  unknown
+Version        -
+Launched       -
+Threads        29 (1 root, 28 subagents)
+Turns          9 in the root thread, 4 in subagents
+Model calls    943
+Tool calls     701, 14 failed
+Models         grok-4.6 (943)
+Tokens         input 9.7M · cache read 123.6M (93% of input) · cache write 0 (1h 0) · output 1.3M (reasoning 1.2M)
+Context        peak 234k est. at 2002-02-25T01:05 in the root thread, 310k est. at 2002-02-23T20:19 in subagents · budget classification unknown for 943 calls · 0 compactions
+Cost           computed $98.2 est. · reported by harness $19.4 · 0 of 12 calls unpriced
+Turn time      5:01:01 wall in root turns; across all threads: model 7:01:21, tools 0:02:12, waiting on subagents 4:29:07, waiting on user 0:00:00
+Skills         writing-style [file_read] ×2, execute-plan [file_read] ×1, design [file_read] ×1, git [file_read] ×1, resume-claude [file_read] ×1, gh-stack [file_read] ×1
+Incidents      incomplete child coverage ×24
