@@ -1,0 +1,18 @@
+$ wf tools <session>
+category         calls  share  failed     time  tool names
+---------------  -----  -----  ------  -------  -----------------------------------------------
+shell/read          29    28%       0  0:00:01  exec_command
+file_write          17    16%       0  0:00:00  apply_patch
+shell/search        12    11%       0  0:00:22  exec_command
+agent               10    10%       0  0:10:39  spawn_agent,wait_agent,list_agents,send_message
+shell/vcs           10    10%       0  0:00:03  exec_command
+shell/script         8     8%       1  0:00:07  exec_command
+shell/database       5     5%       0  0:00:26  exec_command
+shell/forge          5     5%       0  0:01:20  exec_command
+shell/agent_cli      4     4%       1  0:20:36  exec_command
+shell/workflow       2     2%       0  0:00:03  exec_command
+shell/process        2     2%       0  0:00:00  exec_command
+shell/other          1     1%       0  0:00:01  exec_command
+
+Top shell programs: sed 27, git 10, rg 9, node 8, sqlite3 5, gh 5, find 3, claude 3, workflow 2, file 1
+Failing shell programs: claude 1, node 1

@@ -1,0 +1,31 @@
+$ wf route critique -d 2002-02-14.. -x claude-opus-5
+Routes for critique, judged against claude-opus-5. Best first.
+
+#  harness   model                           list  plan                headroom                  independence    calls
+-  --------  ------------------------------  ----  ------------------  ------------------------  --------------  -----
+1  claude    claude-opus-5-5                    1  Example Anthropic   no reading, pace unknown  distinct model      0
+2  codex     gpt-6.1-sol                        2  Example OpenAI Pro  no reading, pace unknown  cross family        0
+3  grok      grok-4.6                           -  Example Xai         no reading, pace unknown  cross family      943
+4  opencode  zai-coding-plan/glm-5.3-flash      -  Example Zai Pro     no reading, pace unknown  cross family       61
+5  pi        zai/glm-5.3-flash                  -  Example Zai Pro     no reading, pace unknown  cross family       31
+6  opencode  openrouter/stealth/union-alpha     -  per token           no reading, pace unknown  cross family       99
+7  claude    claude-opus-5                      -  Example Anthropic   no reading, pace unknown  same model         92
+
+wf run claude claude-opus-5-5 -i <task file> -k critique
+
+$ wf route implement -d 2002-02-14..
+Routes for implement. Best first.
+
+#  harness   model                           list  plan                headroom                  independence  calls
+-  --------  ------------------------------  ----  ------------------  ------------------------  ------------  -----
+1  codex     gpt-6.1-sol                        1  Example OpenAI Pro  no reading, pace unknown  -                 0
+2  pi        xai/grok-4.6                       2  Example Xai         no reading, pace unknown  -                 0
+3  grok      grok-4.6                           3  Example Xai         no reading, pace unknown  -               943
+4  claude    claude-sonnet-5-5                  4  Example Anthropic   no reading, pace unknown  -                 0
+5  claude    claude-opus-5                      -  Example Anthropic   no reading, pace unknown  -                92
+6  opencode  zai-coding-plan/glm-5.3-flash      -  Example Zai Pro     no reading, pace unknown  -                61
+7  pi        zai/glm-5.3-flash                  -  Example Zai Pro     no reading, pace unknown  -                31
+8  opencode  openrouter/stealth/union-alpha     -  per token           no reading, pace unknown  -                99
+Verdicts missing (custom log roots).
+
+wf run codex gpt-6.1-sol -i <task file> -k implement

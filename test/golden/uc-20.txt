@@ -1,0 +1,150 @@
+$ wf export -d 2002-02-14..2002-03-15
+{
+  "schema": 2,
+  "range": {
+    "from": "2002-02-14T00:00:00.000Z",
+    "to": "2002-03-16T00:00:00.000Z"
+  },
+  "rows": [
+    {
+      "day": "2002-02-22",
+      "harness": "claude",
+      "model": "claude-opus-5",
+      "skill": null,
+      "repository": null,
+      "sessions": 1,
+      "tokens": {
+        "input": 184,
+        "cacheRead": 10382692,
+        "cacheWrite": 361528,
+        "output": 78184
+      },
+      "costUsd": 10.4857,
+      "wallSeconds": 9303
+    },
+    {
+      "day": "2002-02-23",
+      "harness": "grok",
+      "model": "grok-4.6",
+      "skill": null,
+      "repository": null,
+      "sessions": 1,
+      "tokens": {
+        "input": 9718962,
+        "cacheRead": 123615488,
+        "cacheWrite": 0,
+        "output": 1329167
+      },
+      "costUsd": 98.2,
+      "wallSeconds": 18061
+    },
+    {
+      "day": "2002-02-24",
+      "harness": "codex",
+      "model": "gpt-5.6-sol",
+      "skill": null,
+      "repository": null,
+      "sessions": 1,
+      "tokens": {
+        "input": 414325,
+        "cacheRead": 23421312,
+        "cacheWrite": 0,
+        "output": 87653
+      },
+      "costUsd": 12.7789,
+      "wallSeconds": 3230
+    },
+    {
+      "day": "2002-03-02",
+      "harness": "copilot",
+      "model": "gpt-5.6-sol",
+      "skill": null,
+      "repository": null,
+      "sessions": 1,
+      "tokens": {
+        "input": 91369,
+        "cacheRead": 7362155,
+        "cacheWrite": 411334,
+        "output": 54088
+      },
+      "costUsd": 6.4488,
+      "wallSeconds": 8238
+    },
+    {
+      "day": "2002-03-02",
+      "harness": "opencode",
+      "model": "glm-5.3-flash",
+      "skill": null,
+      "repository": null,
+      "sessions": 1,
+      "tokens": {
+        "input": 711988,
+        "cacheRead": 5468096,
+        "cacheWrite": 0,
+        "output": 43572
+      },
+      "costUsd": 0.2926,
+      "wallSeconds": 95037
+    },
+    {
+      "day": "2002-03-02",
+      "harness": "opencode",
+      "model": "stealth/union-alpha",
+      "skill": null,
+      "repository": null,
+      "sessions": 0,
+      "tokens": {
+        "input": 1323145,
+        "cacheRead": 3122228,
+        "cacheWrite": 0,
+        "output": 21678
+      },
+      "costUsd": null,
+      "wallSeconds": 0
+    },
+    {
+      "day": "2002-03-06",
+      "harness": "pi",
+      "model": "glm-5.3-flash",
+      "skill": null,
+      "repository": null,
+      "sessions": 1,
+      "tokens": {
+        "input": 21568,
+        "cacheRead": 432576,
+        "cacheWrite": 0,
+        "output": 4500
+      },
+      "costUsd": 0.0185,
+      "wallSeconds": 160
+    },
+    {
+      "day": "2002-03-12",
+      "harness": "grok",
+      "model": "grok-4.7",
+      "skill": "implement",
+      "repository": null,
+      "sessions": 1,
+      "tokens": {
+        "input": 8562,
+        "cacheRead": 32384,
+        "cacheWrite": 0,
+        "output": 233
+      },
+      "costUsd": 0.0347,
+      "wallSeconds": 5
+    }
+  ],
+  "totals": {
+    "sessions": 7,
+    "tokens": {
+      "input": 12290103,
+      "cacheRead": 173836931,
+      "cacheWrite": 772862,
+      "output": 1619075
+    },
+    "costUsd": 128.2592,
+    "unpricedRows": 1,
+    "wallSeconds": 134034
+  }
+}

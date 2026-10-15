@@ -1,0 +1,27 @@
+{
+  "note": "Limits behind wf status, wf summary and wf files. Minutes unless the name says otherwise.",
+  "contextBudgetTokens": 200000,
+  "sizeBandSMaxTokens": 60000,
+  "sizeBandMMaxTokens": 120000,
+  "charsPerToken": 3.66,
+  "charsPerTokenMeaning": "wf files estimates the tokens of a tool result as its characters over this ratio. Measured with the o200k tokenizer over this repository's src, docs and test on 2026-09-30.",
+  "sizeBandMeaning": "S is peak context under sizeBandSMaxTokens. M is from sizeBandSMaxTokens to under sizeBandMMaxTokens. L is from sizeBandMMaxTokens through contextBudgetTokens inclusive. A higher peak is over budget.",
+  "status": {
+    "window": 60,
+    "quiet": 10,
+    "tool": 30,
+    "repeat": 4,
+    "failed": 5,
+    "costPerHourUsd": 20,
+    "compactions": 2
+  },
+  "statusMeaning": {
+    "window": "a session is listed when it had an event this recently",
+    "quiet": "an open turn with no event for this long is stuck",
+    "tool": "a shell or other tool running this long is stuck",
+    "repeat": "the same shell command this often among the hour's last 20 tool calls",
+    "failed": "failed tool calls among the hour's last 10",
+    "costPerHourUsd": "API-equivalent cost in the last hour",
+    "compactions": "compactions in the last hour"
+  }
+}

@@ -1,0 +1,8 @@
+{"at":1014339600000,"provider":"anthropic","plan":null,"windowMinutes":10080,"usedPercent":40,"resetsAt":1014469200000}
+{"at":1014339600000,"provider":"anthropic","plan":null,"windowMinutes":300,"usedPercent":5,"resetsAt":1014354000000}
+{"at":1014344100000,"provider":"anthropic","plan":null,"windowMinutes":10080,"usedPercent":46,"resetsAt":1014469200000}
+{"at":1014345900000,"provider":"anthropic","plan":null,"windowMinutes":10080,"usedPercent":48,"resetsAt":1014469200000}
+{"at":1014349500000,"provider":"anthropic","plan":null,"windowMinutes":10080,"usedPercent":52,"resetsAt":1014469200000}
+{"at":1014349500000,"provider":"anthropic","plan":null,"windowMinutes":300,"usedPercent":70,"resetsAt":1014354000000}
+{"at":1014577200000,"provider":"openai","plan":"prolite","windowMinutes":10080,"usedPercent":66,"resetsAt":1014910162000}
+not json

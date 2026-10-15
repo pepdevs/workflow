@@ -1,0 +1,17 @@
+$ wf turns <session>
+ #  start  trigger  prompt  models               calls  tools  subagents   cost  +subagents      wall  outcome      skills
+--  -----  -------  ------  -------------------  -----  -----  ---------  -----  ----------  --------  -----------  ----------------------------------------------------------
+ 1  16:34  prompt   <text>  stealth/union-alpha      8     13          1   $0.0        $0.0   0:06:27  completed
+ 2  16:44  prompt   <text>  stealth/union-alpha      1      0          0   $0.0        $0.0   0:04:10  interrupted
+ 3  16:48  prompt   <text>  glm-5.3-flash           13     19          0  <$0.1       <$0.1   0:28:48  completed    clarify
+ 4  17:17  prompt   <text>  glm-5.3-flash            2      1          0  <$0.1       <$0.1   0:01:01  completed
+ 5  17:18  prompt   <text>  glm-5.3-flash            1      0          0  <$0.1       <$0.1   0:01:31  completed
+ 6  17:21  prompt   <text>  glm-5.3-flash            1      0          0  <$0.1       <$0.1   0:02:22  completed
+ 7  17:24  prompt   <text>  glm-5.3-flash            1      0          0  <$0.1       <$0.1   0:00:42  completed
+ 8  17:25  prompt   <text>  glm-5.3-flash            1      1          0  <$0.1       <$0.1   0:01:35  unknown
+ 9  17:26  prompt   <text>  glm-5.3-flash            1      0          0  <$0.1       <$0.1   0:01:23  completed
+10  23:29  prompt   <text>  stealth/union-alpha     10     17          1   $0.0        $0.0   0:06:23  completed    writing-style,git,delegate
+11  23:37  prompt   <text>  stealth/union-alpha      3      2          1   $0.0        $0.0   0:05:04  completed
+12  00:44  prompt   <text>  stealth/union-alpha     12     12          0   $0.0        $0.0   0:02:04  completed
+13  01:04  prompt   <text>  stealth/union-alpha     11     14          2   $0.0        $0.0  14:15:42  error        principle-type-system-discipline,principle-fix-root-causes
+14  15:20  prompt   <text>  glm-5.3-flash           41     40          0   $0.2        $0.2  11:06:47  completed

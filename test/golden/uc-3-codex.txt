@@ -1,0 +1,14 @@
+$ wf turns <session>
+ #  start  trigger  prompt  models       calls  tools  subagents  cost  +subagents     wall  outcome      skills
+--  -----  -------  ------  -----------  -----  -----  ---------  ----  ----------  -------  -----------  ---------------------------------------------------
+ 1  16:50  prompt   <text>  gpt-5.6-sol      2      0          0  $0.1        $0.1  0:00:13  interrupted  clarify
+ 2  16:51  prompt   <text>  gpt-5.6-sol      9      8          0  $0.6        $0.6  0:01:43  completed    clarify
+ 3  16:57  prompt   <text>  gpt-5.6-sol      1      0          0  $0.1        $0.1  0:00:10  completed
+ 4  16:59  prompt   <text>  gpt-5.6-sol      6      2          0  $0.3        $0.3  0:01:01  completed    openai-docs
+ 5  17:02  prompt   <text>  gpt-5.6-sol      6      2          0  $0.3        $0.3  0:00:32  completed
+ 6  17:05  prompt   <text>  gpt-5.6-sol      3      2          0  $0.2        $0.2  0:00:27  completed
+ 7  17:08  prompt   <text>  gpt-5.6-sol     37     24          1  $2.6        $4.4  0:24:41  completed    f,principle-migrate-callers-then-delete-legacy-apis
+ 8  17:35  prompt   <text>  gpt-5.6-sol     40     11          0  $3.1        $3.1  0:17:40  completed
+ 9  17:59  prompt   <text>  gpt-5.6-sol     17     13          0  $1.5        $1.5  0:03:11  completed
+10  18:04  prompt   <text>  gpt-5.6-sol      9      8          0  $0.7        $0.7  0:00:59  completed    git
+11  18:28  prompt   <text>  gpt-5.6-sol     16     13          0  $1.5        $1.5  0:03:13  completed    git

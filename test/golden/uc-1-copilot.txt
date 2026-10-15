@@ -1,0 +1,40 @@
+$ wf summary <session>
+Session       copilot bab59557-2671-41ea-a96d-9a78bca8ccc8
+Title         <text>
+Directory     <text>
+Repository    unknown (session directory missing)
+Start commit  unknown (harness SHA <text>: clone unavailable)
+Version       1.0.85
+Launched      -
+Threads       3 (1 root, 2 subagents)
+Turns         1 in the root thread, 2 in subagents
+Model calls   101
+Tool calls    241, 3 failed
+Models        gpt-5.6-sol (101)
+Tokens        input 91k · cache read 7.4M (94% of input) · cache write 411k (1h 0) · output 54k (reasoning 19k)
+Context       peak 109k est. at 2002-03-02T20:10 in the root thread, unknown in subagents · budget classification unknown for 101 calls · 0 compactions
+Cost          computed $0.0 est. · reported by harness $6.4 · 3 of 3 calls unpriced
+Turn time     2:17:18 wall in root turns; across all threads: model 0:16:20, tools 0:11:52, waiting on subagents 2:13:09, waiting on user 0:00:00
+Skills        git [tool] ×3, writing-style [tool] ×1
+Incidents     -
+
+$ wf summary <session> --size
+Session        copilot bab59557-2671-41ea-a96d-9a78bca8ccc8
+Title          <text>
+Directory      <text>
+Repository     unknown (session directory missing)
+Start commit   unknown (harness SHA <text>: clone unavailable)
+Code and docs  unknown
+Version        1.0.85
+Launched       -
+Threads        3 (1 root, 2 subagents)
+Turns          1 in the root thread, 2 in subagents
+Model calls    101
+Tool calls     241, 3 failed
+Models         gpt-5.6-sol (101)
+Tokens         input 91k · cache read 7.4M (94% of input) · cache write 411k (1h 0) · output 54k (reasoning 19k)
+Context        peak 109k est. at 2002-03-02T20:10 in the root thread, unknown in subagents · budget classification unknown for 101 calls · 0 compactions
+Cost           computed $0.0 est. · reported by harness $6.4 · 3 of 3 calls unpriced
+Turn time      2:17:18 wall in root turns; across all threads: model 0:16:20, tools 0:11:52, waiting on subagents 2:13:09, waiting on user 0:00:00
+Skills         git [tool] ×3, writing-style [tool] ×1
+Incidents      -

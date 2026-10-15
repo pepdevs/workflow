@@ -1,0 +1,39 @@
+$ wf files <session>
+Session    codex 623fe08c-f089-4457-ab98-839fdfaf83f1
+Directory  <text>
+Reads      9 calls, 7 files, 15 tokens; root thread 10, 0% of peak context 203k
+Repeats    2 reads of 2 files, 3 tokens; 0 after a compaction
+
+Files read
+#  path                                                               reads  turns  lines  words  tokens  edited  after compaction
+-  -----------------------------------------------------------------  -----  -----  -----  -----  ------  ------  ----------------
+1  ...                                                                    2  7×2        2      2       3
+2  skills/git/SKILL.md                                                    2  10,11      2      2       3
+3  skills/clarify/SKILL.md                                                1  2          1      1       2
+4  skills/f/SKILL.md                                                      1  7          1      1       2
+5  skills/openai-docs/SKILL.md                                            1  4          1      1       2
+6  skills/principle-foundational-thinking/SKILL.md                        1  7          1      1       2
+7  skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md      1  7          1      1       2
+
+Skills and instructions
+#  path                                                               thread    reads  turns  lines  words  tokens
+-  -----------------------------------------------------------------  --------  -----  -----  -----  -----  ------
+1  skills/clarify/SKILL.md                                            root          1  2          1      1       2
+2  skills/openai-docs/SKILL.md                                        root          1  4          1      1       2
+3  skills/f/SKILL.md                                                  root          1  7          1      1       2
+4  skills/principle-foundational-thinking/SKILL.md                    subagent      1  7          1      1       2
+5  skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md  root          1  7          1      1       2
+6  skills/git/SKILL.md                                                root          2  10,11      2      2       3
+
+Largest reads
+#  turn  thread    path                                                          range  lines  words  tokens
+-  ----  --------  ------------------------------------------------------------  -----  -----  -----  ------
+1     2  root      skills/clarify/SKILL.md                                                  1      1       2
+2     4  root      skills/openai-docs/SKILL.md                                              1      1       2
+3     7  root      skills/f/SKILL.md                                                        1      1       2
+4     7  subagent  skills/principle-foundational-thinking/SKILL.md                          1      1       2
+5     7  subagent  ...                                                                      1      1       2
+6     7  subagent  ...                                                                      1      1       2
+7     7  root      skills/principle-migrate-callers-then-delete-legacy-apis/SK…             1      1       2
+8    10  root      skills/git/SKILL.md                                                      1      1       2
+9    11  root      skills/git/SKILL.md                                                      1      1       2
