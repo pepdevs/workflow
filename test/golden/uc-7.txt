@@ -1,0 +1,238 @@
+$ wf subscriptions
+Paying €96.00 a month on 5 plans, as of 2002-03-12 18:51 UTC
+Used: API-equivalent cost of the current billing period's calls. Week: share of the current weekly limit used, and when it resets (UTC).
+
+plan                   price         next bill        used  multiplier  week  resets
+---------------------  ------------  --------------  -----  ----------  ----  ------
+Example OpenAI Basic   €16.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example OpenAI Shared  €15.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Anthropic      €25.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Zai Basic      €8.00/month   04-01 (in 19d)   $0.3        0.0x     -  -
+Example Xai            €32.00/month  04-01 (in 19d)  <$0.1        0.0x     -  -
+total                  €96.00/month                   $0.3        0.0x
+
+$ wf subscriptions --history
+Paying €96.00 a month on 5 plans, as of 2002-03-12 18:51 UTC
+Used: API-equivalent cost of the current billing period's calls. Week: share of the current weekly limit used, and when it resets (UTC).
+
+plan                   price         next bill        used  multiplier  week  resets
+---------------------  ------------  --------------  -----  ----------  ----  ------
+Example OpenAI Basic   €16.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example OpenAI Shared  €15.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Anthropic      €25.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Zai Basic      €8.00/month   04-01 (in 19d)   $0.3        0.0x     -  -
+Example Xai            €32.00/month  04-01 (in 19d)  <$0.1        0.0x     -  -
+total                  €96.00/month                   $0.3        0.0x
+
+Value of each subscription, most usage per euro first
+Used: the logged calls at API prices against the price paid. Full window: a weekly limit's worth, from the share each window used. Full multiplier: a month of full windows against the price.
+
+plan                  price            paid   used  used multiplier  windows  full window  full multiplier  limit hits
+--------------------  ------------  -------  -----  ---------------  -------  -----------  ---------------  ----------
+Example Xai           €32.00/month  €864.00  $98.2             0.1x        0            -                -           0
+Example OpenAI Basic  €16.00/month  €432.00  $12.8             0.0x        1        $19.4             4.2x           0
+Example Anthropic     €25.00/month  €675.00  $10.5             0.0x        1        $16.5             2.3x           0
+Example Zai Basic     €8.00/month   €216.00   $0.3             0.0x        0            -                -           0
+
+Per billing period
+
+plan                  period                               paid   used  multiplier  calls  limit hits
+--------------------  ---------------------------------  ------  -----  ----------  -----  ----------
+Example Anthropic     2000-01-01 to 2000-02-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-02-01 to 2000-03-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-03-01 to 2000-04-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-04-01 to 2000-05-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-05-01 to 2000-06-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-06-01 to 2000-07-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-07-01 to 2000-08-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-08-01 to 2000-09-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-09-01 to 2000-10-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-10-01 to 2000-11-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-11-01 to 2000-12-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2000-12-01 to 2001-01-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-01-01 to 2001-02-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-02-01 to 2001-03-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-03-01 to 2001-04-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-04-01 to 2001-05-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-05-01 to 2001-06-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-06-01 to 2001-07-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-07-01 to 2001-08-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-08-01 to 2001-09-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-09-01 to 2001-10-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-10-01 to 2001-11-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-11-01 to 2001-12-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2001-12-01 to 2002-01-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2002-01-01 to 2002-02-01           €25.00   $0.0        0.0x      0           0
+Example Anthropic     2002-02-01 to 2002-03-01           €25.00  $10.5        0.3x     92           0
+Example Anthropic     2002-03-01 to 2002-04-01 (so far)  €25.00   $0.0        0.0x      0           0
+Example Xai           2000-01-01 to 2000-02-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-02-01 to 2000-03-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-03-01 to 2000-04-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-04-01 to 2000-05-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-05-01 to 2000-06-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-06-01 to 2000-07-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-07-01 to 2000-08-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-08-01 to 2000-09-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-09-01 to 2000-10-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-10-01 to 2000-11-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-11-01 to 2000-12-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2000-12-01 to 2001-01-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-01-01 to 2001-02-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-02-01 to 2001-03-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-03-01 to 2001-04-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-04-01 to 2001-05-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-05-01 to 2001-06-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-06-01 to 2001-07-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-07-01 to 2001-08-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-08-01 to 2001-09-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-09-01 to 2001-10-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-10-01 to 2001-11-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-11-01 to 2001-12-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2001-12-01 to 2002-01-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2002-01-01 to 2002-02-01           €32.00   $0.0        0.0x      0           0
+Example Xai           2002-02-01 to 2002-03-01           €32.00  $98.2        2.5x    943           0
+Example Xai           2002-03-01 to 2002-04-01 (so far)  €32.00  <$0.1        0.0x      2           0
+Example OpenAI Basic  2000-01-01 to 2000-02-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-02-01 to 2000-03-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-03-01 to 2000-04-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-04-01 to 2000-05-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-05-01 to 2000-06-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-06-01 to 2000-07-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-07-01 to 2000-08-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-08-01 to 2000-09-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-09-01 to 2000-10-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-10-01 to 2000-11-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-11-01 to 2000-12-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2000-12-01 to 2001-01-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-01-01 to 2001-02-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-02-01 to 2001-03-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-03-01 to 2001-04-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-04-01 to 2001-05-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-05-01 to 2001-06-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-06-01 to 2001-07-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-07-01 to 2001-08-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-08-01 to 2001-09-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-09-01 to 2001-10-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-10-01 to 2001-11-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-11-01 to 2001-12-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2001-12-01 to 2002-01-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2002-01-01 to 2002-02-01           €16.00   $0.0        0.0x      0           0
+Example OpenAI Basic  2002-02-01 to 2002-03-01           €16.00  $12.8        0.6x    169           0
+Example OpenAI Basic  2002-03-01 to 2002-04-01 (so far)  €16.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-01-01 to 2000-02-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-02-01 to 2000-03-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-03-01 to 2000-04-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-04-01 to 2000-05-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-05-01 to 2000-06-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-06-01 to 2000-07-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-07-01 to 2000-08-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-08-01 to 2000-09-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-09-01 to 2000-10-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-10-01 to 2000-11-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-11-01 to 2000-12-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2000-12-01 to 2001-01-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-01-01 to 2001-02-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-02-01 to 2001-03-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-03-01 to 2001-04-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-04-01 to 2001-05-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-05-01 to 2001-06-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-06-01 to 2001-07-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-07-01 to 2001-08-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-08-01 to 2001-09-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-09-01 to 2001-10-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-10-01 to 2001-11-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-11-01 to 2001-12-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2001-12-01 to 2002-01-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2002-01-01 to 2002-02-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2002-02-01 to 2002-03-01            €8.00   $0.0        0.0x      0           0
+Example Zai Basic     2002-03-01 to 2002-04-01 (so far)   €8.00   $0.3        0.0x     92           0
+
+$ wf subscriptions --weeks
+Paying €96.00 a month on 5 plans, as of 2002-03-12 18:51 UTC
+Used: API-equivalent cost of the current billing period's calls. Week: share of the current weekly limit used, and when it resets (UTC).
+
+plan                   price         next bill        used  multiplier  week  resets
+---------------------  ------------  --------------  -----  ----------  ----  ------
+Example OpenAI Basic   €16.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example OpenAI Shared  €15.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Anthropic      €25.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Zai Basic      €8.00/month   04-01 (in 19d)   $0.3        0.0x     -  -
+Example Xai            €32.00/month  04-01 (in 19d)  <$0.1        0.0x     -  -
+total                  €96.00/month                   $0.3        0.0x
+
+Per weekly window, newest first
+
+plan                  start (UTC)       used  API-equivalent  full window  multiplier
+--------------------  ----------------  ----  --------------  -----------  ----------
+Example OpenAI Basic  2002-02-21 15:29   66%           $12.8        $19.4        4.2x
+Example Anthropic     2002-02-16 13:00   52%            $8.6        $16.5        2.3x
+
+Readings: Codex logs report the share used, Claude Code logs only limit hits, and wf usage records every provider's share each time it runs.
+Use outside these logs counts toward a limit without adding cost, so the full window and its multiplier are lower bounds.
+
+$ wf subscriptions --models -d2002-03-05..
+Paying €96.00 a month on 5 plans, as of 2002-03-12 18:51 UTC
+Used: API-equivalent cost of the current billing period's calls. Week: share of the current weekly limit used, and when it resets (UTC).
+
+plan                   price         next bill        used  multiplier  week  resets
+---------------------  ------------  --------------  -----  ----------  ----  ------
+Example OpenAI Basic   €16.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example OpenAI Shared  €15.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Anthropic      €25.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Zai Basic      €8.00/month   04-01 (in 19d)   $0.3        0.0x     -  -
+Example Xai            €32.00/month  04-01 (in 19d)  <$0.1        0.0x     -  -
+total                  €96.00/month                   $0.3        0.0x
+
+Per plan and model
+
+plan               model          calls  unpriced  API-equivalent
+-----------------  -------------  -----  --------  --------------
+Example Xai        all                2         0           <$0.1
+                   grok-4.7           2         0           <$0.1
+Example Zai Basic  all               31         0           <$0.1
+                   glm-5.3-flash     31         0           <$0.1
+
+$ wf subscriptions --models -d2002-02-23T08:00+02:00..
+Paying €96.00 a month on 5 plans, as of 2002-03-12 18:51 UTC
+Used: API-equivalent cost of the current billing period's calls. Week: share of the current weekly limit used, and when it resets (UTC).
+
+plan                   price         next bill        used  multiplier  week  resets
+---------------------  ------------  --------------  -----  ----------  ----  ------
+Example OpenAI Basic   €16.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example OpenAI Shared  €15.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Anthropic      €25.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
+Example Zai Basic      €8.00/month   04-01 (in 19d)   $0.3        0.0x     -  -
+Example Xai            €32.00/month  04-01 (in 19d)  <$0.1        0.0x     -  -
+total                  €96.00/month                   $0.3        0.0x
+
+Per plan and model
+
+plan                        model                calls  unpriced  API-equivalent
+--------------------------  -------------------  -----  --------  --------------
+Example Xai                 all                    945         0           $98.2
+                            grok-4.6               943         0           $98.2
+                            grok-4.7                 2         0           <$0.1
+Example OpenAI Basic        all                    169         0           $12.8
+                            gpt-5.6-sol            169         0           $12.8
+github-copilot (per token)  all                    101         0            $6.4
+                            gpt-5.6-sol            101         0            $6.4
+Example Zai Basic           all                     92         0            $0.3
+                            glm-5.3-flash           92         0            $0.3
+openrouter (per token)      all                     99        96            $0.0
+                            stealth/union-alpha     99        96            $0.0
+
+$ wf subscriptions -s 5
+API-equivalent cost of each 5-point rise within a limit window, newest first
+
+plan                  window  from (UTC)        to (UTC)            used  API-equivalent  per 1%  multiplier  main model
+--------------------  ------  ----------------  ----------------  ------  --------------  ------  ----------  ------------------
+Example OpenAI Basic  7d      2002-02-24 16:50  2002-02-24 18:29  60-65%           $11.3   $2.26       49.1x  gpt-5.6-sol 100%
+Example OpenAI Basic  7d      2002-02-21 15:29  2002-02-24 16:50   0-60%           <$0.1   $0.00        0.0x  gpt-5.6-sol 100%
+Example Anthropic     7d      2002-02-22 02:15  2002-02-22 03:45  46-52%            $6.1   $1.01       14.1x  claude-opus-5 100%
+Example Anthropic     5h      2002-02-22 01:00  2002-02-22 03:45   5-70%            $8.6   $0.13           -  claude-opus-5 100%
+Example Anthropic     7d      2002-02-22 01:00  2002-02-22 02:15  40-46%            $2.5   $0.42        5.8x  claude-opus-5 100%
+Example Anthropic     7d      2002-02-16 13:00  2002-02-22 01:00   0-40%            $0.0   $0.00        0.0x  -
+Example Anthropic     5h      2002-02-22 00:00  2002-02-22 01:00    0-5%            $0.0   $0.00           -  -
+
+The multiplier is a month of weekly windows at this rate over the plan's price; shorter windows have none.
+Use outside these logs counts toward a limit without adding cost, so a low figure can mean unlogged use.

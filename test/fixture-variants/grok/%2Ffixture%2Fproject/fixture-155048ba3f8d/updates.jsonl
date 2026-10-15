@@ -1,0 +1,1 @@
+{"timestamp":1014914888,"method":"<text>","params":{"sessionId":"fixture-155048ba3f8d","update":{"sessionUpdate":"hook_execution","event_name":"session_start","runs":[{"name":"<text>","status":{"status":"success","elapsed_ms":46}},{"name":"<text>","status":{"status":"success","elapsed_ms":37}}]},"_meta":{"eventId":"fixture-ed47e59069b0","agentTimestampMs":1014914888381}}}

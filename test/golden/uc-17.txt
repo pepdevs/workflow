@@ -1,0 +1,2 @@
+$ wf plan 7 -d 2002-02-14..
+No wf run session names plan 7 in the window. Widen it with -d.

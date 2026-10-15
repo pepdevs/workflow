@@ -1,0 +1,5 @@
+{
+  "usdPerEur": 1,
+  "note": "Configure purchased plans and exchange rate in the local subscriptions.json override. Bundled defaults contain no subscriptions.",
+  "plans": []
+}

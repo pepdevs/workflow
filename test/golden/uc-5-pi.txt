@@ -1,0 +1,7 @@
+$ wf time <session>
+#  start     wall    model  model share    tools  agent tools  waiting on user  call start
+-  -----  -------  -------  -----------  -------  -----------  ---------------  ----------
+1  16:44  0:01:45  0:01:33          88%  0:00:18      0:00:00          0:00:00  recorded
+2  16:46  0:00:54  0:00:41          75%  0:00:14      0:00:00          0:00:00  recorded
+
+Time between turns (the person's time): total 0:00:08, longest 0:00:08

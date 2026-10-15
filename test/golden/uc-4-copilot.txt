@@ -1,0 +1,16 @@
+$ wf tools <session>
+category          calls  share  failed     time  tool names
+----------------  -----  -----  ------  -------  -----------
+file_read            91    38%       1  0:04:43  view
+search               47    20%       0  0:02:21  glob,rg
+shell/vcs            25    10%       0  0:01:44  powershell
+file_write           20     8%       2  0:00:00  apply_patch
+shell/other          19     8%       0  0:00:41  powershell
+shell/build_test     14     6%       0  0:01:09  powershell
+shell/script         13     5%       0  0:01:05  powershell
+shell/forge           6     2%       0  0:00:09  powershell
+skill                 4     2%       0  0:00:00  skill
+agent                 2     1%       0  2:13:09  task
+
+Top shell programs: git 25, node 13, @' 10, npm 8, gh 6, npx 6, Get-Content 3, $files 3, $body 2, $root 1
+Failing shell programs: -
