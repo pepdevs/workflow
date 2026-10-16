@@ -128,6 +128,18 @@ const HELP: Record<string, Help> = {
       "No prompt, reply, file content, path or credential is included. schema rises when a field changes.",
     ],
   },
+  prompts: {
+    group: "Across sessions", args: "", line: "each session's prompts as JSON",
+    detail: [
+      "wf prompts [-d when] [--root dir]",
+      `${WHEN}; 30 days by default`,
+      "One JSON document with each session that started in the range or took a prompt in it.",
+      "A session has its start day, parent (the session that launched it with wf run), harness,",
+      "repository, skill, model, cost and prompts. A prompt is a root turn the person started",
+      "by typing. It has its start time, model, outcome, cost with spawned subagents, launch mark",
+      "and text. The output holds prompt text. schema rises when a field changes.",
+    ],
+  },
   subscriptions: {
     group: "Across sessions", args: "", line: "plan prices, next bills, use this period and this week",
     detail: [

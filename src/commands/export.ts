@@ -1,12 +1,14 @@
 // uc-20: agent sessions per day as JSON, for tools such as Career that keep the evidence.
-import { type Session, UNNAMED_MODELS } from "../model.ts";
-import { callCost, launchOf, modelCounts, primaryModel, rootThread, rootTurns, sum } from "../facts.ts";
+// uc-21: the prompts of those sessions as JSON, for Overview.
+import { type Session, type Turn, UNNAMED_MODELS } from "../model.ts";
+import { callCost, launchOf, modelCounts, primaryModel, rootThread, rootTurnCalls, rootTurns, sum, turnCalls } from "../facts.ts";
 import { ProvenanceCall } from "../repos/provenance.ts";
 import { ADAPTER_OF, type Range, loadAll, parseWhen } from "./find.ts";
 import { day } from "./format.ts";
 
 // Raise when a field changes meaning or goes away; consumers check it before reading.
 export const EXPORT_SCHEMA = 2;
+export const PROMPTS_SCHEMA = 1;
 
 type Tokens = { input: number; cacheRead: number; cacheWrite: number; output: number };
 
@@ -102,3 +104,94 @@ export function exportCommand(flags: Record<string, string>, base: string | unde
 
 // Hundredths of a cent, so sums carry no floating point noise.
 const round = (usd: number) => Math.round(usd * 1e4) / 1e4;
+
+export type PromptRow = {
+  turn: string;
+  at: string;
+  model: string | null;
+  outcome: Turn["outcome"];
+  // The priced calls of the turn and the subagents it spawned; null when the
+  // harness logged no usage for the turn.
+  costUsd: number | null;
+  unpricedCalls: number;
+  // The turn carries the wf run launch header: an agent wrote it.
+  launch: boolean;
+  text: string | null;
+};
+
+export type PromptSession = {
+  session: string;
+  day: string;
+  startedAt: string;
+  parent: string | null;
+  harness: string;
+  repository: string | null;
+  skill: string | null;
+  model: string | null;
+  // The priced calls; unpricedCalls counts the others, as unpricedRows in wf export.
+  costUsd: number;
+  unpricedCalls: number;
+  prompts: PromptRow[];
+};
+
+// Harnesses that log usage apart from turns, so a turn without calls has unknown cost.
+const USAGE_APART: ReadonlySet<Session["harness"]> = new Set(["grok", "copilot"]);
+
+// The model with most calls in the turn's own thread, or the model the turn names.
+function turnModel(s: Session, t: Turn): string | null {
+  const counts = new Map<string, number>();
+  for (const c of turnCalls(s, t, false)) for (const [model, n] of modelCounts(c)) if (named(model)) counts.set(model, (counts.get(model) ?? 0) + n);
+  return top(counts) ?? named(t.model ?? null);
+}
+
+// The cost of the priced calls, and the count of the others.
+const costOf = (calls: Session["modelCalls"]) => {
+  const costs = calls.map(callCost);
+  return { costUsd: round(sum(costs.filter((c) => c !== null))), unpricedCalls: costs.filter((c) => c === null).length };
+};
+
+// The sessions active in the range, each whole: started in it, or a root turn
+// started in it. Prompts are root turns with trigger prompt, in turn order.
+export function promptsCommand(flags: Record<string, string>, base: string | undefined, now: number): string {
+  const when: Range = parseWhen(flags.d ?? "30", now);
+  const loaded = loadAll(base, when.from);
+  const launchers = new Set(loaded.map((s) => launchOf(s)?.parent).filter((p) => p != null).map((p) => `${p!.harness}:${p!.id}`));
+  const provenance = new ProvenanceCall();
+  const inRange = (ms: number) => ms >= when.from && ms < when.to;
+  const sessions: PromptSession[] = [];
+  for (const s of loaded) {
+    const start = startOf(s);
+    const turns = rootTurns(s);
+    if (start === null || !(inRange(start) || turns.some((t) => inRange(t.startedAt)))) continue;
+    const harness = ADAPTER_OF[s.harness];
+    const launch = launchOf(s);
+    const session = `${harness}:${s.id}`;
+    const owned = rootTurnCalls(s);
+    sessions.push({
+      session,
+      day: day(start),
+      startedAt: new Date(start).toISOString(),
+      parent: launch?.parent ? `${launch.parent.harness}:${launch.parent.id}` : null,
+      harness,
+      repository: provenance.repositoryName(s, base === undefined),
+      skill: launch?.skill ?? (launchers.has(session) ? "orchestrator" : null),
+      model: mainModel(s),
+      ...costOf(s.modelCalls),
+      prompts: turns.flatMap((t, i) => {
+        if (t.trigger !== "prompt") return [];
+        const calls = owned.get(t.id)!;
+        return [{
+          turn: t.id,
+          at: new Date(t.startedAt).toISOString(),
+          model: turnModel(s, t),
+          outcome: t.outcome,
+          ...(calls.length === 0 && USAGE_APART.has(s.harness) ? { costUsd: null, unpricedCalls: 0 } : costOf(calls)),
+          launch: i === 0 && launch !== null,
+          text: t.promptText,
+        }];
+      }),
+    });
+  }
+  sessions.sort((a, b) => (a.startedAt < b.startedAt ? -1 : a.startedAt > b.startedAt ? 1 : a.session < b.session ? -1 : 1));
+  return JSON.stringify({ schema: PROMPTS_SCHEMA, range: { from: iso(when.from), to: iso(when.to) }, sessions }, null, 2);
+}
