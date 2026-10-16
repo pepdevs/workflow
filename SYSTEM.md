@@ -8,7 +8,7 @@ session and billing reports, and launches or stops supported agent sessions.
 | Path | Responsibility |
 | --- | --- |
 | `src/cli.ts` | Parse CLI arguments, expose public test entry points, dispatch commands |
-| `src/commands/` | Session, file, model, route, usage, billing, run, status, stop, archive, repository, and export use cases; help and shared formatting |
+| `src/commands/` | Session, file, model, route, usage, billing, run, status, stop, archive, repository, export and prompts use cases; help and shared formatting |
 | `src/harnesses/` | One adapter per agent; the only code that knows its logs, credentials, processes, launch commands, and fixture cutters |
 | `src/harnesses/index.ts` | Public adapter, login, process, launch, and fixture entry points |
 | `src/harnesses/common/` | Log/archive helpers, redaction, process and launch types |

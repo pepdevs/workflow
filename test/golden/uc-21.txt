@@ -1,0 +1,508 @@
+$ wf prompts -d 2002-02-14..2002-03-15
+{
+  "schema": 1,
+  "range": {
+    "from": "2002-02-14T00:00:00.000Z",
+    "to": "2002-03-16T00:00:00.000Z"
+  },
+  "sessions": [
+    {
+      "session": "claude:d87437e1-d40c-4c63-aa05-9f9c3b05b112",
+      "day": "2002-02-22",
+      "startedAt": "2002-02-22T01:18:22.434Z",
+      "parent": null,
+      "harness": "claude",
+      "repository": null,
+      "skill": null,
+      "model": "claude-opus-5",
+      "costUsd": 10.4857,
+      "unpricedCalls": 0,
+      "prompts": [
+        {
+          "turn": "7f77cde7-dfef-41fd-aa9b-93a5d1cca26f",
+          "at": "2002-02-22T01:20:51.123Z",
+          "model": "claude-opus-5",
+          "outcome": "interrupted",
+          "costUsd": 9.2894,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "ec873992-eb27-4ab9-ab94-a8f8ca0653de",
+          "at": "2002-02-22T03:54:42.931Z",
+          "model": "claude-opus-5",
+          "outcome": "completed",
+          "costUsd": 1.1963,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        }
+      ]
+    },
+    {
+      "session": "grok:fixture-a33254bd3946",
+      "day": "2002-02-23",
+      "startedAt": "2002-02-23T15:53:30.674Z",
+      "parent": null,
+      "harness": "grok",
+      "repository": null,
+      "skill": null,
+      "model": "grok-4.6",
+      "costUsd": 98.2,
+      "unpricedCalls": 0,
+      "prompts": [
+        {
+          "turn": "fixture-a33254bd3946:0",
+          "at": "2002-02-23T15:53:30.674Z",
+          "model": "grok-4.6",
+          "outcome": "completed",
+          "costUsd": 0.3341,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "fixture-a33254bd3946:1",
+          "at": "2002-02-23T15:57:52.151Z",
+          "model": "grok-4.6",
+          "outcome": "completed",
+          "costUsd": 0.0377,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "fixture-a33254bd3946:2",
+          "at": "2002-02-23T15:58:17.708Z",
+          "model": "grok-4.6",
+          "outcome": "error",
+          "costUsd": 93.1545,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "fixture-a33254bd3946:3",
+          "at": "2002-02-23T20:51:11.997Z",
+          "model": "grok-4.6",
+          "outcome": "error",
+          "costUsd": null,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "fixture-a33254bd3946:4",
+          "at": "2002-02-25T00:53:00.514Z",
+          "model": "grok-4.6",
+          "outcome": "completed",
+          "costUsd": 2.0389,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "fixture-a33254bd3946:5",
+          "at": "2002-02-25T01:00:21.849Z",
+          "model": "grok-4.6",
+          "outcome": "completed",
+          "costUsd": 0.2237,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "fixture-a33254bd3946:6",
+          "at": "2002-02-25T01:02:11.738Z",
+          "model": "grok-4.6",
+          "outcome": "completed",
+          "costUsd": 0.4671,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "fixture-a33254bd3946:7",
+          "at": "2002-02-25T01:04:05.165Z",
+          "model": "grok-4.6",
+          "outcome": "completed",
+          "costUsd": 0.9888,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "fixture-a33254bd3946:8",
+          "at": "2002-02-25T01:05:20.584Z",
+          "model": "grok-4.6",
+          "outcome": "completed",
+          "costUsd": 0.9551,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        }
+      ]
+    },
+    {
+      "session": "codex:623fe08c-f089-4457-ab98-839fdfaf83f1",
+      "day": "2002-02-24",
+      "startedAt": "2002-02-24T16:50:06.000Z",
+      "parent": null,
+      "harness": "codex",
+      "repository": null,
+      "skill": null,
+      "model": "gpt-5.6-sol",
+      "costUsd": 12.7789,
+      "unpricedCalls": 0,
+      "prompts": [
+        {
+          "turn": "1d40a172-1858-4ac3-a6ba-ebe92aeb27a0",
+          "at": "2002-02-24T16:50:06.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "interrupted",
+          "costUsd": 0.0521,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "513008f4-c323-4c5c-a4cf-6794d803209f",
+          "at": "2002-02-24T16:51:12.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 0.6178,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "ccfa538c-2747-4de1-ab3e-f36668529c66",
+          "at": "2002-02-24T16:57:28.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 0.0504,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "80398814-13a7-49e8-a7ad-14ed9f7b7c02",
+          "at": "2002-02-24T16:59:00.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 0.3346,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "e67bb4e2-954f-4cb4-a9b8-6d429ee3c6e9",
+          "at": "2002-02-24T17:02:25.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 0.2942,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "65fe963c-6727-4f8a-a245-56c50dcbcb02",
+          "at": "2002-02-24T17:05:47.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 0.1593,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "4bbaab0a-a2eb-49a6-a077-5cd16f42f394",
+          "at": "2002-02-24T17:08:39.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 4.4476,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "9e400459-6568-4e95-abd2-1dc9e513f2a0",
+          "at": "2002-02-24T17:35:41.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 3.0955,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "1c9d75d7-dccf-4845-a8a1-35a9e464636f",
+          "at": "2002-02-24T17:59:07.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 1.456,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "a5a7d7f6-1899-46eb-a5f1-4b97a766e9a4",
+          "at": "2002-02-24T18:04:56.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 0.7402,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "1765ded2-b3d3-4ff2-aec1-5ca4b3a0cdc9",
+          "at": "2002-02-24T18:28:59.000Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 1.5311,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        }
+      ]
+    },
+    {
+      "session": "opencode:ses_45ef79cbeb31a9b68c63acf4cf",
+      "day": "2002-03-02",
+      "startedAt": "2002-03-02T16:34:16.094Z",
+      "parent": null,
+      "harness": "opencode",
+      "repository": null,
+      "skill": null,
+      "model": "glm-5.3-flash",
+      "costUsd": 0.2926,
+      "unpricedCalls": 96,
+      "prompts": [
+        {
+          "turn": "msg_c06018a7b4c5ccc95341cfd06a",
+          "at": "2002-03-02T16:34:16.094Z",
+          "model": "stealth/union-alpha",
+          "outcome": "completed",
+          "costUsd": 0,
+          "unpricedCalls": 19,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_072410af25ae17e7c4271224ca",
+          "at": "2002-03-02T16:44:44.086Z",
+          "model": "stealth/union-alpha",
+          "outcome": "interrupted",
+          "costUsd": 0,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_acf9cd56f2e522df511d4986c4",
+          "at": "2002-03-02T16:48:58.217Z",
+          "model": "glm-5.3-flash",
+          "outcome": "completed",
+          "costUsd": 0.0366,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_492cb5d73ff759e593462f58b0",
+          "at": "2002-03-02T17:17:54.732Z",
+          "model": "glm-5.3-flash",
+          "outcome": "completed",
+          "costUsd": 0.0104,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_341354a48c5e105a5d96b75d01",
+          "at": "2002-03-02T17:18:34.656Z",
+          "model": "glm-5.3-flash",
+          "outcome": "completed",
+          "costUsd": 0.0094,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_3f7fbeb0d24b8abf2258aedcd8",
+          "at": "2002-03-02T17:21:54.746Z",
+          "model": "glm-5.3-flash",
+          "outcome": "completed",
+          "costUsd": 0.011,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_ea8369defff8acdae6fb461e93",
+          "at": "2002-03-02T17:24:19.512Z",
+          "model": "glm-5.3-flash",
+          "outcome": "completed",
+          "costUsd": 0.009,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_0f04da157c5d277d4ed497153f",
+          "at": "2002-03-02T17:25:56.444Z",
+          "model": "glm-5.3-flash",
+          "outcome": "unknown",
+          "costUsd": 0.0106,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_998e5fe80c87efbea390a77bd9",
+          "at": "2002-03-02T17:26:48.297Z",
+          "model": "glm-5.3-flash",
+          "outcome": "completed",
+          "costUsd": 0.0101,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_e87a005d70fcea03cb2fead9da",
+          "at": "2002-03-02T23:29:19.720Z",
+          "model": "stealth/union-alpha",
+          "outcome": "completed",
+          "costUsd": 0,
+          "unpricedCalls": 21,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_86a94c2ae09924c80677a01d40",
+          "at": "2002-03-02T23:37:03.491Z",
+          "model": "stealth/union-alpha",
+          "outcome": "completed",
+          "costUsd": 0,
+          "unpricedCalls": 17,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_92ecd9f982784a660f23f6565c",
+          "at": "2002-03-03T00:44:16.907Z",
+          "model": "stealth/union-alpha",
+          "outcome": "completed",
+          "costUsd": 0,
+          "unpricedCalls": 12,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_5a3ba4e6fa355e06a8643e4a5c",
+          "at": "2002-03-03T01:04:21.084Z",
+          "model": "stealth/union-alpha",
+          "outcome": "error",
+          "costUsd": 0,
+          "unpricedCalls": 27,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "msg_d55aa426d981e8170caef11e21",
+          "at": "2002-03-03T15:20:20.963Z",
+          "model": "glm-5.3-flash",
+          "outcome": "completed",
+          "costUsd": 0.1956,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        }
+      ]
+    },
+    {
+      "session": "copilot:bab59557-2671-41ea-a96d-9a78bca8ccc8",
+      "day": "2002-03-02",
+      "startedAt": "2002-03-02T17:15:28.052Z",
+      "parent": null,
+      "harness": "copilot",
+      "repository": null,
+      "skill": null,
+      "model": "gpt-5.6-sol",
+      "costUsd": 6.4488,
+      "unpricedCalls": 0,
+      "prompts": [
+        {
+          "turn": "4d166ad3-693e-447c-ad81-542d2a80b5fc",
+          "at": "2002-03-02T17:15:28.052Z",
+          "model": "gpt-5.6-sol",
+          "outcome": "completed",
+          "costUsd": 6.4488,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        }
+      ]
+    },
+    {
+      "session": "pi:bab8cde5-cd5d-4886-aa1f-58e007677dbb",
+      "day": "2002-03-06",
+      "startedAt": "2002-03-06T16:44:57.313Z",
+      "parent": null,
+      "harness": "pi",
+      "repository": null,
+      "skill": null,
+      "model": "glm-5.3-flash",
+      "costUsd": 0.0185,
+      "unpricedCalls": 0,
+      "prompts": [
+        {
+          "turn": "d94edb41",
+          "at": "2002-03-06T16:44:57.313Z",
+          "model": "glm-5.3-flash",
+          "outcome": "completed",
+          "costUsd": 0.0109,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        },
+        {
+          "turn": "2a3b4db2",
+          "at": "2002-03-06T16:46:50.391Z",
+          "model": "glm-5.3-flash",
+          "outcome": "completed",
+          "costUsd": 0.0076,
+          "unpricedCalls": 0,
+          "launch": false,
+          "text": "<text>"
+        }
+      ]
+    },
+    {
+      "session": "grok:fixture-da1dfc3f5e31",
+      "day": "2002-03-12",
+      "startedAt": "2002-03-12T18:50:57.804Z",
+      "parent": "grok:parent-id",
+      "harness": "grok",
+      "repository": null,
+      "skill": "implement",
+      "model": "grok-4.7",
+      "costUsd": 0.0347,
+      "unpricedCalls": 0,
+      "prompts": [
+        {
+          "turn": "fixture-da1dfc3f5e31:0",
+          "at": "2002-03-12T18:50:57.804Z",
+          "model": "grok-4.7",
+          "outcome": "completed",
+          "costUsd": 0.0347,
+          "unpricedCalls": 0,
+          "launch": true,
+          "text": "[wf run skill=implement parent=grok:parent-id]\nUse the installed implement skill for this task.\n\nCount to three."
+        }
+      ]
+    }
+  ]
+}

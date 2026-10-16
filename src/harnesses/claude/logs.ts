@@ -144,8 +144,9 @@ export function loadClaude(idOrPath: string, roots = claudeRoots(), { counts = f
           // Queued prompts are written out of time order, so never end a turn before it started.
           if (turn && turn.endedAt === null) turn.endedAt = Math.max(turn.startedAt, boundary ?? turn.startedAt);
           turn = {
-            // Subagent records repeat the parent's promptId, so scope the id to the thread.
-            id: isSubagent ? `${threadId}:${r.uuid}` : (r.promptId ?? r.uuid),
+            // A promptId can span several typed prompts, and subagent records repeat the
+            // parent's, so a turn takes its record's uuid, scoped to a subagent's thread.
+            id: isSubagent ? `${threadId}:${r.uuid}` : r.uuid,
             threadId,
             trigger: isSubagent ? "agent_message" : turnTriggerFromText(text),
             promptText: text.replace(/<\/?command-[a-z]+>/g, " ").trim(),
