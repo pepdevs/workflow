@@ -50,6 +50,25 @@ test("Claude captures the first root record's branch once", () => {
   }
 });
 
+test("Claude root turns stay apart when prompts share a promptId", () => {
+  const dir = mkdtempSync(join(tmpdir(), "workflow-claude-turns-"));
+  const root = join(dir, "claude");
+  const ref = join(root, "project", "session.jsonl");
+  const prompt = (uuid: string, timestamp: string) => ({ type: "user", uuid, promptId: "shared", timestamp, message: { role: "user", content: `prompt ${uuid}` } });
+  const reply = (id: string, timestamp: string) => ({
+    type: "assistant", uuid: `r-${id}`, timestamp,
+    message: { id, role: "assistant", model: "claude-opus-5", stop_reason: "end_turn", content: [{ type: "text", text: "ok" }], usage: { input_tokens: 10, output_tokens: 5 } },
+  });
+  try {
+    mkdirSync(join(root, "project"), { recursive: true });
+    const records = [prompt("first", "2020-01-01T00:00:00Z"), reply("m1", "2020-01-01T00:00:05Z"), prompt("second", "2020-01-01T01:00:00Z"), reply("m2", "2020-01-01T01:00:05Z")];
+    writeFileSync(ref, records.map((r) => JSON.stringify(r)).join("\n") + "\n");
+    const s = ADAPTERS.claude.load(ref, [root]);
+    assert.deepEqual(s.turns.map((t) => t.id), ["first", "second"]);
+    assert.deepEqual(s.modelCalls.map((c) => [c.id, c.turnId]), [["m1", "first"], ["m2", "second"]]);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
 test("session repository provenance", () => {
   const dir = mkdtempSync(join(tmpdir(), "workflow-provenance-"));
   const clone = join(dir, "clone");

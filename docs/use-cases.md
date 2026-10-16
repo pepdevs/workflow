@@ -89,6 +89,21 @@ How do I work with agents, day by day, in a form another tool can keep? `wf expo
 wf export -d 2002-02-14..2002-03-15
 ```
 
+## uc-21 Prompts as JSON
+
+What did I ask agents, session by session, in a form Overview can keep? `wf prompts` prints one JSON document with the sessions active in the range, each with its prompts. Overview stores it and replaces each session it carries. `schema` rises when a field changes meaning or goes away, and `range` gives the window's bounds, with `null` for an open end.
+
+- A session prints when it started in the range or one of its root turns started in it, always whole. A session that runs for days prints with every day it was active.
+- Each session has `session` (`<harness>:<id>`), `day` (the UTC day it started), `startedAt`, `parent` (`<harness>:<id>` of the session that launched it with `wf run`, or `null`), `harness`, `repository`, `skill`, `model` and `costUsd`, as `wf export` derives them. `costUsd` adds the priced calls, and `unpricedCalls` counts the others. A session without a prompt prints with `prompts: []`.
+- A prompt is a root turn with trigger `prompt`; command, notification and agent turns stay out. Each has `turn` (the turn id, unique within the session), `at`, `model` (the model with most calls in the turn, or the model the turn names), `outcome`, `costUsd`, `unpricedCalls`, `launch` and `text`.
+- A prompt's cost covers its turn and the subagents its tool calls spawned. Each call counts in one prompt: a subagent a later turn resumed counts its later calls there. Prompt costs sum to at most the session's cost, because command and notification turns and calls outside any turn belong to no prompt. `costUsd` is `null` when Grok Build or Copilot logged no usage for the turn.
+- `launch` is `true` for the turn that carries the `wf run` launch header: the launching agent wrote it.
+- The document holds prompt text and no reply, file content or credential.
+
+```
+wf prompts -d 2002-02-14..2002-03-15
+```
+
 ## uc-14 Plan usage now
 
 How much of each plan's limit windows is used right now, including use outside these logs, and am I on pace to use each weekly limit up before it resets? Weekly windows show by default with the time to reset, points ahead or behind an even burn to 100%, and the share per day that uses the rest; `-w 5h` or `-w all` shows other windows, and a plan without the chosen window says so. Each provider reports its plan's windows through the login a harness already holds: Codex CLI's app-server, Pi's openai-codex, zai and xai logins, and Claude Code's claude.ai login. SuperGrok appears once for both Grok Build and Pi calls. With `--value`, each weekly row also shows the API-equivalent cost of the logged calls since the window started, that cost over the share used as the value of a full window, and a month of full windows as a multiple of the plan's price. A source that fails names the reason, and the other plans still print. It has no golden file because it reads the network.

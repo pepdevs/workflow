@@ -173,13 +173,13 @@
       "path": "src/check.ts",
       "origin": "source",
       "mode": "0644",
-      "sha256": "15d726596e1218e7ef75d0330d1075f8b057e799acd5cd92b71afa1a225f38a4"
+      "sha256": "992c63550816cf095c4bf61cd99c6d2c79e2bb9c5a8698ed02005893fcfdecad"
     },
     {
       "path": "src/cli.ts",
       "origin": "source",
       "mode": "0755",
-      "sha256": "c8f214d184542d3aee2fb74677844ed889e1b77c7d3b76c3483b1ea34d4af028"
+      "sha256": "dfdb2059df96e10a9efc4391b768272ba23dfef9f4c59aa614ce3f1eead4b35a"
     },
     {
       "path": "src/commands/archive.ts",
@@ -191,7 +191,7 @@
       "path": "src/commands/export.ts",
       "origin": "source",
       "mode": "0644",
-      "sha256": "696d70234564e93dda6dfc420ab8aae250885e8e7c87a7a6fb8f4a57f029a823"
+      "sha256": "4d8ec6995f7dd37ade565a8e400e8d6d039fbaa93529ae9d6f9d5d0c8bb94da4"
     },
     {
       "path": "src/commands/files.ts",
@@ -215,7 +215,7 @@
       "path": "src/commands/help.ts",
       "origin": "source",
       "mode": "0644",
-      "sha256": "dc2abb291d12f4b1c1bf3768899dcb321ce8f2550c3c89b88e808b80f95c3ac1"
+      "sha256": "6562d41d5624905ef2df74376fd83db35f8e2cae1148cca3d8e4df41e7c5cca0"
     },
     {
       "path": "src/commands/models.ts",
@@ -281,7 +281,7 @@
       "path": "src/facts.ts",
       "origin": "source",
       "mode": "0644",
-      "sha256": "c33612f53242d37f83e6075467cb24284b50690fe42390b54ff1a5cd4d546e0a"
+      "sha256": "1330a45ac2d9bf59d7ffe6d5e68c24ff7e3bdc58f3b13ae14828995a90017a8e"
     },
     {
       "path": "src/harnesses/claude/credentials.ts",
@@ -305,7 +305,7 @@
       "path": "src/harnesses/claude/logs.ts",
       "origin": "source",
       "mode": "0644",
-      "sha256": "6ccc391b519bc7eeb30087f5b7dd7a78e92b1bcbae2f27e589caf820950137ac"
+      "sha256": "1578d7d1c22433fc26c7d1a55a7c673a852d8e3d8ff86873336a63f2d1205f3f"
     },
     {
       "path": "src/harnesses/claude/processes.ts",
@@ -1213,6 +1213,11 @@
     },
     {
       "path": "test/golden/uc-20.txt",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "test/golden/uc-21.txt",
       "origin": "public",
       "mode": "0644"
     },

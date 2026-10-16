@@ -310,3 +310,110 @@ test("uc-20 repository and model cases", () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+// uc-21 on invented sessions: a session active on a later day than its start, a
+// session without prompts, a launch task, a spawned subagent a later turn resumes,
+// a Grok Build turn without usage, a Copilot aggregate outside its turns, unpriced
+// calls inside and outside the prompts, a placeholder model and two prompts sharing
+// a start time.
+test("uc-21 prompt cases", () => {
+  type Session = ReturnType<(typeof ADAPTERS)["pi"]["load"]>;
+  type Call = Session["modelCalls"][number];
+  const adapters = Object.fromEntries(Object.entries(ADAPTERS).map(([name, adapter]) => [name, { list: adapter.list, load: adapter.load }]));
+  const at = (iso: string) => Date.parse(`2026-10-${iso}Z`);
+  const usage = { input: 100_000, cacheRead: 0, cacheWrite: 0, cacheWrite1h: 0, output: 1_000, reasoning: 0 };
+  const call = (id: string, thread: string, turn: string | null, when: string, model = "claude-opus-5"): Call => ({
+    id, threadId: thread, turnId: turn, provider: "anthropic", model, effort: null, startedAt: at(when), startInferred: false,
+    endedAt: at(when) + 1_000, usage, stopReason: "end_turn", purpose: "turn", reportedCostUsd: null,
+  });
+  const thread = (id: string, parentId: string | null, spawnedByToolCallId: string | null = null) => ({ id, parentId, name: null, agentType: null, spawnedByToolCallId });
+  const turn = (id: string, thread: string, trigger: Session["turns"][number]["trigger"], when: string, promptText: string | null = null): Session["turns"][number] => ({
+    id, threadId: thread, trigger, promptText, startedAt: at(when), endedAt: at(when) + 60_000, outcome: "completed",
+  });
+  const spawn = (id: string, turnId: string, child: string, when: string): Session["toolCalls"][number] => ({
+    id, threadId: "t", turnId, name: "Agent", category: "agent", shellCategory: null, command: null, origin: "model",
+    startedAt: at(when), endedAt: at(when) + 1_000, status: "ok", spawnsThreadId: child, paths: [], lines: null, resultChars: null, resultLines: null, resultWords: null,
+  });
+  const session = (harness: Session["harness"], id: string, parts: Partial<Session>): Session => ({
+    harness, id, title: null, cwd: null, harnessVersion: null, threads: [thread("t", null)], turns: [], modelCalls: [], toolCalls: [],
+    skills: [], incidents: [], compactions: [], quotaReadings: [], reportedCostUsd: null, ...parts,
+  });
+  const header = "[wf run skill=implement parent=claude:orch]";
+  const sessions: Session[] = [
+    session("claude-code", "orch", { turns: [turn("o1", "t", "prompt", "12T09:00:00", "plan the work")], modelCalls: [call("o", "t", "o1", "12T09:00:10")] }),
+    // Started on the 13th, prompted again on the 14th. Prompt l3 resumes the subagent l1 spawned.
+    session("pi", "long", {
+      threads: [thread("t", null), thread("sub", "t", "x")],
+      turns: [
+        turn("l1", "t", "prompt", "13T10:00:00", `${header}\nbuild it`),
+        turn("sub1", "sub", "agent_message", "13T10:00:20"),
+        turn("l2", "t", "command", "13T11:00:00", "/compact"),
+        turn("l3", "t", "prompt", "14T08:00:00", "finish it"),
+      ],
+      modelCalls: [
+        call("l1a", "t", "l1", "13T10:00:10"), call("s1", "sub", "sub1", "13T10:00:30"),
+        call("l2a", "t", "l2", "13T11:00:10"),
+        call("l3a", "t", "l3", "14T08:00:10", "unknown"), call("s2", "sub", "sub1", "14T08:00:30"),
+      ],
+      toolCalls: [spawn("x", "l1", "sub", "13T10:00:15"), spawn("y", "l3", "sub", "14T08:00:25")],
+    }),
+    session("pi", "quiet", { turns: [turn("q1", "t", "notification", "14T09:00:00")], modelCalls: [call("q", "t", "q1", "14T09:00:10", "mystery-model")] }),
+    session("grok", "apart", { turns: [turn("g1", "t", "prompt", "14T10:00:00", "look")] }),
+    session("copilot", "shutdown", { turns: [turn("c1", "t", "prompt", "14T11:00:00", "fix")], modelCalls: [call("c", "t", null, "14T11:30:00")] }),
+    session("pi", "twins", {
+      turns: [turn("w1", "t", "prompt", "14T12:00:00", "one"), turn("w2", "t", "prompt", "14T12:00:00", "two")],
+      modelCalls: [call("w1a", "t", "w1", "14T12:00:10"), call("w2a", "t", "w2", "14T12:00:10"), call("w2b", "t", "w2", "14T12:00:20")],
+    }),
+  ];
+  try {
+    for (const current of Object.values(ADAPTERS)) current.list = () => [];
+    for (const harness of ["claude", "pi", "grok", "copilot"] as const) {
+      const mine = sessions.filter((s) => (harness === "claude" ? s.harness === "claude-code" : s.harness === harness));
+      ADAPTERS[harness].list = () => mine.map((s) => ({ id: s.id, ref: s.id, updatedAt: at("14T12:00:00") }));
+      ADAPTERS[harness].load = (ref: string) => mine.find((s) => s.id === ref)!;
+    }
+    type Prompt = { turn: string; at: string; model: string | null; costUsd: number | null; unpricedCalls: number; launch: boolean; text: string | null };
+    type Row = { session: string; day: string; parent: string | null; harness: string; repository: string | null; skill: string | null; costUsd: number; unpricedCalls: number; prompts: Prompt[] };
+    const prompts = (when: string) => JSON.parse(String(run(["prompts", "-d", when], at("16T00:00:00")))).sessions as Row[];
+    const day = prompts("2026-10-14");
+    assert.deepEqual(day.map((s) => [s.session, s.day]), [
+      ["pi:long", "2026-10-13"], ["pi:quiet", "2026-10-14"], ["grok:apart", "2026-10-14"], ["copilot:shutdown", "2026-10-14"], ["pi:twins", "2026-10-14"],
+    ]);
+
+    const long = day[0];
+    assert.equal(long.parent, "claude:orch");
+    assert.equal(long.skill, "implement");
+    assert.deepEqual(long.prompts.map((p) => [p.turn, p.launch, p.model, p.unpricedCalls]), [["l1", true, "claude-opus-5", 0], ["l3", false, null, 1]]);
+    const [l1, l3] = long.prompts.map((p) => p.costUsd!);
+    // l1 covers its call and the subagent's first call. l3 covers the resumed subagent's call, and its own call is unpriced.
+    assert.ok(l1 > 0 && l3 > 0 && Math.abs(l1 - l3 * 2) < 0.001, `${l1} ${l3}`);
+    assert.ok(l1 + l3 < long.costUsd, "the command turn belongs to no prompt");
+    assert.equal(long.unpricedCalls, 1);
+
+    assert.deepEqual([day[1].prompts, day[1].costUsd, day[1].unpricedCalls], [[], 0, 1]);
+    assert.deepEqual(day[2].prompts.map((p) => [p.costUsd, p.unpricedCalls]), [[null, 0]]);
+    // Copilot logs usage as one aggregate at shutdown, outside the turn.
+    assert.deepEqual(day[3].prompts.map((p) => p.costUsd), [null]);
+    assert.ok(day[3].costUsd > 0);
+    const [w1, w2] = day[4].prompts;
+    assert.deepEqual([w1.turn, w2.turn, w1.at === w2.at], ["w1", "w2", true]);
+    assert.ok(Math.abs(w2.costUsd! - w1.costUsd! * 2) < 0.001, `${w1.costUsd} ${w2.costUsd}`);
+
+    // Every session wf export counts on a day prints for that day.
+    const exported = JSON.parse(String(run(["export", "-d", "2026-10-12..2026-10-15"], at("16T00:00:00")))).rows as { day: string; harness: string; repository: string | null; sessions: number }[];
+    const all = prompts("2026-10-12..2026-10-15");
+    const key = (r: { day: string; harness: string; repository: string | null }) => `${r.day} ${r.harness} ${r.repository}`;
+    const counted = new Map<string, number>();
+    for (const r of exported) counted.set(key(r), (counted.get(key(r)) ?? 0) + r.sessions);
+    const printed = new Map<string, number>();
+    for (const r of all) printed.set(key(r), (printed.get(key(r)) ?? 0) + 1);
+    assert.deepEqual(printed, counted);
+    assert.equal(all.find((s) => s.session === "claude:orch")!.skill, "orchestrator");
+    assert.deepEqual(prompts("2026-10-12").map((s) => s.session), ["claude:orch"]);
+  } finally {
+    for (const [name, original] of Object.entries(adapters)) {
+      ADAPTERS[name as keyof typeof ADAPTERS].list = original.list;
+      ADAPTERS[name as keyof typeof ADAPTERS].load = original.load;
+    }
+  }
+});
