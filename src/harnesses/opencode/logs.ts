@@ -86,10 +86,10 @@ export function loadOpenCode(sessionId: string, roots = openCodeRoots(), { count
         const mParts = partsByMessage.get(row.id) ?? [];
         if (m.role === "user") {
           if (!s.parent_id) session.result = null;
-          const text = mParts
+          const text = unquoteRunPrompt(mParts
             .filter((p) => p.type === "text" && !p.synthetic)
             .map((p) => p.text)
-            .join("\n");
+            .join("\n"));
           const turn: Turn = {
             id: row.id,
             threadId: s.id,
@@ -184,4 +184,15 @@ export function loadOpenCode(sessionId: string, roots = openCodeRoots(), { count
     for (const thread of session.threads) thread.spawnedByToolCallId = spawnedBy.get(thread.id) ?? null;
     return session;
   });
+}
+
+// `opencode run` wraps a message argument that contains a space in double quotes
+// and escapes the quotes inside it. A text in that exact form is unwrapped, so a
+// `wf run` launch header starts the prompt. A typed prompt with an unescaped inner
+// quote keeps its text.
+export function unquoteRunPrompt(text: string): string {
+  if (text.length < 2 || !text.startsWith('"') || !text.endsWith('"')) return text;
+  const inner = text.slice(1, -1);
+  if (!inner.includes(" ") || /(^|[^\\])"/.test(inner)) return text;
+  return inner.replaceAll('\\"', '"');
 }
