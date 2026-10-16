@@ -2,7 +2,7 @@
 // where the model's assumptions break.
 // Usage: node src/check.ts [codex|claude|pi|opencode|grok|copilot ...] [--root <path>]...
 import { ADAPTERS, HARNESS_NAMES, isHarnessName, type HarnessName } from "./harnesses/index.ts";
-import { launchOf, callCount, listCost } from "./facts.ts";
+import { launchOf, callCount, listCost, rootTurns } from "./facts.ts";
 import type { ModelCall, Session } from "./model.ts";
 import { SessionSizeCall } from "./repos/session-size.ts";
 
@@ -75,6 +75,9 @@ export function checkHarness(harness: HarnessName, roots?: string[]): CheckResul
     for (const t of s.threads) {
       if (t.parentId !== null && !t.spawnedByToolCallId) note("subagent threads without spawn link", id);
     }
+    // Commands attribute calls and tools to a root turn by id, so two root turns sharing one double count.
+    const rootIds = rootTurns(s).map((t) => t.id);
+    if (new Set(rootIds).size < rootIds.length) note("sessions with repeated root turn ids", id);
     for (const t of s.turns) {
       if (t.endedAt === null) note("turns without end", id);
       else if (t.endedAt < t.startedAt) note("turns ending before start", id);

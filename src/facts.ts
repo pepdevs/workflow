@@ -65,6 +65,22 @@ export function turnCalls(s: Session, turn: Turn, withSubagents: boolean): Model
   return s.modelCalls.filter((c) => c.turnId === turn.id || threads.has(c.threadId));
 }
 
+// Each call in at most one root turn: of the turns whose own or spawned threads
+// hold it, the latest that started by the call's start, else the first. A subagent
+// resumed by a later turn then counts its later calls there.
+export function rootTurnCalls(s: Session): Map<string, ModelCall[]> {
+  const turns = rootTurns(s);
+  const reach = turns.map((t) => new Set(turnCalls(s, t, true)));
+  const out = new Map<string, ModelCall[]>(turns.map((t) => [t.id, []]));
+  for (const c of s.modelCalls) {
+    const at = c.startedAt ?? c.endedAt;
+    const holders = turns.filter((_, i) => reach[i]!.has(c));
+    const owner = holders.findLast((t) => t.startedAt <= at) ?? holders[0];
+    if (owner) out.get(owner.id)!.push(c);
+  }
+  return out;
+}
+
 export const rootThread = (s: Session) => s.threads.find((t) => t.parentId === null)!.id;
 
 export const rootTurns = (s: Session) =>
