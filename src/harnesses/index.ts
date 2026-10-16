@@ -35,6 +35,7 @@ import { runningPi } from "./pi/processes.ts";
 export { ARCHIVE_ROOT, lineRange, resultFromReply, shellReads, skillFromPath, turnTriggerFromText, unionFiles, type SessionRef } from "./common/logs.ts";
 export { findClaudeJobs };
 export { spawnedId as grokSpawnedId } from "./grok/logs.ts";
+export { unquoteRunPrompt } from "./opencode/logs.ts";
 export { cutClaudeJobFixture };
 export { descendants, onlyWrittenSince, type RunningSession } from "./common/processes.ts";
 export type { Launch, LaunchOptions, RunResult } from "./common/launch.ts";

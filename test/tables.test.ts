@@ -6,7 +6,19 @@ import { readFileSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { test } from "node:test";
-import { ADAPTERS, lineRange, onlyWrittenSince, resultFromReply, shellReads, turnTriggerFromText } from "../src/harnesses/index.ts";
+import { ADAPTERS, lineRange, onlyWrittenSince, resultFromReply, shellReads, turnTriggerFromText, unquoteRunPrompt } from "../src/harnesses/index.ts";
+
+test("unquoteRunPrompt", () => {
+  const rows: [string, string, string][] = [
+    ["wf run launch", '"[wf run skill=research parent=claude:c6c4]\ntask\n"', "[wf run skill=research parent=claude:c6c4]\ntask\n"],
+    ["escaped inner quotes", '"search \\"GLM score\\" now"', 'search "GLM score" now'],
+    ["one word stays quoted", '"word"', '"word"'],
+    ["typed quotes stay", '"a" and "b"', '"a" and "b"'],
+    ["plain prompt", "fix the build", "fix the build"],
+    ["lone quote", '"', '"'],
+  ];
+  for (const [name, text, expected] of rows) assert.equal(unquoteRunPrompt(text), expected, name);
+});
 
 test("resultFromReply", () => {
   const good = '<!-- workflow-result: {"schema":1,"status":"complete","pullRequest":"https://github.com/fixture/workflow/pull/12","headSha":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"} -->';
