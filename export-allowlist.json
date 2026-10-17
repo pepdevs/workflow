@@ -1014,6 +1014,10 @@
       "mode": "0644"
     },
     {
+      "path": "test/claude.test.ts",
+      "mode": "0644"
+    },
+    {
       "path": "test/grok.test.ts",
       "mode": "0644"
     },
