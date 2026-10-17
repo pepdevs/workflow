@@ -171,7 +171,7 @@ export function run(argv: string[], now = Date.now()): string | Promise<string> 
     return lsCommand(words, flags, base, now, withSize);
   }
   if (ALL_SESSION_COMMANDS[command] && base !== null) {
-    const views = ["--history", "--weeks", "--models"];
+    const views = ["--history", "--weeks", "--models", "--json"];
     const { words, flags } = parseFlags(args.slice(1).filter((a) => !views.includes(a)));
     if (words.length || Object.keys(flags).some((f) => f !== "d" && f !== "s")) throw new Error(commandHelp(command));
     for (const v of views) if (args.includes(v)) flags[v.slice(2)] = "";
