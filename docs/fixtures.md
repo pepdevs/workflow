@@ -48,3 +48,25 @@ infer boundaries from record structure; the semantic comparison proves the resul
 instead of assuming text redaction is sufficient. Only temporal numeric fields move; usage and
 cost counters remain unchanged. The tool refuses to repeat on a tree carrying its provenance
 marker. Restart from original candidate inputs to reproduce the transformation.
+
+## Cut one harness again
+
+The pseudonymizer derives one timeline shift from the earliest stamp in the candidate, and it
+rehashes identifiers that are already pseudonyms. A cut of one harness needs a candidate that holds
+only that harness, with the committed shift:
+
+1. Export a clean checkout into the candidate and run `npm run fixtures` there with a source map
+   for that harness only. Keep at least one session the committed fixture holds, so step 5 can
+   prove the shift.
+2. Delete `test/fixture-provenance.json`, `test/fixture-variants`, `test/job-fixtures`, and every
+   other harness under `test/fixtures` from the candidate.
+3. Compute the shift as a committed session's shifted `created_at` minus its original
+   `created_at`. Write `{"timestamp": <canonical epoch in Unix seconds minus shift>}` to
+   `test/fixtures/anchor.json` in the candidate. The original anchor stays out of the repository.
+4. Copy the candidate as the original candidate checkout without `anchor.json`, then pseudonymize
+   the candidate and delete `anchor.json`.
+5. Confirm that each session kept from the committed fixture is byte-identical. A difference
+   means a different shift or cut option, such as `launchResult`.
+6. Run `node scripts/compare-fixtures.ts <original-candidate-checkout>` in the candidate.
+7. Replace the harness directory in this repository, update `fixtureFiles` in
+   `test/fixture-provenance.json`, then follow steps 3 and 5 to 7 of the review above.
