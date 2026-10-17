@@ -148,7 +148,8 @@ export function loadClaude(idOrPath: string, roots = claudeRoots(), { counts = f
             // parent's, so a turn takes its record's uuid, scoped to a subagent's thread.
             id: isSubagent ? `${threadId}:${r.uuid}` : r.uuid,
             threadId,
-            trigger: isSubagent ? "agent_message" : turnTriggerFromText(text),
+            // Claude Code writes its compaction summary as a user record; the operator typed none of it.
+            trigger: isSubagent ? "agent_message" : r.isCompactSummary ? "notification" : turnTriggerFromText(text),
             promptText: text.replace(/<\/?command-[a-z]+>/g, " ").trim(),
             startedAt: at,
             endedAt: null,
