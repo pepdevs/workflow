@@ -15,9 +15,10 @@ const HELP: Record<string, Help> = {
   run: {
     group: "Launch and watch", args: "<harness> <model> -i <file>", line: "start a fresh headless session",
     detail: [
-      `wf run <${HARNESS_NAMES.join("|")}> <model> -i <task file> [-k skill] [-p dir] [-e effort] [--plan p] [--write]`,
+      `wf run <${HARNESS_NAMES.join("|")}> <model> -i <task file> [-k skill | -r role] [-p dir] [-e effort] [--plan p] [--write]`,
       "Runs one session, waits, and prints its id, cost and reply.",
       "-k skill   skill the task uses; recorded for wf models and wf route",
+      "-r role    role with no skill to load, such as implement; recorded like -k without the skill line",
       "-p dir     working directory, the current one by default",
       "-e effort  reasoning effort, where the harness takes one",
       "--plan p   plan the session works on, as <owner/repo>#<number>; read back by wf plan",

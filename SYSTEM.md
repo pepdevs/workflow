@@ -30,6 +30,7 @@ session and billing reports, and launches or stops supported agent sessions.
 | `scripts/bench-repo.ts` | Optional Git-tree read benchmark |
 | `scripts/showcase.ts` | README images: real commands over an invented scene, written to `docs/images/` |
 | `scripts/export-public.py`, `scripts/public-check.py` | Reviewed export reproduction and public-boundary audit |
+| `skills/delegate/` | Agent skill that drives `wf route`, `run`, `status` and `stop`; installed with the Skills CLI |
 | `export-allowlist.json` | Approved files, source checksums, modes, and binary fingerprints |
 | `.githooks/pre-push`, `.gitattributes`, `.gitignore` | Local checks, line endings, generated-file exclusions |
 | `docs/` | Settled use cases, install and local configuration, fixture and export procedures, README images |

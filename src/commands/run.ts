@@ -67,7 +67,8 @@ export function runCommand(harness: HarnessName, model: string, flags: Record<st
   const input = readFileSync(flags.i, "utf8");
   const parent = parentFromEnv(process.env, (pid) => ADAPTERS.opencode.running().find((r) => r.pid === pid)?.id ?? null);
   const cwd = resolve(flags.p ?? ".");
-  const header = launchHeader({ skill: flags.k ?? null, parent, plan, ...gitLaunchInfo(cwd) });
+  // -r records a role, such as implement, that has no installed skill to load.
+  const header = launchHeader({ skill: flags.k ?? flags.r ?? null, parent, plan, ...gitLaunchInfo(cwd) });
   const prompt = `${header}\n${flags.k ? `${skillLine(flags.k)}\n\n` : ""}${input}`;
   const env = { ...process.env };
   for (const v of [...SESSION_VARS, "OPENCODE", "CLAUDECODE"]) delete env[v];
@@ -86,7 +87,7 @@ export function runCommand(harness: HarnessName, model: string, flags: Record<st
   const rows: [string, string][] = [
     ["Session", `${harness} ${id ?? "unknown"}`],
     ["Directory", cwd],
-    ["Mode", `${write ? "write" : "read"}${flags.k ? `, skill ${flags.k}` : ""}${flags.e ? `, effort ${flags.e}` : ""}`],
+    ["Mode", `${write ? "write" : "read"}${flags.k ? `, skill ${flags.k}` : ""}${flags.r ? `, role ${flags.r}` : ""}${flags.e ? `, effort ${flags.e}` : ""}`],
     ["Parent", parent ? `${parent.harness} ${parent.id}` : "-"],
     ...(plan ? [["Plan", plan] as [string, string]] : []),
     ["Exit", `${r.error ? r.error.message : `code ${r.status ?? r.signal}`} after ${dur(took)}`],

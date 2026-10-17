@@ -16,3 +16,4 @@ Workflow reads local agent logs, derives a session model, and launches, lists, a
 11. Cut fixtures through `npm run fixtures`, then redact, pseudonymize, shift their timeline, and inspect the diff, because fixtures originate in private logs. `docs/fixtures.md` defines the proof.
 12. Keep operator facts in local catalog overrides and public defaults in `data/`, so personal settings stay outside the source tree. Revisit when another configuration format is needed.
 13. Keep approved publication files and binary checksums in `export-allowlist.json`, so a new file cannot bypass review. `scripts/public-check.py` enforces this.
+14. Change `skills/delegate/` in the same pull request as any `wf` command, flag, or output it names, because the skill breaks silently when the CLI moves. Revisit when a check runs the skill's commands against `wf help`.
