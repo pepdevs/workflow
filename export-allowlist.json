@@ -654,99 +654,51 @@
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/chat_history.jsonl",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-52f2d43f917c/chat_history.jsonl",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/events.jsonl",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-52f2d43f917c/events.jsonl",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/signals.json",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-52f2d43f917c/signals.json",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/summary.json",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-52f2d43f917c/summary.json",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/updates.jsonl",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-52f2d43f917c/updates.jsonl",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/usage.json",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-52f2d43f917c/usage.json",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/chat_history.jsonl",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-801af23300df/chat_history.jsonl",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/events.jsonl",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-801af23300df/events.jsonl",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/signals.json",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-801af23300df/signals.json",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/summary.json",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-801af23300df/summary.json",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/updates.jsonl",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-801af23300df/updates.jsonl",
       "mode": "0644"
     },
     {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/usage.json",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/chat_history.jsonl",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/events.jsonl",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/signals.json",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/summary.json",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/updates.jsonl",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/usage.json",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/chat_history.jsonl",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/events.jsonl",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/signals.json",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/summary.json",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/updates.jsonl",
-      "mode": "0644"
-    },
-    {
-      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/usage.json",
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-801af23300df/usage.json",
       "mode": "0644"
     },
     {
@@ -771,6 +723,30 @@
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a33254bd3946/usage.json",
+      "mode": "0644"
+    },
+    {
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a929fd9c57b1/chat_history.jsonl",
+      "mode": "0644"
+    },
+    {
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a929fd9c57b1/events.jsonl",
+      "mode": "0644"
+    },
+    {
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a929fd9c57b1/signals.json",
+      "mode": "0644"
+    },
+    {
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a929fd9c57b1/summary.json",
+      "mode": "0644"
+    },
+    {
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a929fd9c57b1/updates.jsonl",
+      "mode": "0644"
+    },
+    {
+      "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a929fd9c57b1/usage.json",
       "mode": "0644"
     },
     {

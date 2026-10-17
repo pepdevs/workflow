@@ -30,12 +30,12 @@ $ wf export -d 2002-02-14..2002-03-15
       "repository": null,
       "sessions": 1,
       "tokens": {
-        "input": 9718962,
-        "cacheRead": 123615488,
+        "input": 9248391,
+        "cacheRead": 103300480,
         "cacheWrite": 0,
-        "output": 1329167
+        "output": 1179423
       },
-      "costUsd": 98.2,
+      "costUsd": 79.5603,
       "wallSeconds": 18061
     },
     {
@@ -138,12 +138,12 @@ $ wf export -d 2002-02-14..2002-03-15
   "totals": {
     "sessions": 7,
     "tokens": {
-      "input": 12290103,
-      "cacheRead": 173836931,
+      "input": 11819532,
+      "cacheRead": 153521923,
       "cacheWrite": 772862,
-      "output": 1619075
+      "output": 1469331
     },
-    "costUsd": 128.2592,
+    "costUsd": 109.6195,
     "unpricedRows": 1,
     "wallSeconds": 134034
   }

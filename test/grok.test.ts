@@ -91,11 +91,11 @@ test("Grok Build joins children once across resumes and log roots", () => {
     assert.equal(listed.length, 2); // the golden session first, then the wf run session
     const parent = ADAPTERS.grok.load(listed[0].ref, roots);
     assert.equal(parent.threads.length, 29);
-    assert.equal(parent.incidents.filter((i) => i.kind === "incomplete child coverage").length, 24);
-    assert.equal(parent.turns.length, 13);
-    assert.equal(parent.modelCalls.length, 12);
-    assert.equal(parent.toolCalls.length, 701);
-    assert.equal(parent.reportedCostUsd, 19.3664341);
+    assert.equal(parent.incidents.filter((i) => i.kind === "incomplete child coverage").length, 25);
+    assert.equal(parent.turns.length, 12);
+    assert.equal(parent.modelCalls.length, 11);
+    assert.equal(parent.toolCalls.length, 336);
+    assert.equal(parent.reportedCostUsd, 15.91638712);
     for (const thread of parent.threads.filter((t) => t.parentId)) {
       const tool = parent.toolCalls.find((t) => t.id === thread.spawnedByToolCallId);
       assert.equal(tool?.spawnsThreadId, thread.id);
@@ -105,30 +105,30 @@ test("Grok Build joins children once across resumes and log roots", () => {
       assert.equal(new Set(rows.map((r) => r.id)).size, rows.length);
       assert.ok(rows.every((r) => parent.turns.some((t) => t.id === r.turnId)));
     }
-    const resumedId = "fixture-31f6cff95531";
+    const resumedId = "fixture-801af23300df";
     const childDir = `${root}/live/%2Ffixture%2Fproject/${resumedId}`;
     const updated = new Date("2030-01-01T00:00:00Z");
     for (const file of readdirSync(childDir)) utimesSync(`${childDir}/${file}`, updated, updated);
     assert.equal(ADAPTERS.grok.list(roots)[0].updatedAt, updated.getTime());
     assert.equal(parent.modelCalls.filter((c) => c.threadId === resumedId).length, 1);
-    assert.equal(parent.toolCalls.filter((c) => c.threadId === resumedId).length, 22);
+    assert.equal(parent.toolCalls.filter((c) => c.threadId === resumedId).length, 12);
     const standalone = ADAPTERS.grok.load(resumedId, roots);
     assert.equal(standalone.modelCalls.length, 3);
-    assert.equal(standalone.toolCalls.length, 380);
+    assert.equal(standalone.toolCalls.length, 102);
 
     // A missing predecessor still leaves its inherited usage available in the resumed child.
-    for (const dir of roots) rmSync(`${dir}/%2Ffixture%2Fproject/fixture-7e460b209ab3`, { recursive: true });
+    for (const dir of roots) rmSync(`${dir}/%2Ffixture%2Fproject/fixture-52f2d43f917c`, { recursive: true });
     ADAPTERS.grok.list(roots);
     const missingSource = ADAPTERS.grok.load(listed[0].ref, roots);
     assert.equal(missingSource.modelCalls.length, parent.modelCalls.length);
     assert.equal(missingSource.toolCalls.length, parent.toolCalls.length);
     assert.equal(missingSource.reportedCostUsd, parent.reportedCostUsd);
-    assert.equal(missingSource.incidents.length, 25);
+    assert.equal(missingSource.incidents.length, 26);
 
     // Summary ancestry alone cannot hide a child whose spawning parent is unavailable.
     for (const dir of roots) rmSync(`${dir}/${listed[0].ref}`, { recursive: true });
     const unlinked = ADAPTERS.grok.list(roots);
-    assert.equal(unlinked.length, 4); // three orphaned children and the wf run session
+    assert.equal(unlinked.length, 3); // two orphaned children and the wf run session
     assert.ok(unlinked.some((s) => s.id === resumedId));
   } finally {
     rmSync(root, { recursive: true, force: true });
