@@ -195,6 +195,31 @@
       "mode": "0644"
     },
     {
+      "path": "skills/delegate/SKILL.md",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "skills/delegate/agents/openai.yaml",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "skills/delegate/assets/task-capsule.md",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "skills/delegate/references/routing.md",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "skills/delegate/skill-dependencies.json",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
       "path": "src/catalog.ts",
       "origin": "public",
       "mode": "0644"

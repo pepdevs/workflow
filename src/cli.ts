@@ -39,7 +39,7 @@ export { launchHeader, launchOf } from "./facts.ts";
 export { categoryOf } from "./repos/index.ts";
 export { sessionProvenance } from "./repos/provenance.ts";
 
-const FLAGS = new Set(["d", "m", "c", "p", "s", "n", "a", "w", "i", "k", "e", "x"]);
+const FLAGS = new Set(["d", "m", "c", "p", "s", "n", "a", "w", "i", "k", "r", "e", "x"]);
 
 // Splits `-xVALUE` and `-x VALUE` flags from positional arguments.
 function parseFlags(args: string[]): { words: string[]; flags: Record<string, string> } {
@@ -116,7 +116,7 @@ export function run(argv: string[], now = Date.now()): string | Promise<string> 
     if (plan === undefined || plan?.startsWith("-")) throw new Error(commandHelp(command));
     const { words, flags } = parseFlags(args.slice(1).filter((a, i) => a !== "--write" && i + 1 !== at && i + 1 !== at + 1));
     const [h, model, ...rest] = words;
-    if (!h || !isHarnessName(h) || !model || rest.length || Object.keys(flags).some((f) => !["i", "k", "p", "e"].includes(f))) throw new Error(commandHelp(command));
+    if (!h || !isHarnessName(h) || !model || rest.length || Object.keys(flags).some((f) => !["i", "k", "r", "p", "e"].includes(f)) || (flags.k && flags.r)) throw new Error(commandHelp(command));
     return runCommand(h, model, flags, write, plan);
   }
   if (command === "route" && base !== null) {

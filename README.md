@@ -49,6 +49,16 @@ wf help
 Node.js 24 or newer. [Install and configure](docs/install.md) covers local catalogs, storage and
 checks.
 
+## Delegate skill
+
+[`skills/delegate`](skills/delegate/SKILL.md) teaches an agent to route, launch, watch and check
+sessions through `wf`. Install it with the [Skills CLI](https://github.com/vercel-labs/skills), and
+its companions from [pepdevs/skills](https://github.com/pepdevs/skills):
+
+```sh
+npx --yes skills@1.7.2 add pepdevs/workflow --skill delegate --agent codex --global --copy --yes
+```
+
 ## More
 
 - [Use cases](docs/use-cases.md): each question, the command that answers it, and its output.
