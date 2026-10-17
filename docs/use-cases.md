@@ -101,12 +101,13 @@ wf prompts -d 2002-02-14..2002-03-15
 
 ## uc-14 Plan usage now
 
-How much of each plan's limit windows is used right now, including use outside these logs, and am I on pace to use each weekly limit up before it resets? Weekly windows show by default with the time to reset, points ahead or behind an even burn to 100%, and the share per day that uses the rest; `-w 5h` or `-w all` shows other windows, and a plan without the chosen window says so. Each provider reports its plan's windows through the login a harness already holds: Codex CLI's app-server, Pi's openai-codex, zai and xai logins, and Claude Code's claude.ai login. SuperGrok appears once for both Grok Build and Pi calls. With `--value`, each weekly row also shows the API-equivalent cost of the logged calls since the window started, that cost over the share used as the value of a full window, and a month of full windows as a multiple of the plan's price. A source that fails names the reason, and the other plans still print. It has no golden file because it reads the network.
+How much of each plan's limit windows is used right now, including use outside these logs, and am I on pace to use each weekly limit up before it resets? Weekly windows show by default with the time to reset, points ahead or behind an even burn to 100%, and the share per day that uses the rest; `-w 5h` or `-w all` shows other windows, and a plan without the chosen window says so. Each provider reports its plan's windows through the login a harness already holds: Codex CLI's app-server, Pi's openai-codex, zai and xai logins, and Claude Code's claude.ai login. SuperGrok appears once for both Grok Build and Pi calls. With `--value`, each weekly row also shows the API-equivalent cost of the logged calls since the window started, that cost over the share used as the value of a full window, and a month of full windows as a multiple of the plan's price. A source that fails names the reason, and the other plans still print. `--json` prints every window of every plan as one document with `schema`, `at` and `plans`; each plan has `provider`, `plan`, `error` and `windows`, and each window has `window`, `minutes`, `usedPercent`, `resetsAt`, `pace` and `perDay`, with `null` where the provider reported none. It has no golden file because it reads the network.
 
 ```
 wf usage
 wf usage -w all
 wf usage --value
+wf usage --json
 ```
 
 ## uc-13 Choose a model for a skill
