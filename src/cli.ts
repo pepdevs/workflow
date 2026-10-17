@@ -15,6 +15,7 @@ import { costCommand, lsCommand, summary, timeCommand, toolsCommand, turnsComman
 import { statusCommand } from "./commands/status.ts";
 import { commandHelp, helpText } from "./commands/help.ts";
 import { planCommand } from "./commands/plan.ts";
+import { changesCommand } from "./commands/changes.ts";
 import { exportCommand, promptsCommand } from "./commands/export.ts";
 import { stopCommand } from "./commands/stop.ts";
 import { repoCommand } from "./commands/repo.ts";
@@ -73,7 +74,7 @@ const ALL_SESSION_COMMANDS: Record<string, (s: Session[], when: Range, recorded:
 };
 
 // Every command name, for the use case check in test/golden.test.ts.
-export const COMMAND_NAMES = ["ls", "status", "route", "models", "usage", "run", "plan", "export", "prompts", "repo", ...Object.keys(COMMANDS), ...Object.keys(ALL_SESSION_COMMANDS), "archive"];
+export const COMMAND_NAMES = ["ls", "status", "route", "models", "usage", "run", "plan", "export", "prompts", "changes", "repo", ...Object.keys(COMMANDS), ...Object.keys(ALL_SESSION_COMMANDS), "archive"];
 
 export const USAGE = helpText();
 
@@ -139,6 +140,11 @@ export function run(argv: string[], now = Date.now()): string | Promise<string> 
     const { words, flags } = parseFlags(args.slice(1));
     if (words.length || Object.keys(flags).some((f) => f !== "d")) throw new Error(commandHelp(command));
     return promptsCommand(flags, base, now);
+  }
+  if (command === "changes" && roots === undefined) {
+    const { words, flags } = parseFlags(args.slice(1));
+    if (Object.keys(flags).some((f) => f !== "d")) throw new Error(commandHelp(command));
+    return changesCommand(flags, words, now);
   }
   if (command === "models" && base !== null) {
     const { words, flags } = parseFlags(args.slice(1));

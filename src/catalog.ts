@@ -302,6 +302,8 @@ export function displayPath(path: string, cwd: string | null, session: string, a
 export const CHARS_PER_TOKEN: number = thresholds.charsPerToken;
 
 // Upper bounds for implement peak-context bands. L runs through the context budget.
+// Days after a merge at which wf changes counts the lines still credited to the change.
+export const REWORK_DAYS: number = thresholds.reworkDays ?? 14;
 export const SIZE_BAND_S_MAX: number = thresholds.sizeBandSMaxTokens;
 export const SIZE_BAND_M_MAX: number = thresholds.sizeBandMMaxTokens;
 export type SizeBand = "S" | "M" | "L" | "over";

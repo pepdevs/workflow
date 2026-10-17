@@ -12,6 +12,7 @@ export type RepoReport = { files: FileMeasure[]; categories: Record<Category, Me
 const CATEGORIES: Category[] = ["code", "test", "test data", "docs", "data", "config"];
 const OVERRIDE_ORDER: Category[] = ["test data", "test", "docs", "data", "config", "code"];
 const LOCKFILES = new Set(["package-lock.json", "pnpm-lock.yaml", "yarn.lock", "Cargo.lock", "poetry.lock", "uv.lock", "go.sum", "Gemfile.lock", "composer.lock"]);
+export const isLockfile = (path: string): boolean => LOCKFILES.has(basename(path));
 const decoder = new TextDecoder("utf-8", { fatal: true });
 const ordinaryText = { allowedSpecial: new Set<string>(), disallowedSpecial: new Set<string>() };
 const compare = (a: string, b: string): number => a < b ? -1 : a > b ? 1 : 0;

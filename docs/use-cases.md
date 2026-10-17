@@ -100,6 +100,18 @@ What did I ask agents, session by session, in a form another tool can keep? `wf 
 wf prompts -d 2002-02-14..2002-03-15
 ```
 
+## uc-22 Merged changes and the lines still theirs
+
+Did the work hold? `wf changes` prints one JSON document with each branch merged into a clone's default branch in the range, as the clone last fetched it. A change is the commits one branch brought in by a merge commit: GitHub's `Merge pull request #N from owner/branch`, or git's `Merge branch 'name'`. Clones default to the repository catalog; named directories replace it.
+
+- Each change has `repository` (the origin's name), `pullRequest` (the GitHub URL, or `null` for a local merge), `branch`, `mergedAt`, `merge` (the merge commit), `commits` (the branch's commit count) and `added`: the lines the branch added or changed since its merge base, by `wf repo` category. Lock files and binary files are left out.
+- `surviving` counts, per category, the added lines that `git blame -w` on the default branch still credits to the branch's commits at `reworkAt`, `reworkDays` (`data/thresholds.json`, 14) after the merge. It is `null` while `reworkAt` lies ahead. A file moved or deleted since keeps none of its lines.
+- `schema` rises when a field changes meaning or goes away, and `range` gives the window's bounds.
+
+```
+wf changes -d 2002-02-14.. <clone>
+```
+
 ## uc-14 Plan usage now
 
 How much of each plan's limit windows is used right now, including use outside these logs, and am I on pace to use each weekly limit up before it resets? Weekly windows show by default with the time to reset, points ahead or behind an even burn to 100%, and the share per day that uses the rest; `-w 5h` or `-w all` shows other windows, and a plan without the chosen window says so. Each provider reports its plan's windows through the login a harness already holds: Codex CLI's app-server, Pi's openai-codex, zai and xai logins, and Claude Code's claude.ai login. SuperGrok appears once for both Grok Build and Pi calls. With `--value`, each weekly row also shows the API-equivalent cost of the logged calls since the window started, that cost over the share used as the value of a full window, and a month of full windows as a multiple of the plan's price. A source that fails names the reason, and the other plans still print. `--json` prints every window of every plan as one document with `schema`, `at` and `plans`; each plan has `provider`, `plan`, `error` and `windows`, and each window has `window`, `minutes`, `usedPercent`, `resetsAt`, `pace` and `perDay`, with `null` where the provider reported none. It has no golden file because it reads the network.

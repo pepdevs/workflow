@@ -6,6 +6,8 @@
   "charsPerToken": 3.66,
   "charsPerTokenMeaning": "wf files estimates the tokens of a tool result as its characters over this ratio. Measured with the o200k tokenizer over this repository's src, docs and test on 2026-09-30.",
   "sizeBandMeaning": "S is peak context under sizeBandSMaxTokens. M is from sizeBandSMaxTokens to under sizeBandMMaxTokens. L is from sizeBandMMaxTokens through contextBudgetTokens inclusive. A higher peak is over budget.",
+  "reworkDays": 14,
+  "reworkDaysMeaning": "wf changes counts a change's added lines that git blame still credits to its commits this many days after the merge",
   "status": {
     "window": 60,
     "quiet": 10,
