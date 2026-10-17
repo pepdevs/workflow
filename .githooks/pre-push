@@ -1,3 +1,11 @@
 #!/bin/sh
-# Blocks a push when type checking or a test fails. Enable with `npm run setup`.
+# Blocks a push when the public audit finds a private term or sensitive signature in the
+# tracked files or the pushed commit messages, or when type checking or a test fails.
+# Enable with `npm run setup`. The private terms live outside the public tree.
+zero=0000000000000000000000000000000000000000
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$zero" ] && continue
+  if [ "$remote_sha" = "$zero" ]; then range="$local_sha --not --remotes=origin"; else range="$remote_sha..$local_sha"; fi
+  python3 scripts/public-check.py --require-denylist --commits="$range" || exit 1
+done
 exec npm run -s check

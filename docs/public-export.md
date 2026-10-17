@@ -5,10 +5,16 @@ history. `export-allowlist.json` names every published file and its mode. Binary
 pseudonymized SQLite fixture and the synthetic Git bundle by SHA-256.
 
 Run `python3 scripts/public-check.py` to verify the approved inventory, generic sensitive
-signatures, SQLite text cells and free pages, and binary fingerprints. An optional
-`--denylist <external-private-terms.json>` adds a private literal-term audit. Keep those terms
-outside the public tree. Pattern scanning supplements review; it cannot establish that arbitrary
-prose has no confidential fact.
+signatures, SQLite text cells and free pages, and binary fingerprints. It adds a private
+literal-term audit from `~/.config/workflow/private-terms.json` (or `WORKFLOW_PRIVATE_TERMS`, or
+`--denylist <file>`): a JSON array of terms, matched as whole words and without case. Keep those
+terms outside the public tree. Pattern scanning supplements review; it cannot establish that
+arbitrary prose has no confidential fact.
+
+- The pre-push hook runs it with `--require-denylist`, so a push fails without the terms file, and
+  with `--commits` over the pushed commits, so their messages are scanned too.
+- Pull request titles, bodies and comments are public as soon as they are posted. Pipe each one
+  through `python3 scripts/public-check.py --text -` first.
 
 New files and changed binary fixtures need review and an allowlist update. A raw fixture source
 map, original ID mapping, original time anchor, live-session output, personal catalogs, service
