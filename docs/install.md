@@ -91,5 +91,5 @@ are separate from loader failures.
 
 [Fixture documentation](fixtures.md) explains the explicit source map, redaction,
 pseudonymization, shifted timeline, and semantic comparison. [Public export](public-export.md)
-explains the approved allowlist and reproduction command. [SYSTEM.md](../SYSTEM.md) maps the code;
+explains the approved allowlist and its audit. [SYSTEM.md](../SYSTEM.md) maps the code;
 [AGENTS.md](../AGENTS.md) defines editing rules.
