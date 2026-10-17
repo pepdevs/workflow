@@ -1,7 +1,7 @@
 // uc-10: what runs now, and which sessions are stuck or spiralling.
 import { ADAPTERS, HARNESS_NAMES, type HarnessName, type RunningSession } from "../harnesses/index.ts";
 import { CONTEXT_BUDGET, shellProgram, STATUS } from "../catalog.ts";
-import { type Session } from "../model.ts";
+import { type Session, type ToolCall } from "../model.ts";
 import { type Found, findSessions, parseAt, shortIds } from "./find.ts";
 import { dur, folderName, oneLine, table, tok, usd } from "./format.ts";
 import { callCost, contextOf, countBy, launchOf, primaryModel, rootThread, rootTurns, sum, titleOf } from "../facts.ts";
@@ -80,10 +80,7 @@ export function sessionStatus(full: Session, at: number): Status {
   const flags: string[] = [];
   const flagKinds: FlagKind[] = [];
   const flag = (kind: FlagKind, text: string) => { flagKinds.push(kind); flags.push(text); };
-  const [command, repeats] = countBy(recent.filter((t) => t.command), (t) => t.command!)[0] ?? ["", 0];
-  if (repeats >= STATUS.repeat) flag("repeated command", `same command ×${repeats}: ${oneLine(command, 40)}`);
-  const failed = recent.slice(-10).filter((t) => t.status === "failed").length;
-  if (failed >= STATUS.failed) flag("failed tools", `${failed} of the last 10 tool calls failed`);
+  for (const f of toolFlags(recent)) flag(f.kind, f.detail);
   if (lastHourUsd >= STATUS.costPerHourUsd) flag("hourly cost", `${usd(lastHourUsd)} in the last hour`);
   if (lastRootCall?.kind !== "turn_aggregate" && context !== null && context > CONTEXT_BUDGET) flag("context budget", `context ${tok(context)}`);
   const compactions = lastHour.filter((c) => c.purpose === "compaction").length;
@@ -101,6 +98,33 @@ export function sessionStatus(full: Session, at: number): Status {
     flags,
     flagKinds,
   };
+}
+
+// The repeated-command and failed-tool flags over a time-ordered window of tool calls.
+function toolFlags(recent: ToolCall[]): { kind: "repeated command" | "failed tools"; detail: string }[] {
+  const out: { kind: "repeated command" | "failed tools"; detail: string }[] = [];
+  // A bare sleep waits for other work, so repeating it is no loop.
+  const [command, repeats] = countBy(recent.filter((t) => t.command && !/^sleep\s+[\d.]+[smhd]?$/.test(t.command.trim())), (t) => t.command!)[0] ?? ["", 0];
+  if (repeats >= STATUS.repeat) out.push({ kind: "repeated command", detail: `same command ×${repeats}: ${oneLine(command, 40)}` });
+  const failed = recent.slice(-10).filter((t) => t.status === "failed").length;
+  if (failed >= STATUS.failed) out.push({ kind: "failed tools", detail: `${failed} of the last 10 tool calls failed` });
+  return out;
+}
+
+export type FlagEvent = { kind: "repeated command" | "failed tools"; at: number; detail: string };
+
+// The first time each tool flag of wf status fired over the whole session: the
+// status window evaluated as of each tool call's start.
+export function toolFlagHistory(s: Session): FlagEvent[] {
+  const calls = s.toolCalls.filter((t) => t.startedAt !== null).sort((a, b) => a.startedAt! - b.startedAt!);
+  const seen = new Map<FlagEvent["kind"], FlagEvent>();
+  let from = 0;
+  for (let i = 0; i < calls.length && seen.size < 2; i++) {
+    const at = calls[i]!.startedAt!;
+    while (calls[from]!.startedAt! <= at - 60 * 60_000) from++;
+    for (const f of toolFlags(calls.slice(Math.max(from, i - 19), i + 1))) if (!seen.has(f.kind)) seen.set(f.kind, { kind: f.kind, at, detail: f.detail });
+  }
+  return [...seen.values()].sort((a, b) => a.at - b.at);
 }
 
 // Reconcile logs with a known process inventory before either command filters rows.
