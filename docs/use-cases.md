@@ -7,7 +7,7 @@ Each use case is a question the operator asks about agent sessions, and the comm
 - A CLI command that no use case names fails the test. Delete the command, or add the use case it serves.
 - A golden file that no use case produces fails the test. Removing a use case removes its golden files.
 
-`workflow` stands for `node src/cli.ts`, which `npm run setup` installs as `wf`. The name `workflow` stays with workflow-deprecated until supervision moves here. Candidate use cases, not yet answered, are in `research/use-cases.md`.
+`wf` stands for `node src/cli.ts`, which `npm run setup` installs as `wf`.
 
 ## uc-18 Repository size
 
@@ -45,7 +45,7 @@ wf status -a 2002-02-23T08:27 -w 2h
 
 ## uc-11 Stop a session
 
-Stop a session that is stuck or spiralling, from the laptop or over SSH. `stop` sends SIGTERM to the harness process that writes the session and to the tools it runs, and waits up to 10 seconds for them to exit.
+Stop a session that is stuck or spiralling. `stop` sends SIGTERM to the harness process that writes the session and to the tools it runs, and waits up to 10 seconds for them to exit.
 
 ```
 wf stop <session>
@@ -68,7 +68,7 @@ wf models -k implement -d 2002-03-05.. --size
 
 ## uc-17 What a plan cost
 
-What did building a plan cost, split into the orchestrator, builders, evaluators and critics? `wf run --plan <owner/repo>#<number>` writes the plan into the launch line, and `workflow-plan` and `workflow-build` pass it on every launch. `wf plan` totals the sessions that name the plan, per skill, and lists each with its harness, main model, cost, time and pull request. The sessions that launched them follow as orchestrators, outside the total, because an orchestrator session also holds work outside the plan. A plan number without a repo matches that number in every repo. Sessions launched before the marker carried a plan do not count. The fixtures hold no plan marker yet, so the golden file shows the empty answer until `npm run fixtures` cuts a session that has one.
+What did building a plan cost, split into the orchestrator, builders, evaluators and critics? `wf run --plan <owner/repo>#<number>` writes the plan into the launch line, and an orchestrating session passes it on every launch. `wf plan` totals the sessions that name the plan, per skill, and lists each with its harness, main model, cost, time and pull request. The sessions that launched them follow as orchestrators, outside the total, because an orchestrator session also holds work outside the plan. A plan number without a repo matches that number in every repo. Sessions launched before the marker carried a plan do not count. The fixtures hold no plan marker yet, so the golden file shows the empty answer until `npm run fixtures` cuts a session that has one.
 
 ```
 wf plan 7 -d 2002-02-14..
@@ -76,7 +76,7 @@ wf plan 7 -d 2002-02-14..
 
 ## uc-20 Agent practice as JSON
 
-How do I work with agents, day by day, in a form another tool can keep? `wf export` prints one JSON document for the range: a row per UTC day, harness, model, skill and repository, with sessions, tokens by type (uncached input, cache read, cache write and output, which includes reasoning), cost in USD and wall seconds, then the totals. Career's `career evidence` stores it. `schema` rises when a field changes meaning or goes away, and `range` gives the window's bounds, with `null` for an open end.
+How do I work with agents, day by day, in a form another tool can keep? `wf export` prints one JSON document for the range: a row per UTC day, harness, model, skill and repository, with sessions, tokens by type (uncached input, cache read, cache write and output, which includes reasoning), cost in USD and wall seconds, then the totals. `schema` rises when a field changes meaning or goes away, and `range` gives the window's bounds, with `null` for an open end.
 
 - A session counts once, on the UTC day it started, under the model with most turn calls in its root thread, with the wall time of its root turns. Tokens and cost follow each call's model, so a subagent on another model adds a row with zero sessions.
 - `skill` is the skill `wf run` launched the session with, `orchestrator` when it launched other sessions, or `null` for a session a person started.
@@ -91,7 +91,7 @@ wf export -d 2002-02-14..2002-03-15
 
 ## uc-21 Prompts as JSON
 
-What did I ask agents, session by session, in a form Overview can keep? `wf prompts` prints one JSON document with the sessions active in the range, each with its prompts. Overview stores it and replaces each session it carries. `schema` rises when a field changes meaning or goes away, and `range` gives the window's bounds, with `null` for an open end.
+What did I ask agents, session by session, in a form another tool can keep? `wf prompts` prints one JSON document with the sessions active in the range, each with its prompts. A tool that stores it can replace each session it carries, so a long session refreshes. `schema` rises when a field changes meaning or goes away, and `range` gives the window's bounds, with `null` for an open end.
 
 - A session prints when it started in the range or one of its root turns started in it, always whole. A session that runs for days prints with every day it was active.
 - Each session has `session` (`<harness>:<id>`), `day` (the UTC day it started), `startedAt`, `parent` (`<harness>:<id>` of the session that launched it with `wf run`, or `null`), `harness`, `repository`, `skill`, `model` and `costUsd`, as `wf export` derives them. `costUsd` adds the priced calls, and `unpricedCalls` counts the others. A session without a prompt prints with `prompts: []`.
@@ -204,7 +204,7 @@ wf archive
 
 ## uc-7 Value from each subscription
 
-What do my plans cost me each month, when does each bill next, and how much of each plan have I used? Which plan gives the most usage per euro, and what did each plan and model cost since a moment? Plans and their prices are in `data/subscriptions.json`. Billing figures are in euros, the currency the operator pays in, with USD plans converted at `usdPerEur`; API-equivalent costs stay in dollars.
+What do my plans cost me each month, when does each bill next, and how much of each plan have I used? Which plan gives the most usage per euro, and what did each plan and model cost since a moment? Plans and their prices are in `data/subscriptions.json`. Billing figures are in euros, with USD plans converted at `usdPerEur`; API-equivalent costs stay in dollars.
 
 - By default, the plans running at the latest call or reading: the monthly price, the next billing date and the days to it, the API-equivalent use of the current billing period, its multiplier over the price, and the current weekly window's share used and reset time. A total row sums the prices and the use.
 - `--history`: per plan, the logged use against the price paid, so an underused plan scores low, and the value of a full weekly limit with a month of them against the price. The gap between the two multipliers is the plan left unused. Limit hits show which plans capped the work. Then per billing period, the same use against the price, one row per month, ended plans included.
