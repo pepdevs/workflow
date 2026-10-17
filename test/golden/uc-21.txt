@@ -49,7 +49,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "repository": null,
       "skill": null,
       "model": "grok-4.6",
-      "costUsd": 98.2,
+      "costUsd": 79.5603,
       "unpricedCalls": 0,
       "prompts": [
         {
@@ -77,7 +77,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-23T15:58:17.708Z",
           "model": "grok-4.6",
           "outcome": "error",
-          "costUsd": 93.1545,
+          "costUsd": 74.5149,
           "unpricedCalls": 0,
           "launch": false,
           "text": "<text>"

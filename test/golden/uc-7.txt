@@ -29,7 +29,7 @@ Used: the logged calls at API prices against the price paid. Full window: a week
 
 plan                  price            paid   used  used multiplier  windows  full window  full multiplier  limit hits
 --------------------  ------------  -------  -----  ---------------  -------  -----------  ---------------  ----------
-Example Xai           €32.00/month  €864.00  $98.2             0.1x        0            -                -           0
+Example Xai           €32.00/month  €864.00  $79.6             0.1x        0            -                -           0
 Example OpenAI Basic  €16.00/month  €432.00  $12.8             0.0x        1        $19.4             4.2x           0
 Example Anthropic     €25.00/month  €675.00  $10.5             0.0x        1        $16.5             2.3x           0
 Example Zai Basic     €8.00/month   €216.00   $0.3             0.0x        0            -                -           0
@@ -90,7 +90,7 @@ Example Xai           2001-10-01 to 2001-11-01           €32.00   $0.0        
 Example Xai           2001-11-01 to 2001-12-01           €32.00   $0.0        0.0x      0           0
 Example Xai           2001-12-01 to 2002-01-01           €32.00   $0.0        0.0x      0           0
 Example Xai           2002-01-01 to 2002-02-01           €32.00   $0.0        0.0x      0           0
-Example Xai           2002-02-01 to 2002-03-01           €32.00  $98.2        2.5x    943           0
+Example Xai           2002-02-01 to 2002-03-01           €32.00  $79.6        2.0x    839           0
 Example Xai           2002-03-01 to 2002-04-01 (so far)  €32.00  <$0.1        0.0x      2           0
 Example OpenAI Basic  2000-01-01 to 2000-02-01           €16.00   $0.0        0.0x      0           0
 Example OpenAI Basic  2000-02-01 to 2000-03-01           €16.00   $0.0        0.0x      0           0
@@ -187,8 +187,8 @@ Per plan and model
 
 plan                        model                calls  unpriced  API-equivalent
 --------------------------  -------------------  -----  --------  --------------
-Example Xai                 all                    945         0           $98.2
-                            grok-4.6               943         0           $98.2
+Example Xai                 all                    841         0           $79.6
+                            grok-4.6               839         0           $79.6
                             grok-4.7                 2         0           <$0.1
 Example OpenAI Basic        all                    169         0           $12.8
                             gpt-5.6-sol            169         0           $12.8

@@ -5,38 +5,38 @@ Cost by root turn (subagent calls included in the turn that spawned them)
 -  -----  -----  -----  ----------  -----------  ------  ---------  ---------  -------------
 1  15:53      6    72k        291k            0      8k         6k       $0.3           $0.3
 2  15:57      1    520         71k            0     214         44      <$0.1           $0.4
-3  15:58    919   9.4M      119.7M            0    1.3M       1.2M      $93.2          $93.5
-4  20:51      0      0           0            0       0          0       $0.0          $93.5
-5  00:53      6   219k        1.1M            0      8k         6k       $2.0          $95.6
-6  01:00      1    876        219k            0      98         60       $0.2          $95.8
-7  01:02      2     3k        440k            0      1k        280       $0.5          $96.3
-8  01:04      4     9k        909k            0      4k         3k       $1.0          $97.2
-9  01:05      4     2k        931k            0      1k        894       $1.0          $98.2
+3  15:58    815   8.9M       99.4M            0    1.2M       1.1M      $74.5          $74.9
+4  20:51      0      0           0            0       0          0       $0.0          $74.9
+5  00:53      6   219k        1.1M            0      8k         6k       $2.0          $76.9
+6  01:00      1    876        219k            0      98         60       $0.2          $77.1
+7  01:02      2     3k        440k            0      1k        280       $0.5          $77.6
+8  01:04      4     9k        909k            0      4k         3k       $1.0          $78.6
+9  01:05      4     2k        931k            0      1k        894       $1.0          $79.6
 
 Where the money went
 
 token type       cost  share
 --------------  -----  -----
-uncached input  $21.1    22%
-cache read      $68.7    70%
+uncached input  $19.0    24%
+cache read      $53.4    67%
 cache write      $0.0     0%
-output           $8.3     8%
+output           $7.2     9%
 
 model      cost  share
 --------  -----  -----
-grok-4.6  $98.2   100%
+grok-4.6  $79.6   100%
 
 thread   cost  share
 ------  -----  -----
-root    $77.1    78%
-<text>  $21.1    22%
+root    $77.1    97%
+<text>   $2.5     3%
 
 Most expensive calls and turn aggregates
 
 at     thread  model       context  output   cost
 -----  ------  --------  ---------  ------  -----
 20:51  root    grok-4.6  203k est.    1.1M  $72.0
-20:19  <text>  grok-4.6  310k est.     41k   $9.4
-19:46  <text>  grok-4.6  219k est.    104k   $6.6
-20:28  <text>  grok-4.6  298k est.      6k   $3.9
 00:56  root    grok-4.6  219k est.      8k   $2.0
+18:00  <text>  grok-4.6  108k est.     32k   $1.2
+01:05  root    grok-4.6  232k est.      4k   $1.0
+01:05  root    grok-4.6  234k est.      1k   $1.0

@@ -3,7 +3,7 @@ $ wf turns <session>
 -  -----  -------  ------  --------  -----  -----  ---------  -------  ----------  -------  ---------  ---------------------------------
 1  15:53  prompt   <text>  grok-4.6      6     23          0     $0.3        $0.3  0:02:33  completed  execute-plan,writing-style,design
 2  15:57  prompt   <text>  grok-4.6      1      0          0    <$0.1       <$0.1  0:00:07  completed
-3  15:58  prompt   <text>  grok-4.6    787    191         28    $72.0       $93.2  4:52:54  error      git
+3  15:58  prompt   <text>  grok-4.6    787    191         28    $72.0       $74.5  4:52:54  error      git
 4  20:51  prompt   <text>                0      0          0  unknown     unknown  0:00:01  error
 5  00:53  prompt   <text>  grok-4.6      6      9          0     $2.0        $2.0  0:03:05  completed
 6  01:00  prompt   <text>  grok-4.6      1      0          0     $0.2        $0.2  0:00:05  completed
