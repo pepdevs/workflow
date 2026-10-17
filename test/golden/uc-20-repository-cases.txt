@@ -9,4 +9,6 @@ removed directory with a logged repository URL: "logged"
 directory outside Git: null
 missing directory without evidence: null
 redacted logged repository: null
+session before its repository's rename: "former"
+session after its repository's rename: "repo"
 placeholder model rows: 1, sessions under null: 0

@@ -84,7 +84,16 @@ export class ProvenanceCall {
   // pattern holds the directory. A directory that still exists falls back to its
   // Git repository's origin, then its main checkout. Anything else is null, so a
   // folder name never stands in for a repository. Custom log roots skip Git reads.
-  repositoryName(session: Session, readClones: boolean): string | null {
+  // A session that started before a rename reports the catalog repository that
+  // held the name then.
+  repositoryName(session: Session, readClones: boolean, startedAt: number | null = null): string | null {
+    const name = this.nameOf(session, readClones);
+    if (!name || startedAt === null) return name;
+    const former = Object.entries(this.entries).find(([, entry]) => entry.formerly?.some((f) => f.name === name && startedAt < Date.parse(f.until)));
+    return former ? former[0].split("/").at(-1)! : name;
+  }
+
+  private nameOf(session: Session, readClones: boolean): string | null {
     const launch = launchOf(session);
     if (launch?.repo) return launch.repo.split("/").at(-1)!;
     const logged = repositoryOfRemote(session.startGit?.repository);

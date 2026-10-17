@@ -72,7 +72,7 @@ export function exportCommand(flags: Record<string, string>, base: string | unde
     if (start === null || start < when.from || start >= when.to) continue;
     const harness = ADAPTER_OF[s.harness];
     const skill = launchOf(s)?.skill ?? (launchers.has(`${harness}:${s.id}`) ? "orchestrator" : null);
-    const repository = provenance.repositoryName(s, base === undefined);
+    const repository = provenance.repositoryName(s, base === undefined, start);
     const d = day(start);
     const main = rowFor(d, harness, mainModel(s), skill, repository);
     main.sessions += 1;
@@ -180,7 +180,7 @@ export function promptsCommand(flags: Record<string, string>, base: string | und
       startedAt: new Date(start).toISOString(),
       parent: launch?.parent ? `${launch.parent.harness}:${launch.parent.id}` : null,
       harness,
-      repository: provenance.repositoryName(s, base === undefined),
+      repository: provenance.repositoryName(s, base === undefined, start),
       skill: launch?.skill ?? (launchers.has(session) ? "orchestrator" : null),
       model: mainModel(s),
       ...costOf(s.modelCalls),

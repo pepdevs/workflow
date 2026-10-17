@@ -329,6 +329,15 @@ test("uc-20 repository and model cases", () => {
       session.startGit = { ...(logged ? { repository: logged } : {}), at: Date.now() };
       return exported()[0].repository;
     };
+    // The catalog's other clone held the name "repo" until the given time.
+    const renamed = (until: string) => {
+      repositoryEntries["fixture/former"] = { path: other, formerly: [{ name: "repo", until }] };
+      try {
+        return repository(clone);
+      } finally {
+        delete repositoryEntries["fixture/former"];
+      }
+    };
 
     const cases: [string, () => string | null][] = [
       ["catalog clone", () => repository(clone)],
@@ -341,6 +350,8 @@ test("uc-20 repository and model cases", () => {
       ["directory outside Git", () => repository(outside)],
       ["missing directory without evidence", () => repository(join(root, "gone"))],
       ["redacted logged repository", () => repository(join(root, "gone"), "<text>")],
+      ["session before its repository's rename", () => renamed("9999-01-01T00:00:00Z")],
+      ["session after its repository's rename", () => renamed("2000-01-01T00:00:00Z")],
     ];
     const lines = cases.map(([label, read]) => `${label}: ${JSON.stringify(read())}`);
     const call = session.modelCalls[0];
