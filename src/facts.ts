@@ -1,7 +1,7 @@
 // Facts derived from the session model: costs, times, root turns, and the launch
 // header `wf run` writes into a prompt.
 import { isHarnessName, type HarnessName } from "./harnesses/index.ts";
-import { aggregateCostParts, computeCostUsd } from "./catalog.ts";
+import { aggregateCostParts, commandBranches, computeCostUsd } from "./catalog.ts";
 import { type ModelCall, type Session, type ToolCall, type Turn } from "./model.ts";
 
 // List price from the catalog, or null when a model has no price. Aggregates
@@ -83,10 +83,14 @@ export function rootTurnCalls(s: Session): Map<string, ModelCall[]> {
 
 export const rootThread = (s: Session) => s.threads.find((t) => t.parentId === null)!.id;
 
-// The branches a session's logs name: each record's branch where the harness logs
-// one per record, otherwise the branch at start. HEAD names no branch.
-export const branchesOf = (s: Session): string[] =>
-  (s.branches?.length ? s.branches : s.startGit?.branch ? [s.startGit.branch] : []).filter((b) => b !== "HEAD");
+// The branches a session's logs name, in order of first appearance: each record's
+// branch where the harness logs one per record, otherwise the branch at start,
+// then the branches its shell commands, subagents included, create or push. HEAD names no branch.
+export function branchesOf(s: Session): string[] {
+  const logged = s.branches?.length ? s.branches : s.startGit?.branch ? [s.startGit.branch] : [];
+  const commands = s.toolCalls.filter((t) => t.command).flatMap((t) => commandBranches(t.command!));
+  return [...new Set([...logged, ...commands])].filter((b) => b !== "HEAD");
+}
 
 export const rootTurns = (s: Session) =>
   s.turns.filter((t) => t.threadId === rootThread(s)).sort((a, b) => a.startedAt - b.startedAt);
