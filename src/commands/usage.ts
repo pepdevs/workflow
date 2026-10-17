@@ -58,3 +58,31 @@ export function usageCommand(usages: PlanUsage[], flags: Record<string, string>,
     ...(spent === null ? [] : ["", "Use outside these logs counts toward the limit without adding cost, so the full window and multiplier are lower bounds."]),
   ].join("\n");
 }
+
+// The same readings as one JSON document for another tool, every window with its pace.
+export function usageJson(usages: PlanUsage[], now: number): string {
+  return JSON.stringify(
+    {
+      schema: 1,
+      at: new Date(now).toISOString(),
+      plans: usages.map((u) => ({
+        provider: u.provider,
+        plan: u.plan?.name ?? null,
+        error: u.error,
+        windows: u.windows.map((w) => {
+          const pace = w.minutes !== null && w.usedPercent !== null && w.resetsAt !== null ? windowPace(w.usedPercent, w.minutes, w.resetsAt, now) : null;
+          return {
+            window: windowName(w.minutes),
+            minutes: w.minutes,
+            usedPercent: w.usedPercent,
+            resetsAt: w.resetsAt === null ? null : new Date(w.resetsAt).toISOString(),
+            pace: pace?.pace ?? null,
+            perDay: pace?.perDay ?? null,
+          };
+        }),
+      })),
+    },
+    null,
+    2,
+  );
+}

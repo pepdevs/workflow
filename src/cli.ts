@@ -7,7 +7,7 @@ import { archiveCommand } from "./commands/archive.ts";
 import { DAY, type Range, findByPrefix, loadAll, parseAt, parseWhen } from "./commands/find.ts";
 import { modelsCommand } from "./commands/models.ts";
 import { routeCommand } from "./commands/route.ts";
-import { usageCommand } from "./commands/usage.ts";
+import { usageCommand, usageJson } from "./commands/usage.ts";
 import { READINGS_FILE, readUsage, recordUsage, recordedReadings, type PlanUsage } from "./providers/index.ts";
 import { runCommand } from "./commands/run.ts";
 import { filesCommand } from "./commands/files.ts";
@@ -29,7 +29,7 @@ export { summary, costCommand, turnsCommand, timeCommand } from "./commands/sess
 export { filesCommand } from "./commands/files.ts";
 export { readGithubEvaluations } from "./providers/github.ts";
 export { rankRoutes } from "./commands/route.ts";
-export { usageCommand, windowPace } from "./commands/usage.ts";
+export { usageCommand, usageJson, windowPace } from "./commands/usage.ts";
 export { stepSpans, windowProjection } from "./commands/subscriptions.ts";
 export { changedLines, parseReadings, readingLines } from "./providers/index.ts";
 export { planMatches } from "./commands/plan.ts";
@@ -147,8 +147,10 @@ export function run(argv: string[], now = Date.now()): string | Promise<string> 
   }
   if (command === "usage" && roots === undefined) {
     const withValue = args.includes("--value");
-    const { words, flags } = parseFlags(args.slice(1).filter((a) => a !== "--value"));
-    if (words.length || Object.keys(flags).some((f) => f !== "w")) throw new Error(commandHelp(command));
+    const asJson = args.includes("--json");
+    const { words, flags } = parseFlags(args.slice(1).filter((a) => a !== "--value" && a !== "--json"));
+    if (words.length || Object.keys(flags).some((f) => f !== "w") || (asJson && (withValue || flags.w))) throw new Error(commandHelp(command));
+    if (asJson) return readUsage(now).then(recorded(now)).then((usage) => usageJson(usage, now));
     // A weekly window started at most 7 days ago; sessions updated since then hold its calls.
     // Reading them takes seconds, so the value columns wait for --value.
     return readUsage(now).then(recorded(now)).then((usage) => usageCommand(usage, flags, now, withValue ? weeklySpend(loadAll(undefined, now - 7 * DAY), usage) : null));

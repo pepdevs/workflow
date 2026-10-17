@@ -69,7 +69,7 @@ const HELP: Record<string, Help> = {
   usage: {
     group: "Choose a route", args: "", line: "plan limits used, time to reset, weekly pace and value",
     detail: [
-      "wf usage [-w 7d|5h|all] [--value]",
+      "wf usage [-w 7d|5h|all] [--value] | --json",
       "-w window  7d (default), 5h or all",
       "pace       points ahead or behind an even burn to 100% by reset",
       "needs/day  share per day that uses the rest",
@@ -77,6 +77,7 @@ const HELP: Record<string, Help> = {
       "  spent        API-equivalent cost of logged calls since the window started",
       "  full window  spent over the share used",
       "  multiplier   a month of full windows over the plan's price",
+      "--json     every window with its pace, as one JSON document",
     ],
   },
   summary: { group: "Inspect one session", args: "<id>", line: "calls, models, tokens, cost, compactions, result", detail: ["wf summary <id> [--size]", "Threads, turns, calls, models, tokens, cost, time, skills, incidents and result link.", "--size shows code and docs tokens at the starting commit.", ...ONE_SESSION] },
