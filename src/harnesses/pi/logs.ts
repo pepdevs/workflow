@@ -151,7 +151,7 @@ export function loadPi(idOrPath: string, roots = piRoots(), { counts = false }: 
           endedAt: null,
           status: "unknown",
           spawnsThreadId: null,
-          ...toolTarget(b.arguments, command),
+          ...toolTarget(b.arguments, command, b.name),
           ...UNKNOWN_SIZE,
         };
         tools.set(b.id, tool);
@@ -180,6 +180,7 @@ export function loadPi(idOrPath: string, roots = piRoots(), { counts = false }: 
         startedAt: m.timestamp ?? null,
         endedAt: at,
         status: m.exitCode === 0 ? "ok" : "failed",
+        web: null,
         spawnsThreadId: null,
         ...shellReads(m.command ?? ""),
         ...resultSize(m.output, counts),

@@ -154,6 +154,19 @@ const HELP: Record<string, Help> = {
       "and binary files are left out. schema rises when a field changes.",
     ],
   },
+  web: {
+    group: "Across sessions", args: "", line: "web searches per tool and how often agents searched again",
+    detail: [
+      "wf web [-d when] [--json] [--root dir]",
+      `${WHEN}; 30 days by default`,
+      "Web calls per harness tool with its backend from data/web-backends.json: sessions,",
+      "searches, pages opened, finds in a page and failures. Then the chains each search tool",
+      "started, a chain being web calls in a row in one thread and turn: median searches, searches",
+      "run in parallel, searches made again after a result, reworded searches, long chains and",
+      "chains that read pages. --json prints every web call with its query or URL, chain and",
+      "position. schema rises when a field changes.",
+    ],
+  },
   subscriptions: {
     group: "Across sessions", args: "", line: "plan prices, next bills, use this period and this week",
     detail: [

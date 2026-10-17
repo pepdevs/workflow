@@ -2,7 +2,8 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, relative } from "node:path";
-import type { SessionResult } from "../../model.ts";
+import { webAction } from "../../catalog.ts";
+import type { SessionResult, WebUse } from "../../model.ts";
 
 export function resultFromReply(reply: string): SessionResult | null {
   const markers = [...reply.matchAll(/<!--\s*workflow-result:\s*([\s\S]*?)-->/g)];
@@ -135,16 +136,29 @@ export function lineRange(offset: unknown, limit: unknown): string | null {
 // Argument names that hold a file or folder across the harnesses' file tools.
 const PATH_ARGS = ["file_path", "filePath", "path", "target_file", "target_directory", "notebook_path"];
 
-// The paths and line range of one tool call, from its arguments or its shell command.
-export function toolTarget(args: any, command: string | null): { paths: string[]; lines: string | null } {
-  if (command) return shellReads(command);
-  if (!args || typeof args !== "object") return { paths: [], lines: null };
+// Argument names that hold a web call's query or URL across the harnesses' web tools.
+const WEB_ARGS = ["query", "search_query", "url"];
+
+// The action and query or URL of a call to a web tool `name`; null for other tools.
+export function webUse(name: string, args: any): WebUse | null {
+  const action = webAction(name);
+  if (!action) return null;
+  const target = args && typeof args === "object" ? WEB_ARGS.map((k) => args[k]).find((v) => typeof v === "string" && v !== "") : undefined;
+  return { action, target: target ?? null };
+}
+
+// The paths and line range of one tool call, from its arguments or its shell command,
+// and what it searched or opened when `name` is a web tool.
+export function toolTarget(args: any, command: string | null, name: string): { paths: string[]; lines: string | null; web: WebUse | null } {
+  const web = webUse(name, args);
+  if (command) return { ...shellReads(command), web };
+  if (!args || typeof args !== "object") return { paths: [], lines: null, web };
   const paths = PATH_ARGS.map((k) => args[k]).filter((p): p is string => typeof p === "string" && p !== "");
   if (Array.isArray(args.paths)) paths.push(...args.paths.filter((p: unknown): p is string => typeof p === "string"));
   const range = Array.isArray(args.view_range) && args.view_range.length === 2
     ? `${args.view_range[0]}-${args.view_range[1] === -1 ? "" : args.view_range[1]}`
     : lineRange(args.offset, args.limit);
-  return { paths, lines: range };
+  return { paths, lines: range, web };
 }
 
 // Text of a tool result: a string, or the text parts of an array.

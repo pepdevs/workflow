@@ -39,7 +39,7 @@ function shell(id: string, thread: string, turn: string, command: string, from: 
   return {
     id, threadId: thread, turnId: turn, name: "bash", category: "shell", shellCategory: null, command, origin: "model",
     startedAt: at(from), endedAt: minutes === null ? null : at(from) + minutes * min, status, spawnsThreadId: null,
-    paths: [], lines: null, resultChars: 2_000, resultLines: 40, resultWords: 300,
+    paths: [], lines: null, web: null, resultChars: 2_000, resultLines: 40, resultWords: 300,
   };
 }
 

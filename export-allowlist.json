@@ -58,6 +58,10 @@
       "mode": "0644"
     },
     {
+      "path": "data/web-backends.json",
+      "mode": "0644"
+    },
+    {
       "path": "docs/configuration.md",
       "mode": "0644"
     },
@@ -243,6 +247,10 @@
     },
     {
       "path": "src/commands/usage.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "src/commands/web.ts",
       "mode": "0644"
     },
     {
@@ -1003,6 +1011,10 @@
     },
     {
       "path": "test/golden/uc-22.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "test/golden/uc-23.txt",
       "mode": "0644"
     },
     {

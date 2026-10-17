@@ -4,7 +4,7 @@ import { homedir } from "node:os";
 import { basename, dirname, join, sep } from "node:path";
 import { shellCategory, toolCategory } from "../../catalog.ts";
 import { emptySession, type Session, type ToolCall, type Turn, type Usage } from "../../model.ts";
-import { archiveDir, cachedByRoots, resultFromReply, skillFromPath, resultSize, toolTarget, UNKNOWN_SIZE, unionFiles, type LoadOptions, type SessionRef } from "../common/logs.ts";
+import { archiveDir, cachedByRoots, resultFromReply, skillFromPath, resultSize, toolTarget, UNKNOWN_SIZE, unionFiles, webUse, type LoadOptions, type SessionRef } from "../common/logs.ts";
 
 export const GROK_LIVE = join(homedir(), ".grok", "sessions");
 export const grokRoots = () => [GROK_LIVE, archiveDir("grok")];
@@ -228,12 +228,19 @@ function loadThread(idOrPath: string, roots: string[], { counts = false }: LoadO
         category: CATEGORIES[name] ?? toolCategory(name),
         shellCategory: command ? shellCategory(command) : null, command,
         origin: "model", startedAt: at, endedAt: null, status: "unknown", spawnsThreadId: null,
-        paths: [], lines: null, ...UNKNOWN_SIZE };
+        paths: [], lines: null, web: webUse(name, u.rawInput), ...UNKNOWN_SIZE };
       tools.set(callId, tool);
       session.toolCalls.push(tool);
     }
     if (command && !tool.command) { tool.command = command; tool.shellCategory = shellCategory(command); }
-    if (u.rawInput && Object.keys(u.rawInput).length && !tool.paths.length) Object.assign(tool, toolTarget(u.rawInput, tool.command));
+    if (u.rawInput && Object.keys(u.rawInput).length && !tool.paths.length) {
+      const web = tool.web;
+      Object.assign(tool, toolTarget(u.rawInput, tool.command, name));
+      if (web?.target && !tool.web?.target) tool.web = web;
+    }
+    // The backend web search names its query only in the update that completes it.
+    const query = u.rawOutput?.action?.query;
+    if (tool.web && typeof query === "string" && query) tool.web = { action: "search", target: query };
     if (u.content) Object.assign(tool, resultSize((Array.isArray(u.content) ? u.content : []).map((c: any) => c?.content ?? c), counts));
     // One tool waits on both background commands and subagents; only a spawned child makes it a subagent wait.
     const taskIds = u.rawInput?.task_ids;

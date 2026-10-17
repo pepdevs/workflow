@@ -86,6 +86,8 @@ export type ToolCall = {
   paths: string[];
   // The line range a read asked for, such as `80-199`, or null for the whole file.
   lines: string | null;
+  // For a web call, what it did and the query, URL or pattern it named; null for other calls.
+  web: WebUse | null;
   // Characters of text the call returned to the model; null when the log keeps none.
   resultChars: number | null;
   // Lines and words of that text, without line numbers a read tool added; null
@@ -93,6 +95,11 @@ export type ToolCall = {
   resultLines: number | null;
   resultWords: number | null;
 };
+
+// A search, a page opened, a find inside an opened page, or an action the log names no further.
+export type WebAction = "search" | "open" | "find" | "other";
+
+export type WebUse = { action: WebAction; target: string | null };
 
 export type SkillUse = {
   turnId: string | null;

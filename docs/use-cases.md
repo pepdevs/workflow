@@ -112,6 +112,20 @@ Did the work hold? `wf changes` prints one JSON document with each branch merged
 wf changes -d 2002-02-14.. <clone>
 ```
 
+## uc-23 Web searches and whether they found it
+
+Which web tools do agents use in each harness, which search runs behind each, and how often did an agent search again before it acted on the results? `wf web` counts the web calls that started in the range per harness tool: sessions, searches, pages opened, finds inside a page, other actions and the share that failed. The backend comes from `data/web-backends.json`, with each entry's source; a tool without an entry shows `unknown`.
+
+- A chain is the web calls in a row in one thread and turn. Any other tool call by the model ends it. A chain belongs to the tool of its first search; a chain without a search stays out of the second table.
+- Per search tool: chains, the median searches per chain, and the share of searches that ran in parallel (started before the search before them returned, as Claude Code batches them), that were made again once the search before returned, and that reworded an earlier search of their chain, sharing at least `rephraseOverlap` of their words. Then the chains with `longChain` searches or more, and the chains that opened a page or searched inside one. Both thresholds are in `data/thresholds.json`.
+- Codex logs one `web_search` tool for searches, pages opened and finds; its other actions name no query. Grok Build's backend search names its query only when it completes.
+- `--json` prints one document with `schema`, `range` and `calls`, oldest first. Each call has `session`, `at`, `harness`, `tool`, `backend`, `action`, `target` (the query, URL or pattern, or `null`), `status`, `chain` and `position` within it. The document holds the queries and URLs agents sent, and no result text.
+
+```
+wf web -d 2002-02-14..
+wf web -d 2002-02-14.. --json
+```
+
 ## uc-14 Plan usage now
 
 How much of each plan's limit windows is used right now, including use outside these logs, and am I on pace to use each weekly limit up before it resets? Weekly windows show by default with the time to reset, points ahead or behind an even burn to 100%, and the share per day that uses the rest; `-w 5h` or `-w all` shows other windows, and a plan without the chosen window says so. Each provider reports its plan's windows through the login a harness already holds: Codex CLI's app-server, Pi's openai-codex, zai and xai logins, and Claude Code's claude.ai login. SuperGrok appears once for both Grok Build and Pi calls. With `--value`, each weekly row also shows the API-equivalent cost of the logged calls since the window started, that cost over the share used as the value of a full window, and a month of full windows as a multiple of the plan's price. A source that fails names the reason, and the other plans still print. `--json` prints every window of every plan as one document with `schema`, `at` and `plans`; each plan has `provider`, `plan`, `error` and `windows`, and each window has `window`, `minutes`, `usedPercent`, `resetsAt`, `pace` and `perDay`, with `null` where the provider reported none. It has no golden file because it reads the network.

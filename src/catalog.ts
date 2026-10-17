@@ -1,9 +1,9 @@
-// Prices, plans, routes and thresholds from data/, and the tool categories and
+// Prices, plans, routes, thresholds and web backends from data/, and the tool categories and
 // incident classes shared by every harness.
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
-import type { Usage } from "./model.ts";
+import type { Usage, WebAction } from "./model.ts";
 
 // Local operator files override whole catalogs; absent files use bundled defaults.
 const explicitConfig = process.env.WORKFLOW_CONFIG_DIR;
@@ -19,6 +19,7 @@ const prices = readData("prices");
 const subscriptions = readData("subscriptions");
 const routes = readData("routes");
 const thresholds = readData("thresholds");
+const webBackends = readData("web-backends");
 const paths = readData("paths");
 export type RepositoryEntry = { path: string; worktrees?: string[]; categories?: Partial<Record<"code" | "test" | "test data" | "docs" | "data" | "config", string[]>>; domains?: Record<string, string[]> };
 export const repositoryEntries: Record<string, RepositoryEntry> = readData("repos");
@@ -194,8 +195,29 @@ const TOOL_CATEGORIES: Record<string, string> = {
 
 export function toolCategory(name: string): string {
   if (name.startsWith("mcp__")) return "mcp";
-  return TOOL_CATEGORIES[name] ?? "other";
+  return TOOL_CATEGORIES[name] ?? (name in WEB_ACTIONS ? "web" : "other");
 }
+
+// What each harness's web tool does when its arguments do not say. Codex's
+// web_search logs its action with every call. web-search-prime is Z.ai's MCP in OpenCode.
+const WEB_ACTIONS: Record<string, WebAction> = {
+  WebSearch: "search", WebFetch: "open",
+  websearch: "search", webfetch: "open", "web-search-prime_web_search_prime": "search",
+  web_search: "search", web_fetch: "open", "Web search:": "search",
+};
+
+export function webAction(name: string): WebAction | null {
+  return WEB_ACTIONS[name] ?? null;
+}
+
+// The search or fetch behind a harness's web tool, from data/web-backends.json, or `unknown`.
+export function webBackend(harness: string, tool: string): string {
+  return webBackends.tools.find((t: { harness: string; tool: string }) => t.harness === harness && t.tool === tool)?.backend ?? "unknown";
+}
+
+// wf web: the searches that make a chain long, and the word overlap that makes a search a rewording.
+export const WEB_LONG_CHAIN: number = thresholds.web?.longChain ?? 3;
+export const WEB_REPHRASE_OVERLAP: number = thresholds.web?.rephraseOverlap ?? 0.5;
 
 const SHELL_CATEGORIES: [string, string[]][] = [
   ["vcs", ["git"]],

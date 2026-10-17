@@ -172,7 +172,7 @@ export function loadOpenCode(sessionId: string, roots = openCodeRoots(), { count
             endedAt: p.state?.time?.end ?? null,
             status: p.state?.status === "error" ? "failed" : p.state?.status === "completed" ? "ok" : "unknown",
             spawnsThreadId: child,
-            ...toolTarget(p.state?.input, command),
+            ...toolTarget(p.state?.input, command, p.tool),
             ...resultSize(p.state?.output, counts),
           });
           if (p.tool === "skill" && p.state?.input?.name) {

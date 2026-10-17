@@ -1,0 +1,15 @@
+{
+  "note": "The search behind each harness's web tool, as wf web shows it. A fetch tool reads the page itself. Checked 2026-10-17.",
+  "tools": [
+    { "harness": "claude", "tool": "WebSearch", "backend": "Brave via Anthropic", "source": "https://simonwillison.net/2025/Mar/21/anthropic-use-brave/", "basis": "Anthropic's subprocessor list names Brave Search for web search; Anthropic names no provider in its docs" },
+    { "harness": "claude", "tool": "WebFetch", "backend": "fetch", "source": "https://mikhail.io/2025/10/claude-code-web-tools/", "basis": "Claude Code fetches the URL and a small model reads the page" },
+    { "harness": "codex", "tool": "web_search", "backend": "OpenAI index", "source": "https://developers.openai.com/codex/cli/features", "basis": "Cached results from an index OpenAI keeps by default; live with --search; the provider is not named" },
+    { "harness": "opencode", "tool": "websearch", "backend": "Exa or Parallel", "source": "https://opencode.ai/docs/tools/", "basis": "Exa's or Parallel's hosted MCP, enabled by the OpenCode provider or OPENCODE_ENABLE_EXA or OPENCODE_ENABLE_PARALLEL" },
+    { "harness": "opencode", "tool": "webfetch", "backend": "fetch", "source": "https://opencode.ai/docs/tools/", "basis": "OpenCode fetches the URL" },
+    { "harness": "opencode", "tool": "web-search-prime_web_search_prime", "backend": "Z.ai", "source": "https://docs.z.ai/devpack/faq", "basis": "Z.ai's web-search-prime MCP, counted against the GLM Coding Plan's monthly web search quota" },
+    { "harness": "grok", "tool": "Web search:", "backend": "xAI", "source": "https://github.com/xai-org/grok-build", "basis": "A backend tool call that xAI's servers run; the provider is not named" },
+    { "harness": "grok", "tool": "web_fetch", "backend": "fetch", "source": "https://github.com/xai-org/grok-build", "basis": "Grok Build fetches the URL" },
+    { "harness": "copilot", "tool": "web_search", "backend": "GitHub MCP", "source": "https://github.blog/changelog/2025-02-14-personal-custom-instructions-bing-web-search-and-more-in-copilot-on-github-com/", "basis": "Copilot CLI 1.0.73 takes web_search from GitHub's remote MCP server; Copilot Chat searches Bing, unconfirmed for the CLI" },
+    { "harness": "copilot", "tool": "web_fetch", "backend": "fetch", "source": "https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference", "basis": "Copilot CLI fetches the URL after a url permission" }
+  ]
+}

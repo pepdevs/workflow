@@ -207,7 +207,7 @@ test("filesCommand", () => {
     id, threadId: thread, turnId: turn, name: extra.name ?? "Read", category: extra.category ?? (extra.command ? "shell" : "file_read"),
     shellCategory: extra.command ? "read" : null, command: extra.command ?? null, origin: "model" as const,
     startedAt: at - ago * 1000, endedAt: at - ago * 1000 + 1, status: "ok" as const, spawnsThreadId: null,
-    paths: extra.paths ?? ["/repo/src/a.ts"], lines: null, resultChars: chars, resultLines: Math.round(chars / 36.6), resultWords: Math.round(chars / 6.1),
+    paths: extra.paths ?? ["/repo/src/a.ts"], lines: null, web: null, resultChars: chars, resultLines: Math.round(chars / 36.6), resultWords: Math.round(chars / 6.1),
   });
   const usage = { input: 10_000, cacheRead: 0, cacheWrite: 0, cacheWrite1h: 0, output: 0, reasoning: 0 };
   const call = (turn: string | null, ago: number, purpose: "turn" | "compaction") => ({
@@ -455,7 +455,7 @@ test("sessionStatus", () => {
   const tool = (ago: number, done: boolean, extra: { category?: string; command?: string; status?: "ok" | "failed" } = {}) => ({
     id: `x${ago}`, threadId: "t", turnId: "u", name: "Bash", category: extra.category ?? "shell",
     shellCategory: null, command: extra.command ?? null, origin: "model" as const,
-    startedAt: at - ago * min, endedAt: done ? at - ago * min + 1_000 : null, status: extra.status ?? "ok", spawnsThreadId: null, paths: [], lines: null, resultChars: null, resultLines: null, resultWords: null,
+    startedAt: at - ago * min, endedAt: done ? at - ago * min + 1_000 : null, status: extra.status ?? "ok", spawnsThreadId: null, paths: [], lines: null, web: null, resultChars: null, resultLines: null, resultWords: null,
   });
   const session = (calls: Session["modelCalls"], tools: ReturnType<typeof tool>[] = []): Session => ({
     harness: "claude-code", id: "s", title: null, cwd: null, harnessVersion: null,
@@ -505,7 +505,7 @@ test("subagentStatus", () => {
   const turn = (thread: string, ago: number, open = false) => ({ id: `${thread}u`, threadId: thread, trigger: "agent_message" as const, promptText: null, startedAt: at - ago * min, endedAt: open ? null : at - ago * min, outcome: "unknown" as const });
   const spawn = (id: string, thread: string, child: string, ago: number, done: boolean) => ({
     id, threadId: thread, turnId: `${thread}u`, name: "Agent", category: "agent", shellCategory: null, command: null, origin: "model" as const,
-    startedAt: at - ago * min, endedAt: done ? at - min : null, status: "ok" as const, spawnsThreadId: child, paths: [], lines: null, resultChars: null, resultLines: null, resultWords: null,
+    startedAt: at - ago * min, endedAt: done ? at - min : null, status: "ok" as const, spawnsThreadId: child, paths: [], lines: null, web: null, resultChars: null, resultLines: null, resultWords: null,
   });
   const thread = (id: string, parentId: string | null, name: string | null = null) => ({ id, parentId, name, agentType: null, spawnedByToolCallId: null });
   const session = (threads: Session["threads"], turns: Session["turns"], calls: Session["modelCalls"], tools: Session["toolCalls"]): Session => ({
