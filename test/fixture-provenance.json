@@ -2,5 +2,5 @@
   "schema": 1,
   "provenance": "Redacted structural adapter fixtures; identifiers pseudonymized and timeline shifted to a canonical epoch. No original ID map or date anchor is retained.",
   "canonicalEpoch": "2000-01-01T12:00:00Z",
-  "fixtureFiles": 96
+  "fixtureFiles": 90
 }
