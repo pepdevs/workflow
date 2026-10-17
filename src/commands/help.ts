@@ -157,11 +157,12 @@ const HELP: Record<string, Help> = {
   subscriptions: {
     group: "Across sessions", args: "", line: "plan prices, next bills, use this period and this week",
     detail: [
-      "wf subscriptions [--history] [--weeks] [--models] [-d when] [-s points] [--root dir]",
+      "wf subscriptions [--history] [--weeks [--json]] [--models] [-d when] [-s points] [--root dir]",
       "The running plans: price in euros, next bill, API-equivalent use of this billing period,",
       "its multiplier over the price, and the current weekly window.",
       "--history  value per plan and per billing period, ended plans included",
       "--weeks    each weekly window: share used, cost and full-window value",
+      "  --json   the same windows as one JSON document, a window without a rise at 0%",
       "--models   API-equivalent cost per plan and model",
       "-d when    narrows --history, --weeks and --models: N, Nh, YYYY-MM-DD, MM-DD or a..b;",
       "           a bound may be a moment such as 2026-09-24T01:00+02:00, so",

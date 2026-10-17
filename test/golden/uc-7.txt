@@ -170,6 +170,35 @@ Example Anthropic     2002-02-16 13:00   52%            $8.6        $16.5       
 Readings: Codex logs report the share used, Claude Code logs only limit hits, and wf usage records every provider's share each time it runs.
 Use outside these logs counts toward a limit without adding cost, so the full window and its multiplier are lower bounds.
 
+$ wf subscriptions --weeks --json
+{
+  "schema": 1,
+  "range": {
+    "from": null,
+    "to": null
+  },
+  "weeks": [
+    {
+      "plan": "Example Anthropic",
+      "provider": "anthropic",
+      "start": "2002-02-16T13:00:00.000Z",
+      "resetsAt": "2002-02-23T13:00:00.000Z",
+      "lastReadingAt": "2002-02-22T03:45:00.000Z",
+      "usedPercent": 52,
+      "costUsd": 8.58
+    },
+    {
+      "plan": "Example OpenAI Basic",
+      "provider": "openai",
+      "start": "2002-02-21T15:29:12.000Z",
+      "resetsAt": "2002-02-28T15:29:22.000Z",
+      "lastReadingAt": "2002-02-24T19:00:00.000Z",
+      "usedPercent": 66,
+      "costUsd": 12.78
+    }
+  ]
+}
+
 $ wf subscriptions --models -d2002-02-23T08:00+02:00..
 Paying €96.00 a month on 5 plans, as of 2002-03-12 18:51 UTC
 Used: API-equivalent cost of the current billing period's calls. Week: share of the current weekly limit used, and when it resets (UTC).

@@ -283,6 +283,32 @@ function weekly(weeks: Sample[]): string {
   ].join("\n");
 }
 
+// Raise when a field changes meaning or goes away; consumers check it before reading.
+export const WEEKS_SCHEMA = 1;
+
+const iso = (ms: number) => (Number.isFinite(ms) ? new Date(ms).toISOString() : null);
+
+// uc-7 --weeks --json: every weekly window whose last reading falls in `when`,
+// oldest first, for Overview's quota history. A window with no rise shows 0%.
+function weeklyJson(calls: PricedCall[], windows: ReturnType<typeof limitWindows>, when: Range): string {
+  const weeks = windows
+    .filter((w) => w.readings[0].windowMinutes === WEEK_MINUTES && w.readings.at(-1)!.at >= when.from && w.readings.at(-1)!.at < when.to)
+    .map(({ sub, readings: rs }) => {
+      const [first, last] = [rs[0], rs.at(-1)!];
+      return {
+        plan: sub.name,
+        provider: first.provider,
+        start: iso(first.at),
+        resetsAt: iso(last.resetsAt),
+        lastReadingAt: iso(last.at),
+        usedPercent: Math.max(0, last.usedPercent - first.usedPercent),
+        costUsd: Math.round(costBetween(calls, sub, first.at, last.at) * 100) / 100,
+      };
+    })
+    .sort((a, b) => (a.start! < b.start! ? -1 : a.start! > b.start! ? 1 : a.plan.localeCompare(b.plan)));
+  return JSON.stringify({ schema: WEEKS_SCHEMA, range: { from: iso(when.from), to: iso(when.to) }, weeks }, null, 2);
+}
+
 // uc-7: the running plans, then the views the flags ask for. Windows count when
 // their last reading falls in `when`, and calls when they end in it. `now` is the
 // latest call or reading, so a fixed set of logs gives the same output every day.
@@ -294,6 +320,10 @@ export function subscriptionsCommand(sessions: Session[], when: Range, recorded:
   }
   const calls = pricedCalls(sessions);
   const windows = limitWindows(sessions, recorded);
+  if (flags.json !== undefined) {
+    if (flags.weeks === undefined || flags.history !== undefined || flags.models !== undefined) throw new Error("subscriptions: --json goes with --weeks alone");
+    return weeklyJson(calls, windows, when);
+  }
   const now = Math.max(calls.at(-1)?.at ?? 0, ...windows.map((w) => w.readings.at(-1)!.at));
   const weeks = windowSamples(sessions, recorded).filter((x) => x.windowMinutes === WEEK_MINUTES && x.at >= when.from && x.at < when.to);
   const parts = [overview(calls, windows, now)];
