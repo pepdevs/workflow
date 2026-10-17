@@ -290,9 +290,16 @@ const iso = (ms: number) => (Number.isFinite(ms) ? new Date(ms).toISOString() : 
 
 // uc-7 --weeks --json: every weekly window whose last reading falls in `when`,
 // oldest first, for Overview's quota history. A window with no rise shows 0%.
+// A provider that has not started an idle window reports its reset a week after
+// each reading, so a window at 0% that a later one replaced before its reset never started.
 function weeklyJson(calls: PricedCall[], windows: ReturnType<typeof limitWindows>, when: Range): string {
-  const weeks = windows
-    .filter((w) => w.readings[0].windowMinutes === WEEK_MINUTES && w.readings.at(-1)!.at >= when.from && w.readings.at(-1)!.at < when.to)
+  const weekly = windows.filter((w) => w.readings[0].windowMinutes === WEEK_MINUTES);
+  const startOf = (w: (typeof weekly)[number]) => w.readings[0].at;
+  const rose = (w: (typeof weekly)[number]) => w.readings.at(-1)!.usedPercent > w.readings[0].usedPercent;
+  const replaced = (w: (typeof weekly)[number]) => weekly.some((o) => o.sub === w.sub && startOf(o) > startOf(w) && startOf(o) < w.readings.at(-1)!.resetsAt);
+  const weeks = weekly
+    .filter((w) => rose(w) || !replaced(w))
+    .filter((w) => w.readings.at(-1)!.at >= when.from && w.readings.at(-1)!.at < when.to)
     .map(({ sub, readings: rs }) => {
       const [first, last] = [rs[0], rs.at(-1)!];
       return {
