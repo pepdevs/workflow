@@ -88,6 +88,31 @@
       "mode": "0644"
     },
     {
+      "path": "docs/images/cost.svg",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "docs/images/plan.svg",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "docs/images/route.svg",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "docs/images/status.svg",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "docs/install.md",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
       "path": "docs/public-export.md",
       "origin": "public",
       "mode": "0644"
@@ -156,6 +181,11 @@
     },
     {
       "path": "scripts/setup.ts",
+      "origin": "public",
+      "mode": "0644"
+    },
+    {
+      "path": "scripts/showcase.ts",
       "origin": "public",
       "mode": "0644"
     },

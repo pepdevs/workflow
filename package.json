@@ -10,7 +10,8 @@
     "check": "node scripts/check.ts",
     "check:real": "node src/cli.ts archive && node src/check.ts",
     "fixtures": "node scripts/fixtures.ts",
-    "golden:update": "WORKFLOW_GOLDEN_UPDATE=1 node --import ./scripts/test-config.ts --test test/golden.test.ts"
+    "golden:update": "WORKFLOW_GOLDEN_UPDATE=1 node --import ./scripts/test-config.ts --test test/golden.test.ts",
+    "showcase": "node --import ./scripts/test-config.ts scripts/showcase.ts"
   },
   "devDependencies": {
     "@types/node": "^26.6.2",

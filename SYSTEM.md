@@ -28,10 +28,11 @@ session and billing reports, and launches or stops supported agent sessions.
 | `scripts/fixtures.ts`, `scripts/repo-fixture.ts` | Explicit source-map cutting and synthetic Git bundle generation |
 | `scripts/pseudonymize-fixtures.py`, `scripts/compare-fixtures.ts` | Fixture privacy transformation and parsed-model equivalence proof |
 | `scripts/bench-repo.ts` | Optional Git-tree read benchmark |
+| `scripts/showcase.ts` | README images: real commands over an invented scene, written to `docs/images/` |
 | `scripts/export-public.py`, `scripts/public-check.py` | Reviewed export reproduction and public-boundary audit |
 | `export-allowlist.json` | Approved files, source checksums, modes, and binary fingerprints |
 | `.githooks/pre-push`, `.gitattributes`, `.gitignore` | Local checks, line endings, generated-file exclusions |
-| `docs/` | Settled use cases, local configuration, fixture and export procedures |
+| `docs/` | Settled use cases, install and local configuration, fixture and export procedures, README images |
 | `README.md`, `SYSTEM.md`, `AGENTS.md`, `CLAUDE.md` | Usage, layout, rules, and host instruction pointer |
 | `package.json`, `package-lock.json`, `tsconfig.json` | Runtime/dependency declarations and static checking |
 | `LICENSE` | MIT terms for authored material |

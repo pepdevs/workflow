@@ -1,104 +1,59 @@
 # Workflow
 
-Workflow is a local CLI, `wf`, for agent sessions. It reads Codex, Claude Code, Pi, Grok Build,
-OpenCode, and GitHub Copilot logs into one session model: threads, turns, model calls, tool calls,
-skills, incidents, costs, and optional outcome links. It can launch, inspect, and stop supported
-agent sessions. Copilot sessions are read only.
+`wf` reads the logs of six coding agents into one session model: Codex, Claude Code, Pi, Grok Build,
+OpenCode and GitHub Copilot. It shows what is running, what it cost and which model to use next. It
+launches and stops sessions in every harness except Copilot.
+
+![wf status: five sessions in four harnesses, one stuck on a repeated command](docs/images/status.svg)
+
+`wf status` lists live sessions with the sessions an orchestrator launched indented under it. A
+session is stuck after 10 minutes without an event or 30 minutes in one tool. A flag names the
+pattern.
+
+## Ask it
+
+**What did plan 12 cost?** Every launched session carries its skill and plan.
+
+![wf plan 12: cost by skill and by session](docs/images/plan.svg)
+
+**Where did the money go?**
+
+![wf cost: one root turn split by token type](docs/images/cost.svg)
+
+**Which model should build next?** Your preferred list sets the order. Exhausted plans and the model
+that wrote the work move to the bottom. The last line is the command that launches the first route.
+
+![wf route implement: seven routes ranked, two limited](docs/images/route.svg)
+
+The images are real `wf` output over invented sessions. `npm run showcase` regenerates them.
+
+## How it works
+
+```mermaid
+flowchart LR
+  logs["Agent logs<br/>Codex, Claude Code, Pi,<br/>Grok Build, OpenCode, Copilot"] --> model["One session model<br/>threads, turns, model calls,<br/>tool calls, costs"]
+  model --> read["Read<br/>status, cost, plan"]
+  model --> choose["Choose<br/>route, models, usage"]
+  providers["Provider usage<br/>and GitHub reviews"] --> choose
+  choose --> act["Act<br/>run, stop"]
+```
 
 ## Install
 
-Use Node.js 24 or newer, npm, and Git:
-
 ```sh
-git clone https://github.com/pepdevs/workflow.git
-cd workflow
-npm ci
-npm run setup
+git clone https://github.com/pepdevs/workflow.git && cd workflow
+npm ci && npm run setup
 wf help
 ```
 
-`setup` links the checkout's executable into `~/.local/bin` and enables the checkout's pre-push
-check. Add that directory to `PATH`. The link follows this checkout, so keep it after installation.
-To choose a different writable bin directory:
+Node.js 24 or newer. [Install and configure](docs/install.md) covers local catalogs, storage and
+checks.
 
-```sh
-npm run setup -- --bin-dir /path/to/bin
-```
+## More
 
-Setup refuses to overwrite a regular file. Repeating it keeps the same link. The repository is
-published on GitHub; the package remains protected from accidental npm publication.
+- [Use cases](docs/use-cases.md): each question, the command that answers it, and its output.
+- [Configuration](docs/configuration.md): prices, plans, routes and repositories.
+- [Fixtures](docs/fixtures.md): how the test logs were redacted.
+- [SYSTEM.md](SYSTEM.md) maps the code. [AGENTS.md](AGENTS.md) holds the editing rules.
 
-## Configure local facts
-
-Bundled defaults contain public model prices, thresholds, empty subscriptions and repository
-mappings, and empty preferred route lists. The CLI reads optional whole-file overrides from:
-
-1. `WORKFLOW_CONFIG_DIR`, when explicitly set;
-2. `$XDG_CONFIG_HOME/workflow`, when XDG_CONFIG_HOME is set;
-3. `~/.config/workflow` otherwise.
-
-Create only the JSON files you want to override. An absent file uses its bundled counterpart in
-`data/`. An invalid explicit directory or malformed JSON fails visibly. Keep account billing dates,
-local clones, path aliases, and personal routing choices in this local directory.
-See [configuration](docs/configuration.md) for the six catalog shapes and examples.
-
-`wf help` lists commands; `wf help <command>` shows its flags. Examples:
-
-```sh
-wf ls
-wf summary <session-prefix>
-wf status
-wf repo .
-wf route implement
-wf run codex <model> -i task.md -k implement
-```
-
-Session reads use each harness's native log locations. `--root <directory>` selects an explicit log
-root instead. The [use cases](docs/use-cases.md) pair operator questions with commands and their
-fixture output.
-
-`wf usage` reads provider usage through credentials already held by the supported harnesses.
-`wf route` can read provider headroom, and `wf models -k implement` can read GitHub evaluations
-through authenticated `gh`. These commands need the corresponding local clients and logins.
-`wf run` requires the chosen agent CLI and installed skills; it starts a fresh headless session.
-Write mode follows the selected harness's permission behavior. Copilot has no launch adapter.
-
-## Local storage
-
-`wf usage` and `wf route` append changed provider readings to
-`~/.local/share/workflow/usage-readings.jsonl`. `WORKFLOW_READINGS` overrides that path.
-`wf subscriptions` derives billing and usage comparisons from the local catalogs, session logs,
-and readings. Billing displays euros using the configured exchange rate; token costs stay in USD.
-
-`wf archive` copies supported harness logs into `~/.local/share/workflow/archive/`.
-`WORKFLOW_ARCHIVE` overrides the archive directory. It keeps new or grown logs and preserves a
-shrunk live file beside the older archive. Loaders combine live and archived logs, with live copies
-winning. OpenCode's database is read directly and is not archived.
-No background service is installed by this repository. Schedule an explicit command through your
-own operating-system service configuration when needed.
-
-## Verify and develop
-
-```sh
-npm run check
-npm run golden:update
-```
-
-`check` runs the public file audit, type checks, and the adapter, table, guard, and golden fixtures.
-Tests force `test/config/` so they never consume your local catalogs. The fixture suite reads no
-live logs, launches no model, and makes no credentialed provider calls. Python 3.10 or newer is
-required for the public audit. The pre-push hook runs the same check.
-
-`npm run check:real` archives and loads your real local sessions. It can read gigabytes and writes
-the archive; run it deliberately after adapter or catalog changes. Keep its detailed session
-output private. A completed run can report incomplete records and unknown prices; those diagnostics
-are separate from loader failures.
-
-[Fixture documentation](docs/fixtures.md) explains the explicit source map, redaction,
-pseudonymization, shifted timeline, and semantic comparison. [Public export](docs/public-export.md)
-explains the approved allowlist and reproduction command. [SYSTEM.md](SYSTEM.md) maps the code;
-[AGENTS.md](AGENTS.md) defines editing rules.
-
-## License
-
-[MIT](LICENSE). Dependencies retain their own package licenses through npm.
+[MIT](LICENSE)

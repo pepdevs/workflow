@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="809" height="351" viewBox="0 0 809 351" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14">
+<rect width="809" height="351" rx="10" fill="#0d1117"/>
+<rect width="809" height="34" rx="10" fill="#161b22"/><rect y="24" width="809" height="10" fill="#161b22"/>
+<circle cx="20" cy="17" r="6" fill="#ff5f56"/><circle cx="40" cy="17" r="6" fill="#ffbd2e"/><circle cx="60" cy="17" r="6" fill="#27c93f"/>
+<text x="18" y="64" fill="#7ee787" xml:space="preserve">$ wf cost a7f3</text>
+<text x="18" y="83" fill="#e6edf3" xml:space="preserve">Cost by root turn (subagent calls included in the turn that spawned them)</text>
+<text x="18" y="102" fill="#e6edf3" xml:space="preserve"></text>
+<text x="18" y="121" fill="#8b949e" xml:space="preserve">#  start  calls  input  cache read  cache write  output  reasoning  turn cost  running total</text>
+<text x="18" y="140" fill="#484f58" xml:space="preserve">-  -----  -----  -----  ----------  -----------  ------  ---------  ---------  -------------</text>
+<text x="18" y="159" fill="#e6edf3" xml:space="preserve">1  08:58     29    58k        3.0M         116k     44k          0       $3.6           $3.6</text>
+<text x="18" y="178" fill="#e6edf3" xml:space="preserve"></text>
+<text x="18" y="197" fill="#e6edf3" xml:space="preserve">Where the money went</text>
+<text x="18" y="216" fill="#e6edf3" xml:space="preserve"></text>
+<text x="18" y="235" fill="#8b949e" xml:space="preserve">token type      cost  share</text>
+<text x="18" y="254" fill="#484f58" xml:space="preserve">--------------  ----  -----</text>
+<text x="18" y="273" fill="#e6edf3" xml:space="preserve">uncached input  $0.3     8%</text>
+<text x="18" y="292" fill="#e6edf3" xml:space="preserve">cache read      $1.5    41%</text>
+<text x="18" y="311" fill="#e6edf3" xml:space="preserve">cache write     $0.7    20%</text>
+<text x="18" y="330" fill="#e6edf3" xml:space="preserve">output          $1.1    30%</text>
+</svg>

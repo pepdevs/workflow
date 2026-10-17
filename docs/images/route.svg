@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1313" height="332" viewBox="0 0 1313 332" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14">
+<rect width="1313" height="332" rx="10" fill="#0d1117"/>
+<rect width="1313" height="34" rx="10" fill="#161b22"/><rect y="24" width="1313" height="10" fill="#161b22"/>
+<circle cx="20" cy="17" r="6" fill="#ff5f56"/><circle cx="40" cy="17" r="6" fill="#ffbd2e"/><circle cx="60" cy="17" r="6" fill="#27c93f"/>
+<text x="18" y="64" fill="#7ee787" xml:space="preserve">$ wf route implement -x claude-opus-5</text>
+<text x="18" y="83" fill="#e6edf3" xml:space="preserve">Routes for implement, judged against claude-opus-5. Best first.</text>
+<text x="18" y="102" fill="#e6edf3" xml:space="preserve"></text>
+<text x="18" y="121" fill="#8b949e" xml:space="preserve">#  harness   model                          list  plan                  headroom                                                   independence    calls</text>
+<text x="18" y="140" fill="#484f58" xml:space="preserve">-  --------  -----------------------------  ----  --------------------  ---------------------------------------------------------  --------------  -----</text>
+<text x="18" y="159" fill="#e6edf3" xml:space="preserve">1  codex     gpt-6.1-sol                       1  Example OpenAI Basic  48% used (logs), pace unknown                              cross family       13</text>
+<text x="18" y="178" fill="#e6edf3" xml:space="preserve">2  pi        xai/grok-4.6                      2  Example Xai           12% used (logs), pace unknown                              cross family        0</text>
+<text x="18" y="197" fill="#e6edf3" xml:space="preserve">3  grok      grok-4.6                          3  Example Xai           12% used (logs), pace unknown                              cross family       13</text>
+<text x="18" y="216" fill="#e6edf3" xml:space="preserve">4  claude    claude-sonnet-5-5                 4  Example Anthropic     71% used (logs), pace unknown                              distinct model      0</text>
+<text x="18" y="235" fill="#e6edf3" xml:space="preserve">5  claude    claude-opus-5                     -  Example Anthropic     71% used (logs), pace unknown                              same model         29</text>
+<text x="18" y="254" fill="#e6edf3" xml:space="preserve">6  opencode  zai-coding-plan/glm-5.3-flash     -  Example Zai Basic     limited until 03-02 11:40; 100% used (logs), pace unknown  cross family        9</text>
+<text x="18" y="273" fill="#e6edf3" xml:space="preserve">7  pi        zai/glm-5.3                       -  Example Zai Basic     limited until 03-02 11:40; 100% used (logs), pace unknown  cross family        5</text>
+<text x="18" y="292" fill="#e6edf3" xml:space="preserve"></text>
+<text x="18" y="311" fill="#e6edf3" xml:space="preserve">wf run codex gpt-6.1-sol -i &lt;task file&gt; -k implement</text>
+</svg>

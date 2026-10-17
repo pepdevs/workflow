@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="427" viewBox="0 0 700 427" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14">
+<rect width="700" height="427" rx="10" fill="#0d1117"/>
+<rect width="700" height="34" rx="10" fill="#161b22"/><rect y="24" width="700" height="10" fill="#161b22"/>
+<circle cx="20" cy="17" r="6" fill="#ff5f56"/><circle cx="40" cy="17" r="6" fill="#ffbd2e"/><circle cx="60" cy="17" r="6" fill="#27c93f"/>
+<text x="18" y="64" fill="#7ee787" xml:space="preserve">$ wf plan 12</text>
+<text x="18" y="83" fill="#e6edf3" xml:space="preserve">Plan acme/api#12: 3 sessions, $0.6.</text>
+<text x="18" y="102" fill="#e6edf3" xml:space="preserve"></text>
+<text x="18" y="121" fill="#8b949e" xml:space="preserve">skill      sessions   cost</text>
+<text x="18" y="140" fill="#484f58" xml:space="preserve">---------  --------  -----</text>
+<text x="18" y="159" fill="#e6edf3" xml:space="preserve">critique          1   $0.5</text>
+<text x="18" y="178" fill="#e6edf3" xml:space="preserve">implement         1   $0.1</text>
+<text x="18" y="197" fill="#e6edf3" xml:space="preserve">research          1  &lt;$0.1</text>
+<text x="18" y="216" fill="#e6edf3" xml:space="preserve"></text>
+<text x="18" y="235" fill="#8b949e" xml:space="preserve">session   skill      harness   model           cost     time  pull request</text>
+<text x="18" y="254" fill="#484f58" xml:space="preserve">--------  ---------  --------  -------------  -----  -------  ------------</text>
+<text x="18" y="273" fill="#e6edf3" xml:space="preserve">019a6e2b  critique   codex     gpt-6.1-sol     $0.5  0:26:00  -</text>
+<text x="18" y="292" fill="#e6edf3" xml:space="preserve">019a6e9f  implement  pi        glm-5.3         $0.1  0:04:00  -</text>
+<text x="18" y="311" fill="#e6edf3" xml:space="preserve">ses_4f2a  research   opencode  glm-5.3-flash  &lt;$0.1  0:18:00  -</text>
+<text x="18" y="330" fill="#e6edf3" xml:space="preserve"></text>
+<text x="18" y="349" fill="#e6edf3" xml:space="preserve">Launched from, not counted: the whole session, including work outside the plan.</text>
+<text x="18" y="368" fill="#8b949e" xml:space="preserve">session   skill         harness  model          cost     time  pull request</text>
+<text x="18" y="387" fill="#484f58" xml:space="preserve">--------  ------------  -------  -------------  ----  -------  ------------</text>
+<text x="18" y="406" fill="#e6edf3" xml:space="preserve">a7f3c2d1  orchestrator  claude   claude-opus-5  $3.6  1:26:00  -</text>
+</svg>
