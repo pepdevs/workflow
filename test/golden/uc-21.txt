@@ -17,12 +17,24 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "claude-opus-5",
       "costUsd": 10.4857,
       "unpricedCalls": 0,
+      "branches": [
+        "main",
+        "<text>"
+      ],
+      "flags": [
+        {
+          "kind": "repeated command",
+          "at": "2002-02-22T01:22:08.070Z",
+          "detail": "same command ×4: git ..."
+        }
+      ],
       "prompts": [
         {
           "turn": "7f77cde7-dfef-41fd-aa9b-93a5d1cca26f",
           "at": "2002-02-22T01:20:51.123Z",
           "model": "claude-opus-5",
           "outcome": "interrupted",
+          "endedAt": "2002-02-22T03:54:31.766Z",
           "costUsd": 9.2894,
           "unpricedCalls": 0,
           "launch": false,
@@ -33,6 +45,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-22T03:54:42.931Z",
           "model": "claude-opus-5",
           "outcome": "completed",
+          "endedAt": "2002-02-22T03:56:05.151Z",
           "costUsd": 1.1963,
           "unpricedCalls": 0,
           "launch": false,
@@ -51,12 +64,21 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "grok-4.6",
       "costUsd": 79.5603,
       "unpricedCalls": 0,
+      "branches": [],
+      "flags": [
+        {
+          "kind": "repeated command",
+          "at": "2002-02-23T16:03:04.222Z",
+          "detail": "same command ×4: git ..."
+        }
+      ],
       "prompts": [
         {
           "turn": "fixture-a33254bd3946:0",
           "at": "2002-02-23T15:53:30.674Z",
           "model": "grok-4.6",
           "outcome": "completed",
+          "endedAt": "2002-02-23T15:56:03.621Z",
           "costUsd": 0.3341,
           "unpricedCalls": 0,
           "launch": false,
@@ -67,6 +89,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-23T15:57:52.151Z",
           "model": "grok-4.6",
           "outcome": "completed",
+          "endedAt": "2002-02-23T15:57:59.291Z",
           "costUsd": 0.0377,
           "unpricedCalls": 0,
           "launch": false,
@@ -77,6 +100,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-23T15:58:17.708Z",
           "model": "grok-4.6",
           "outcome": "error",
+          "endedAt": "2002-02-23T20:51:11.972Z",
           "costUsd": 74.5149,
           "unpricedCalls": 0,
           "launch": false,
@@ -87,6 +111,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-23T20:51:11.997Z",
           "model": "grok-4.6",
           "outcome": "error",
+          "endedAt": "2002-02-23T20:51:12.585Z",
           "costUsd": null,
           "unpricedCalls": 0,
           "launch": false,
@@ -97,6 +122,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-25T00:53:00.514Z",
           "model": "grok-4.6",
           "outcome": "completed",
+          "endedAt": "2002-02-25T00:56:05.447Z",
           "costUsd": 2.0389,
           "unpricedCalls": 0,
           "launch": false,
@@ -107,6 +133,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-25T01:00:21.849Z",
           "model": "grok-4.6",
           "outcome": "completed",
+          "endedAt": "2002-02-25T01:00:26.654Z",
           "costUsd": 0.2237,
           "unpricedCalls": 0,
           "launch": false,
@@ -117,6 +144,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-25T01:02:11.738Z",
           "model": "grok-4.6",
           "outcome": "completed",
+          "endedAt": "2002-02-25T01:02:39.000Z",
           "costUsd": 0.4671,
           "unpricedCalls": 0,
           "launch": false,
@@ -127,6 +155,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-25T01:04:05.165Z",
           "model": "grok-4.6",
           "outcome": "completed",
+          "endedAt": "2002-02-25T01:05:16.533Z",
           "costUsd": 0.9888,
           "unpricedCalls": 0,
           "launch": false,
@@ -137,6 +166,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-25T01:05:20.584Z",
           "model": "grok-4.6",
           "outcome": "completed",
+          "endedAt": "2002-02-25T01:05:58.112Z",
           "costUsd": 0.9551,
           "unpricedCalls": 0,
           "launch": false,
@@ -155,12 +185,23 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "gpt-5.6-sol",
       "costUsd": 12.7789,
       "unpricedCalls": 0,
+      "branches": [
+        "main"
+      ],
+      "flags": [
+        {
+          "kind": "repeated command",
+          "at": "2002-02-24T16:52:08.409Z",
+          "detail": "same command ×4: sed ..."
+        }
+      ],
       "prompts": [
         {
           "turn": "1d40a172-1858-4ac3-a6ba-ebe92aeb27a0",
           "at": "2002-02-24T16:50:06.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "interrupted",
+          "endedAt": "2002-02-24T16:50:19.000Z",
           "costUsd": 0.0521,
           "unpricedCalls": 0,
           "launch": false,
@@ -171,6 +212,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T16:51:12.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T16:52:55.000Z",
           "costUsd": 0.6178,
           "unpricedCalls": 0,
           "launch": false,
@@ -181,6 +223,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T16:57:28.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T16:57:38.000Z",
           "costUsd": 0.0504,
           "unpricedCalls": 0,
           "launch": false,
@@ -191,6 +234,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T16:59:00.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T17:00:01.000Z",
           "costUsd": 0.3346,
           "unpricedCalls": 0,
           "launch": false,
@@ -201,6 +245,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T17:02:25.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T17:02:57.000Z",
           "costUsd": 0.2942,
           "unpricedCalls": 0,
           "launch": false,
@@ -211,6 +256,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T17:05:47.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T17:06:14.000Z",
           "costUsd": 0.1593,
           "unpricedCalls": 0,
           "launch": false,
@@ -221,6 +267,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T17:08:39.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T17:33:20.000Z",
           "costUsd": 4.4476,
           "unpricedCalls": 0,
           "launch": false,
@@ -231,6 +278,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T17:35:41.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T17:53:21.000Z",
           "costUsd": 3.0955,
           "unpricedCalls": 0,
           "launch": false,
@@ -241,6 +289,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T17:59:07.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T18:02:18.000Z",
           "costUsd": 1.456,
           "unpricedCalls": 0,
           "launch": false,
@@ -251,6 +300,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T18:04:56.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T18:05:55.000Z",
           "costUsd": 0.7402,
           "unpricedCalls": 0,
           "launch": false,
@@ -261,6 +311,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-02-24T18:28:59.000Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-02-24T18:32:12.000Z",
           "costUsd": 1.5311,
           "unpricedCalls": 0,
           "launch": false,
@@ -279,12 +330,21 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "glm-5.3-flash",
       "costUsd": 0.2926,
       "unpricedCalls": 96,
+      "branches": [],
+      "flags": [
+        {
+          "kind": "repeated command",
+          "at": "2002-03-04T02:10:10.670Z",
+          "detail": "same command ×4: node ..."
+        }
+      ],
       "prompts": [
         {
           "turn": "msg_c06018a7b4c5ccc95341cfd06a",
           "at": "2002-03-02T16:34:16.094Z",
           "model": "stealth/union-alpha",
           "outcome": "completed",
+          "endedAt": "2002-03-02T16:40:42.799Z",
           "costUsd": 0,
           "unpricedCalls": 19,
           "launch": false,
@@ -295,6 +355,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T16:44:44.086Z",
           "model": "stealth/union-alpha",
           "outcome": "interrupted",
+          "endedAt": "2002-03-02T16:48:53.865Z",
           "costUsd": 0,
           "unpricedCalls": 0,
           "launch": false,
@@ -305,6 +366,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T16:48:58.217Z",
           "model": "glm-5.3-flash",
           "outcome": "completed",
+          "endedAt": "2002-03-02T17:17:45.778Z",
           "costUsd": 0.0366,
           "unpricedCalls": 0,
           "launch": false,
@@ -315,6 +377,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T17:17:54.732Z",
           "model": "glm-5.3-flash",
           "outcome": "completed",
+          "endedAt": "2002-03-02T17:18:55.749Z",
           "costUsd": 0.0104,
           "unpricedCalls": 0,
           "launch": false,
@@ -325,6 +388,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T17:18:34.656Z",
           "model": "glm-5.3-flash",
           "outcome": "completed",
+          "endedAt": "2002-03-02T17:20:05.170Z",
           "costUsd": 0.0094,
           "unpricedCalls": 0,
           "launch": false,
@@ -335,6 +399,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T17:21:54.746Z",
           "model": "glm-5.3-flash",
           "outcome": "completed",
+          "endedAt": "2002-03-02T17:24:16.645Z",
           "costUsd": 0.011,
           "unpricedCalls": 0,
           "launch": false,
@@ -345,6 +410,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T17:24:19.512Z",
           "model": "glm-5.3-flash",
           "outcome": "completed",
+          "endedAt": "2002-03-02T17:25:01.890Z",
           "costUsd": 0.009,
           "unpricedCalls": 0,
           "launch": false,
@@ -355,6 +421,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T17:25:56.444Z",
           "model": "glm-5.3-flash",
           "outcome": "unknown",
+          "endedAt": "2002-03-02T17:27:31.542Z",
           "costUsd": 0.0106,
           "unpricedCalls": 0,
           "launch": false,
@@ -365,6 +432,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T17:26:48.297Z",
           "model": "glm-5.3-flash",
           "outcome": "completed",
+          "endedAt": "2002-03-02T17:28:11.244Z",
           "costUsd": 0.0101,
           "unpricedCalls": 0,
           "launch": false,
@@ -375,6 +443,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T23:29:19.720Z",
           "model": "stealth/union-alpha",
           "outcome": "completed",
+          "endedAt": "2002-03-02T23:35:42.449Z",
           "costUsd": 0,
           "unpricedCalls": 21,
           "launch": false,
@@ -385,6 +454,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-02T23:37:03.491Z",
           "model": "stealth/union-alpha",
           "outcome": "completed",
+          "endedAt": "2002-03-02T23:42:07.032Z",
           "costUsd": 0,
           "unpricedCalls": 17,
           "launch": false,
@@ -395,6 +465,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-03T00:44:16.907Z",
           "model": "stealth/union-alpha",
           "outcome": "completed",
+          "endedAt": "2002-03-03T00:46:21.219Z",
           "costUsd": 0,
           "unpricedCalls": 12,
           "launch": false,
@@ -405,6 +476,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-03T01:04:21.084Z",
           "model": "stealth/union-alpha",
           "outcome": "error",
+          "endedAt": "2002-03-03T15:20:02.670Z",
           "costUsd": 0,
           "unpricedCalls": 27,
           "launch": false,
@@ -415,6 +487,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-03T15:20:20.963Z",
           "model": "glm-5.3-flash",
           "outcome": "completed",
+          "endedAt": "2002-03-04T02:27:08.287Z",
           "costUsd": 0.1956,
           "unpricedCalls": 0,
           "launch": false,
@@ -433,12 +506,23 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "gpt-5.6-sol",
       "costUsd": 6.4488,
       "unpricedCalls": 0,
+      "branches": [
+        "<text>"
+      ],
+      "flags": [
+        {
+          "kind": "repeated command",
+          "at": "2002-03-02T17:16:32.602Z",
+          "detail": "same command ×4: gh ..."
+        }
+      ],
       "prompts": [
         {
           "turn": "4d166ad3-693e-447c-ad81-542d2a80b5fc",
           "at": "2002-03-02T17:15:28.052Z",
           "model": "gpt-5.6-sol",
           "outcome": "completed",
+          "endedAt": "2002-03-02T19:32:46.042Z",
           "costUsd": 6.4488,
           "unpricedCalls": 0,
           "launch": false,
@@ -457,12 +541,21 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "glm-5.3-flash",
       "costUsd": 0.0185,
       "unpricedCalls": 0,
+      "branches": [],
+      "flags": [
+        {
+          "kind": "repeated command",
+          "at": "2002-03-06T16:46:24.876Z",
+          "detail": "same command ×4: git ..."
+        }
+      ],
       "prompts": [
         {
           "turn": "d94edb41",
           "at": "2002-03-06T16:44:57.313Z",
           "model": "glm-5.3-flash",
           "outcome": "completed",
+          "endedAt": "2002-03-06T16:46:42.622Z",
           "costUsd": 0.0109,
           "unpricedCalls": 0,
           "launch": false,
@@ -473,6 +566,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
           "at": "2002-03-06T16:46:50.391Z",
           "model": "glm-5.3-flash",
           "outcome": "completed",
+          "endedAt": "2002-03-06T16:47:44.766Z",
           "costUsd": 0.0076,
           "unpricedCalls": 0,
           "launch": false,
@@ -491,12 +585,15 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "grok-4.7",
       "costUsd": 0.0347,
       "unpricedCalls": 0,
+      "branches": [],
+      "flags": [],
       "prompts": [
         {
           "turn": "fixture-da1dfc3f5e31:0",
           "at": "2002-03-12T18:50:57.804Z",
           "model": "grok-4.7",
           "outcome": "completed",
+          "endedAt": "2002-03-12T18:51:02.745Z",
           "costUsd": 0.0347,
           "unpricedCalls": 0,
           "launch": true,

@@ -19,7 +19,7 @@
     "window": "a session is listed when it had an event this recently",
     "quiet": "an open turn with no event for this long is stuck",
     "tool": "a shell or other tool running this long is stuck",
-    "repeat": "the same shell command this often among the hour's last 20 tool calls",
+    "repeat": "the same shell command this often among the hour's last 20 tool calls; a bare sleep does not count",
     "failed": "failed tool calls among the hour's last 10",
     "costPerHourUsd": "API-equivalent cost in the last hour",
     "compactions": "compactions in the last hour"

@@ -1,10 +1,11 @@
 // uc-20: agent sessions per day as JSON, for tools such as Career that keep the evidence.
 // uc-21: the prompts of those sessions as JSON, for Overview.
 import { type Session, type Turn, UNNAMED_MODELS } from "../model.ts";
-import { callCost, launchOf, modelCounts, primaryModel, rootThread, rootTurnCalls, rootTurns, sum, turnCalls } from "../facts.ts";
+import { branchesOf, callCost, launchOf, modelCounts, primaryModel, rootThread, rootTurnCalls, rootTurns, sum, turnCalls } from "../facts.ts";
 import { ProvenanceCall } from "../repos/provenance.ts";
 import { ADAPTER_OF, type Range, loadAll, parseWhen } from "./find.ts";
 import { day } from "./format.ts";
+import { toolFlagHistory } from "./status.ts";
 
 // Raise when a field changes meaning or goes away; consumers check it before reading.
 export const EXPORT_SCHEMA = 2;
@@ -110,6 +111,8 @@ export type PromptRow = {
   at: string;
   model: string | null;
   outcome: Turn["outcome"];
+  // When the turn ended; null while it is open.
+  endedAt: string | null;
   // The priced calls of the turn and the subagents it spawned; null when the
   // harness logged no usage for the turn.
   costUsd: number | null;
@@ -131,6 +134,10 @@ export type PromptSession = {
   // The priced calls; unpricedCalls counts the others, as unpricedRows in wf export.
   costUsd: number;
   unpricedCalls: number;
+  // The branches its logs name, in order of first appearance.
+  branches: string[];
+  // The first time each repeated-command and failed-tool flag of wf status fired.
+  flags: { kind: string; at: string; detail: string }[];
   prompts: PromptRow[];
 };
 
@@ -177,6 +184,8 @@ export function promptsCommand(flags: Record<string, string>, base: string | und
       skill: launch?.skill ?? (launchers.has(session) ? "orchestrator" : null),
       model: mainModel(s),
       ...costOf(s.modelCalls),
+      branches: branchesOf(s),
+      flags: toolFlagHistory(s).map((f) => ({ kind: f.kind, at: new Date(f.at).toISOString(), detail: f.detail })),
       prompts: turns.flatMap((t, i) => {
         if (t.trigger !== "prompt") return [];
         const calls = owned.get(t.id)!;
@@ -185,6 +194,7 @@ export function promptsCommand(flags: Record<string, string>, base: string | und
           at: new Date(t.startedAt).toISOString(),
           model: turnModel(s, t),
           outcome: t.outcome,
+          endedAt: t.endedAt === null ? null : new Date(t.endedAt).toISOString(),
           ...(calls.length === 0 && USAGE_APART.has(s.harness) ? { costUsd: null, unpricedCalls: 0 } : costOf(calls)),
           launch: i === 0 && launch !== null,
           text: t.promptText,

@@ -144,6 +144,9 @@ export type Session = {
   cwd: string | null;
   // repository is the remote URL or owner/name a harness logs at start, when it logs one.
   startGit?: { commit?: string; branch?: string; repository?: string; at: number };
+  // Every branch the root thread's records name, in order of first appearance,
+  // for a harness that logs the branch on each record.
+  branches?: string[];
   harnessVersion: string | null;
   threads: Thread[];
   turns: Turn[];

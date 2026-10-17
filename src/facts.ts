@@ -83,6 +83,11 @@ export function rootTurnCalls(s: Session): Map<string, ModelCall[]> {
 
 export const rootThread = (s: Session) => s.threads.find((t) => t.parentId === null)!.id;
 
+// The branches a session's logs name: each record's branch where the harness logs
+// one per record, otherwise the branch at start. HEAD names no branch.
+export const branchesOf = (s: Session): string[] =>
+  (s.branches?.length ? s.branches : s.startGit?.branch ? [s.startGit.branch] : []).filter((b) => b !== "HEAD");
+
 export const rootTurns = (s: Session) =>
   s.turns.filter((t) => t.threadId === rootThread(s)).sort((a, b) => a.startedAt - b.startedAt);
 

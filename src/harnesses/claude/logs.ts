@@ -103,6 +103,11 @@ export function loadClaude(idOrPath: string, roots = claudeRoots(), { counts = f
       if (!isSubagent && !session.startGit && at !== null) {
         session.startGit = { ...(typeof r.gitBranch === "string" ? { branch: r.gitBranch } : {}), at };
       }
+      // A detached worktree logs HEAD, which names no branch.
+      if (!isSubagent && typeof r.gitBranch === "string" && r.gitBranch && r.gitBranch !== "HEAD") {
+        session.branches ??= [];
+        if (!session.branches.includes(r.gitBranch)) session.branches.push(r.gitBranch);
+      }
       if (r.type === "ai-title" && !session.title) session.title = r.aiTitle;
       if (r.type === "custom-title") session.title = r.customTitle;
       if (r.type === "cost-state" && !isSubagent) session.reportedCostUsd = r.totalCostUSD;

@@ -181,7 +181,7 @@ export function loadCodex(idOrPath: string, roots = codexRoots(), { counts = fal
   const metas = new Map(threadFiles.map((f) => [f, firstMeta(f)]));
   const session = emptySession("codex", rootMeta.id);
   session.cwd = rootMeta.cwd ?? null;
-  session.startGit = { ...(typeof rootMeta.git?.commit_hash === "string" ? { commit: rootMeta.git.commit_hash } : {}), ...(typeof rootMeta.git?.repository_url === "string" ? { repository: rootMeta.git.repository_url } : {}), at: Date.parse(rootMeta.timestamp) };
+  session.startGit = { ...(typeof rootMeta.git?.commit_hash === "string" ? { commit: rootMeta.git.commit_hash } : {}), ...(typeof rootMeta.git?.branch === "string" ? { branch: rootMeta.git.branch } : {}), ...(typeof rootMeta.git?.repository_url === "string" ? { repository: rootMeta.git.repository_url } : {}), at: Date.parse(rootMeta.timestamp) };
   session.harnessVersion = rootMeta.cli_version ?? null;
 
   const threadByAgentPath = new Map<string, string>();
