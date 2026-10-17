@@ -26,8 +26,6 @@ With `--size`, each row shows code and docs tokens at its starting commit. Estim
 ```
 wf ls
 wf ls codex claude -d2002-02-14..2002-03-15 -c0.1 -s cost
-wf ls grok -d2002-02-23..
-wf ls copilot -d2002-02-14..
 wf ls -k implement -d 2002-02-14..
 wf ls codex -d 2002-02-14.. --size
 ```
@@ -39,13 +37,11 @@ Which sessions are running now, what is each one doing, and which are stuck or s
 ```
 wf status
 wf status -a 2002-03-02T05:00 -w 30d
-wf status -a 2002-03-02T14:00 -w 2h
-wf status -a 2002-02-23T08:27 -w 2h
 ```
 
 ## uc-11 Stop a session
 
-Stop a session that is stuck or spiralling. `stop` sends SIGTERM to the harness process that writes the session and to the tools it runs, and waits up to 10 seconds for them to exit.
+Stop a session that is stuck or spiralling. `stop` sends SIGTERM to the harness process that writes the session and to the tools it runs, and waits up to 10 seconds for them to exit. It has no golden file because it reads and signals live processes.
 
 ```
 wf stop <session>
@@ -62,7 +58,6 @@ With `--size`, each row shows the median code and docs tokens at its sessions' s
 ```
 wf models -d 2002-02-14..
 wf models -k clarify -d 2002-02-14..
-wf models -k implement -d 2002-03-05..
 wf models -k implement -d 2002-03-05.. --size
 ```
 
@@ -217,7 +212,6 @@ What do my plans cost me each month, when does each bill next, and how much of e
 wf subscriptions
 wf subscriptions --history
 wf subscriptions --weeks
-wf subscriptions --models -d2002-03-05..
 wf subscriptions --models -d2002-02-23T08:00+02:00..
 wf subscriptions -s 5
 ```

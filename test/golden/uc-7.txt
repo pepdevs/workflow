@@ -170,28 +170,6 @@ Example Anthropic     2002-02-16 13:00   52%            $8.6        $16.5       
 Readings: Codex logs report the share used, Claude Code logs only limit hits, and wf usage records every provider's share each time it runs.
 Use outside these logs counts toward a limit without adding cost, so the full window and its multiplier are lower bounds.
 
-$ wf subscriptions --models -d2002-03-05..
-Paying €96.00 a month on 5 plans, as of 2002-03-12 18:51 UTC
-Used: API-equivalent cost of the current billing period's calls. Week: share of the current weekly limit used, and when it resets (UTC).
-
-plan                   price         next bill        used  multiplier  week  resets
----------------------  ------------  --------------  -----  ----------  ----  ------
-Example OpenAI Basic   €16.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
-Example OpenAI Shared  €15.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
-Example Anthropic      €25.00/month  04-01 (in 19d)   $0.0        0.0x     -  -
-Example Zai Basic      €8.00/month   04-01 (in 19d)   $0.3        0.0x     -  -
-Example Xai            €32.00/month  04-01 (in 19d)  <$0.1        0.0x     -  -
-total                  €96.00/month                   $0.3        0.0x
-
-Per plan and model
-
-plan               model          calls  unpriced  API-equivalent
------------------  -------------  -----  --------  --------------
-Example Xai        all                2         0           <$0.1
-                   grok-4.7           2         0           <$0.1
-Example Zai Basic  all               31         0           <$0.1
-                   glm-5.3-flash     31         0           <$0.1
-
 $ wf subscriptions --models -d2002-02-23T08:00+02:00..
 Paying €96.00 a month on 5 plans, as of 2002-03-12 18:51 UTC
 Used: API-equivalent cost of the current billing period's calls. Week: share of the current weekly limit used, and when it resets (UTC).

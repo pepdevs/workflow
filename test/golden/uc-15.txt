@@ -9,14 +9,6 @@ Verdicts missing (custom log roots).
 $ wf models -k clarify -d 2002-02-14..
 No wf run session in the window. Widen it with -d.
 
-$ wf models -k implement -d 2002-03-05..
-Sessions per skill and model, by the model with most calls in the root thread. Medians per session.
-
-skill      harness  model     sessions  finished   cost     time  peak context  over 200k
----------  -------  --------  --------  --------  -----  -------  ------------  ---------
-implement  grok     grok-4.7         1         1  <$0.1  0:00:05      21k est.    unknown
-Verdicts missing (custom log roots).
-
 $ wf models -k implement -d 2002-03-05.. --size
 Sessions per skill and model, by the model with most calls in the root thread. Medians per session.
 

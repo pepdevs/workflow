@@ -34,8 +34,9 @@ test("every CLI command has its own help", () => {
 });
 
 const expected = new Set<string>();
+// `stop` signals live processes, so it has no golden file.
 for (const useCase of useCases) {
-  const perSession = useCase.commands.filter((c) => c.includes("<session>"));
+  const perSession = useCase.commands.filter((c) => c.includes("<session>") && c[0] !== "stop");
   if (perSession.length === 0) continue;
   for (const harness of HARNESS_NAMES) {
     const file = `${useCase.id}-${harness}.txt`;
