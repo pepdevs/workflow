@@ -38,7 +38,7 @@ test("resultFromReply", () => {
 });
 import { categoryOf, planMatches, launchHeader, launchOf, gitLaunchInfo, repoFromRemote, modelRows, modelTable, routeCounts, routesFrom, parseRouteEntry, run, summary, sessionProvenance, costCommand, filesCommand, turnsCommand, timeCommand, parentFromEnv, parseAmount, parseAt, parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseWhen, parseXaiBilling, parseZaiQuota, rankRoutes, readGithubEvaluations, usageCommand, windowPace, windowProjection, stepSpans, changedLines, parseReadings, readingLines, sessionStatus, statusPresentation, subagentStatus } from "../src/cli.ts";
 import { checkMeasurement } from "../src/check.ts";
-import { displayPath, CONTEXT_BUDGET, SIZE_BAND_M_MAX, SIZE_BAND_S_MAX, billingPeriods, classifyApiError, computeCostUsd, familyOf, modelName, SUBSCRIPTIONS, shellCategory, shellProgram, subscriptionOf, type Subscription, isRetired, routeList } from "../src/catalog.ts";
+import { displayPath, CONTEXT_BUDGET, SIZE_BAND_M_MAX, SIZE_BAND_S_MAX, billingPeriods, classifyApiError, computeCostUsd, familyOf, modelName, SUBSCRIPTIONS, shellCategory, shellProgram, subscriptionOf, commandBranches, type Subscription, isRetired, routeList } from "../src/catalog.ts";
 
 test("Claude captures the first root record's branch once", () => {
   for (const initialBranch of [undefined, "initial-branch"]) {
@@ -124,6 +124,20 @@ test("session repository provenance", () => {
       assert.equal(provenance.commit, expected.startsWith("fixture/repo") ? `${sha} (harness SHA)` : `unknown (harness SHA ${sha}: clone unavailable)`, label);
     }
   } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test("commandBranches", () => {
+  const rows: [string, string[]][] = [
+    ["git checkout -b feat/x && git push -u origin feat/x", ["feat/x", "feat/x"]],
+    ["git -C ../repo worktree add ../repo-1 -b fix/y origin/main", ["fix/y"]],
+    ["git push --set-upstream origin \"docs/z\"", ["docs/z"]],
+    ["git push origin HEAD:refs/heads/feat/q", ["feat/q"]],
+    ["gh pr create --base main --head chore/w --title t", ["chore/w"]],
+    ["git push origin --delete feat/x", []],
+    ["git switch -c $BRANCH", []],
+    ["git checkout main", []],
+  ];
+  for (const [command, branches] of rows) assert.deepEqual(commandBranches(command), branches, command);
 });
 
 test("shellProgram", () => {

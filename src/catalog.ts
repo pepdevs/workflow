@@ -245,6 +245,19 @@ export function shellProgram(command: string): string {
   return first;
 }
 
+// Branches a shell command creates or publishes: git checkout -b, git switch -c,
+// git worktree add -b, git push to origin, and gh pr create --head.
+const BRANCH_COMMANDS = [
+  /\bgit\s+(?:-C\s+\S+\s+)?(?:checkout|switch)\s+(?:-[bBcC]|--create|--force-create)\s+["']?([^\s"';&|]+)/g,
+  /\bgit\s+(?:-C\s+\S+\s+)?worktree\s+add\s+(?:[^;&|]*?\s)?-[bB]\s+["']?([^\s"';&|]+)/g,
+  /\bgit\s+(?:-C\s+\S+\s+)?push\s+(?:-{1,2}[\w-]+\s+)*origin\s+["']?(?:HEAD:)?(?:refs\/heads\/)?([^\s"';&|:]+)/g,
+  /\bgh\s+pr\s+create\b[^;&|]*?--head[\s=]["']?([^\s"';&|]+)/g,
+];
+
+export function commandBranches(command: string): string[] {
+  return BRANCH_COMMANDS.flatMap((re) => [...command.matchAll(re)].map((m) => m[1]!)).filter((b) => !b.startsWith("-") && !b.startsWith("$"));
+}
+
 export function shellCategory(command: string): string {
   const program = shellProgram(command);
   if (program === "sed" && /\ssed\s+-i|^sed\s+-i/.test(command)) return "file_write";
