@@ -261,7 +261,7 @@ export function loadClaude(idOrPath: string, roots = claudeRoots(), { counts = f
             endedAt: null,
             status: "unknown",
             spawnsThreadId: threadBySpawnCall.get(b.id) ?? null,
-            ...toolTarget(b.input, command),
+            ...toolTarget(b.input, command, b.name),
             ...UNKNOWN_SIZE,
           };
           tools.set(b.id, tool);

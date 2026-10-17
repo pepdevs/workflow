@@ -4,7 +4,7 @@ import { closeSync, openSync, readFileSync, readSync, statSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { classifyApiError, shellCategory, toolCategory } from "../../catalog.ts";
-import { emptySession, type Session, type Turn } from "../../model.ts";
+import { emptySession, type Session, type Turn, type WebUse } from "../../model.ts";
 import { type LoadOptions, type SessionRef, archiveDir, cachedByRoots, resultFromReply, resultSize, shellReads, skillFromPath, textSize, unionFiles, UNKNOWN_SIZE } from "../common/logs.ts";
 
 export const CODEX_LIVE = join(homedir(), ".codex", "sessions");
@@ -50,6 +50,16 @@ function commandTarget(command: string, parsed: unknown): { paths: string[]; lin
 // Codex cuts command output to about 40,000 characters before the model sees it;
 // its log keeps the whole output. Measured on 304 truncated outputs, 2026-09-30.
 const MODEL_OUTPUT_CHARS = 40_000;
+
+// One web_search item: a search, a page opened or a find in that page. WebSearch
+// items name actions in snake case, and later Extension items in camel case.
+function webSearchUse(item: any): WebUse {
+  const a = item.action ?? {};
+  if (a.type === "search") return { action: "search", target: a.query || a.queries?.[0] || item.query || null };
+  if (a.type === "open_page" || a.type === "openPage") return { action: "open", target: a.url || item.query || null };
+  if (a.type === "find_in_page" || a.type === "findInPage") return { action: "find", target: a.pattern || null };
+  return { action: "other", target: item.query || null };
+}
 
 // A command's output as the model saw it. Lines and words of a truncated output
 // shrink in proportion to its characters.
@@ -279,6 +289,7 @@ export function loadCodex(idOrPath: string, roots = codexRoots(), { counts = fal
             endedAt: p.completed_at_ms ?? null,
             status: item.status === "failed" || (item.exit_code ?? 0) !== 0 ? "failed" : "ok",
             spawnsThreadId: null,
+            web: null,
             ...commandTarget(command, item.parsed_cmd),
             ...commandOutputSize(item),
           });
@@ -301,6 +312,26 @@ export function loadCodex(idOrPath: string, roots = codexRoots(), { counts = fal
             spawnsThreadId: null,
             paths: Object.keys(item.changes ?? {}),
             lines: null,
+            web: null,
+            ...UNKNOWN_SIZE,
+          });
+        } else if (item.type === "WebSearch" || (item.type === "Extension" && item.kind === "web.search")) {
+          session.toolCalls.push({
+            id: item.id,
+            threadId,
+            turnId: p.turn_id,
+            name: "web_search",
+            category: "web",
+            shellCategory: null,
+            command: null,
+            origin: "model",
+            startedAt: p.started_at_ms ?? at,
+            endedAt: p.completed_at_ms ?? at,
+            status: item.status === "failed" ? "failed" : "ok",
+            spawnsThreadId: null,
+            paths: [],
+            lines: null,
+            web: webSearchUse(item),
             ...UNKNOWN_SIZE,
           });
         }
@@ -331,6 +362,7 @@ export function loadCodex(idOrPath: string, roots = codexRoots(), { counts = fal
           spawnsThreadId: spawns,
           paths: [],
           lines: null,
+          web: null,
           ...resultSize(typeof p.output === "string" ? p.output : null, counts),
         });
         if (spawns) {

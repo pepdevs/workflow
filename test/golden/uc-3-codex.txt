@@ -4,7 +4,7 @@ $ wf turns <session>
  1  16:50  prompt   <text>  gpt-5.6-sol      2      0          0  $0.1        $0.1  0:00:13  interrupted  clarify
  2  16:51  prompt   <text>  gpt-5.6-sol      9      8          0  $0.6        $0.6  0:01:43  completed    clarify
  3  16:57  prompt   <text>  gpt-5.6-sol      1      0          0  $0.1        $0.1  0:00:10  completed
- 4  16:59  prompt   <text>  gpt-5.6-sol      6      2          0  $0.3        $0.3  0:01:01  completed    openai-docs
+ 4  16:59  prompt   <text>  gpt-5.6-sol      6      5          0  $0.3        $0.3  0:01:01  completed    openai-docs
  5  17:02  prompt   <text>  gpt-5.6-sol      6      2          0  $0.3        $0.3  0:00:32  completed
  6  17:05  prompt   <text>  gpt-5.6-sol      3      2          0  $0.2        $0.2  0:00:27  completed
  7  17:08  prompt   <text>  gpt-5.6-sol     37     24          1  $2.6        $4.4  0:24:41  completed    f,principle-migrate-callers-then-delete-legacy-apis

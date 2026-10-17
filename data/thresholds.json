@@ -8,6 +8,14 @@
   "sizeBandMeaning": "S is peak context under sizeBandSMaxTokens. M is from sizeBandSMaxTokens to under sizeBandMMaxTokens. L is from sizeBandMMaxTokens through contextBudgetTokens inclusive. A higher peak is over budget.",
   "reworkDays": 14,
   "reworkDaysMeaning": "wf changes counts a change's added lines that git blame still credits to its commits this many days after the merge",
+  "web": {
+    "longChain": 3,
+    "rephraseOverlap": 0.5
+  },
+  "webMeaning": {
+    "longChain": "wf web counts a chain of web calls with at least this many searches as long",
+    "rephraseOverlap": "a search made again rewords an earlier search of its chain when this share of its words, or more, appeared in that search"
+  },
   "status": {
     "window": 60,
     "quiet": 10,

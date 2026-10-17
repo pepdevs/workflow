@@ -253,7 +253,7 @@ export function loadCopilot(idOrPath: string, roots = copilotRoots(), { counts =
           endedAt: null,
           status: "unknown",
           spawnsThreadId: null,
-          ...toolTarget(d.arguments, command),
+          ...toolTarget(d.arguments, command, name),
           ...UNKNOWN_SIZE,
         };
         tools.set(tool.id, tool);

@@ -387,7 +387,7 @@ test("uc-21 prompt cases", () => {
   });
   const spawn = (id: string, turnId: string, child: string, when: string): Session["toolCalls"][number] => ({
     id, threadId: "t", turnId, name: "Agent", category: "agent", shellCategory: null, command: null, origin: "model",
-    startedAt: at(when), endedAt: at(when) + 1_000, status: "ok", spawnsThreadId: child, paths: [], lines: null, resultChars: null, resultLines: null, resultWords: null,
+    startedAt: at(when), endedAt: at(when) + 1_000, status: "ok", spawnsThreadId: child, paths: [], lines: null, web: null, resultChars: null, resultLines: null, resultWords: null,
   });
   const session = (harness: Session["harness"], id: string, parts: Partial<Session>): Session => ({
     harness, id, title: null, cwd: null, harnessVersion: null, threads: [thread("t", null)], turns: [], modelCalls: [], toolCalls: [],
