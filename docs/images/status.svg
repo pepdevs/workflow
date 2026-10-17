@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1212" height="256" viewBox="0 0 1212 256" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14">
+<rect width="1212" height="256" rx="10" fill="#0d1117"/>
+<rect width="1212" height="34" rx="10" fill="#161b22"/><rect y="24" width="1212" height="10" fill="#161b22"/>
+<circle cx="20" cy="17" r="6" fill="#ff5f56"/><circle cx="40" cy="17" r="6" fill="#ffbd2e"/><circle cx="60" cy="17" r="6" fill="#27c93f"/>
+<text x="18" y="64" fill="#7ee787" xml:space="preserve">$ wf status</text>
+<text x="18" y="83" fill="#e6edf3" xml:space="preserve">5 active sessions: 1 <tspan fill="#ff7b72">stuck</tspan>, 2 <tspan fill="#7ee787">working</tspan>, 2 <tspan fill="#8b949e">idle</tspan>.</text>
+<text x="18" y="102" fill="#e6edf3" xml:space="preserve"></text>
+<text x="18" y="121" fill="#8b949e" xml:space="preserve">harness   id          skill      title or first prompt           model          state      quiet   cost  flags</text>
+<text x="18" y="140" fill="#484f58" xml:space="preserve">--------  ----------  ---------  ------------------------------  -------------  -------  -------  -----  -----------------------------------</text>
+<text x="18" y="159" fill="#e6edf3" xml:space="preserve">claude    a7f3c2d1    -          Add rate limiting to the publ…  claude-opus-5  <tspan fill="#7ee787">working</tspan>  0:06:00   $3.6  -</text>
+<text x="18" y="178" fill="#e6edf3" xml:space="preserve">opencode  └ ses_4f2a  research   Find the rate limits the upst…  glm-5.3-flash  <tspan fill="#ff7b72">stuck</tspan>    0:13:48  &lt;$0.1  <tspan fill="#e3b341">same command ×5: curl -s api/limits</tspan></text>
+<text x="18" y="197" fill="#e6edf3" xml:space="preserve">pi        └ 019a6e9f  implement  Build the token bucket from t…  glm-5.3        <tspan fill="#7ee787">working</tspan>  0:01:00   $0.1  -</text>
+<text x="18" y="216" fill="#e6edf3" xml:space="preserve">codex     └ 019a6e2b  critique   Review docs/plans/0012-rate-l…  gpt-6.1-sol    <tspan fill="#8b949e">idle</tspan>     0:56:00   $0.5  -</text>
+<text x="18" y="235" fill="#e6edf3" xml:space="preserve">grok      019a6d11    -          Rewrite the quickstart for th…  grok-4.6       <tspan fill="#8b949e">idle</tspan>     0:26:00   $0.3  -</text>
+</svg>
