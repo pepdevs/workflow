@@ -3,1425 +3,1067 @@
   "files": [
     {
       "path": ".gitattributes",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "d60f352d0db1404c70afb4bb8b2ca3fd1c610572aa40720e8a0b7baa7885418c"
+      "mode": "0644"
     },
     {
       "path": ".githooks/pre-push",
-      "origin": "source",
-      "mode": "0755",
-      "sha256": "478fbba27186e1f761a05c64ab658629a704c920efb19a4e392232ff9b4f04ff"
+      "mode": "0755"
     },
     {
       "path": ".gitignore",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "AGENTS.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "CLAUDE.md",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49"
+      "mode": "0644"
     },
     {
       "path": "LICENSE",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "README.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "SYSTEM.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "data/paths.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "a796864c73c24ce07716513baf5bae72ca34cc1ba3c99d299ea69d1bb59a70a7"
+      "mode": "0644"
     },
     {
       "path": "data/prices.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "29b9a826b7d4ad916bf481bb1daef000141783c9a0515340f1512826103dfc1a"
+      "mode": "0644"
     },
     {
       "path": "data/repos.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "data/routes.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "data/subscriptions.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "data/thresholds.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "70cc66a93f900720eb37b4e98124f553c9a409c7f48d59273af0f1cc03249156"
+      "mode": "0644"
     },
     {
       "path": "docs/configuration.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "docs/fixtures.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "docs/images/cost.svg",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "docs/images/plan.svg",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "docs/images/route.svg",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "docs/images/status.svg",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "docs/install.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "docs/public-export.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "docs/use-cases.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "export-allowlist.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "package-lock.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "package.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "scripts/bench-repo.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "c0d93f2a5a3e58110ce3586e59c77c1932adc80bd7f202d76421a34807412f6f"
+      "mode": "0644"
     },
     {
       "path": "scripts/check.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "scripts/compare-fixtures.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
-      "path": "scripts/export-public.py",
-      "origin": "public",
-      "mode": "0755"
-    },
-    {
       "path": "scripts/fixtures.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "scripts/pseudonymize-fixtures.py",
-      "origin": "public",
       "mode": "0755"
     },
     {
       "path": "scripts/public-check.py",
-      "origin": "public",
       "mode": "0755"
     },
     {
       "path": "scripts/repo-fixture.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "134ae859b12b0470bb46347fbfee16ac19e41124048f10f293f7f4c6ccaad4b9"
+      "mode": "0644"
     },
     {
       "path": "scripts/setup.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "scripts/showcase.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "scripts/test-config.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "skills/delegate/SKILL.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "skills/delegate/agents/openai.yaml",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "skills/delegate/assets/task-capsule.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "skills/delegate/references/routing.md",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "skills/delegate/skill-dependencies.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "src/catalog.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "src/check.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "992c63550816cf095c4bf61cd99c6d2c79e2bb9c5a8698ed02005893fcfdecad"
+      "mode": "0644"
     },
     {
       "path": "src/cli.ts",
-      "origin": "source",
-      "mode": "0755",
-      "sha256": "dfdb2059df96e10a9efc4391b768272ba23dfef9f4c59aa614ce3f1eead4b35a"
+      "mode": "0755"
     },
     {
       "path": "src/commands/archive.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "09e407802d98974b116f6c79cbbf0fb5946223e7902e123b41070c6ba31a753a"
+      "mode": "0644"
     },
     {
       "path": "src/commands/export.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "4d8ec6995f7dd37ade565a8e400e8d6d039fbaa93529ae9d6f9d5d0c8bb94da4"
+      "mode": "0644"
     },
     {
       "path": "src/commands/files.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "ef9d0b4974bae930c446e3339d5791e60e307adaf8f91654dac1ca8e917023ff"
+      "mode": "0644"
     },
     {
       "path": "src/commands/find.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "8cd0873d16415a1d26114fad4fc84d0a61e4610b1486de40755a5c1e98a799c0"
+      "mode": "0644"
     },
     {
       "path": "src/commands/format.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "e05541109e533a2355bd6f36f4b70bd2eb531acafd192547e12e06251e19fc42"
+      "mode": "0644"
     },
     {
       "path": "src/commands/help.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "6562d41d5624905ef2df74376fd83db35f8e2cae1148cca3d8e4df41e7c5cca0"
+      "mode": "0644"
     },
     {
       "path": "src/commands/models.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "ae2419f724dc097a5621af9e46dfd8c6c7aa7f66d4460e99a0662f9963cb785f"
+      "mode": "0644"
     },
     {
       "path": "src/commands/plan.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "1ccbb0ade802c3ab2df21f0cbed0e118c8e21c169d4f7e80770b91e58086e1c6"
+      "mode": "0644"
     },
     {
       "path": "src/commands/repo.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "09531585be9a76952e816b56ab64ca40d3785a2ebe46a4c15b917ff0a221b894"
+      "mode": "0644"
     },
     {
       "path": "src/commands/route.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "920d46ecaba46715929c6b35865e40aaf9dedc5e94ab443acb2f8be1a55f45a0"
+      "mode": "0644"
     },
     {
       "path": "src/commands/run.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "9b3a5e59fbb2d2ef8d7c085cb50e0462df002b955b846e505de87af72c1de05d"
+      "mode": "0644"
     },
     {
       "path": "src/commands/sessions.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "098e6a90ecc31fe932960233a3fb113030c46fd8331786542326e281d206b366"
+      "mode": "0644"
     },
     {
       "path": "src/commands/status.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "37a0af913244a1fcebbf7edde8a85bce2fcc3c60e8dd78b7ae2eaef18a754e02"
+      "mode": "0644"
     },
     {
       "path": "src/commands/stop.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "3f258d6b67181cb3c303ca705b5a85040524f290d54148412b2a1b398d8b053f"
+      "mode": "0644"
     },
     {
       "path": "src/commands/subscriptions.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "b8b839da2b6b9727e74a392b7e244d488e967607dff1e7149206cbd8659af06d"
+      "mode": "0644"
     },
     {
       "path": "src/commands/usage.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "f3e518bf674006533676d041343a3a5dbce3510c0903260db1bd3003d8bdfe32"
+      "mode": "0644"
     },
     {
       "path": "src/facts.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "1330a45ac2d9bf59d7ffe6d5e68c24ff7e3bdc58f3b13ae14828995a90017a8e"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/claude/credentials.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "f4fe809df92acdce68ec31cd245bdf0a2f938af61a18d571b9380113a9ba045c"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/claude/fixture.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "f1a9018ac86fb3d3851b95b2e61ed604fcc3eb21e42b00f39b8ceb1cf09b67e2"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/claude/launch.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "0405491e086953523d2aef6271f02b4ce9e98ebdcd6df956e4285007e3a1054f"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/claude/logs.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "1578d7d1c22433fc26c7d1a55a7c673a852d8e3d8ff86873336a63f2d1205f3f"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/claude/processes.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "ac9d0d057a3338267e21ef2d8645b210de2d6da1a7cc435bad1046c47556acc7"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/codex/fixture.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "1f74d6747f992d9b4d5be280eee45999fbcb5fe8617ec6a42863f26787c53897"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/codex/launch.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "b33cbc7c52dfbd30c489300a7909a505e8593e254cc6e75da4121ee6bd868ba5"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/codex/logs.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "88ebe8198747cc93454d0d59225cae84f718efa7df8251e34371c8b10b4851e3"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/codex/processes.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "5eda5f4abbe4acd5946fb2fb328dc8e10b08f4fe3fda15033a7bd0bc911e6225"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/codex/usage.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "0a94e7468b15fc4e9dbacba90a9a8cbd32056b137d90ced7c1e88d381b83b7eb"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/common/launch.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "0736d16d6070ca99f91c20ae741a3a66a4746b6edc1d36377f8f211e36d07045"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/common/logs.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "e11e0406c665361ef010d42ed5c18035e1cccab8401891fbb2aae0beb9aa4c38"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/common/processes.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "83e42c17f72a61fd08a4ea2005f4325f0c1cf679b0be61ae0cae55127412c481"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/common/redact.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "0ce5af2728f4fb49356b329f5ea8f2985f0dcf79f18547c54a695a8b5d34686c"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/copilot/fixture.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "fede13c3958e27da07688e72b97e70af59cdfba609417e2a18c8faa154f42777"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/copilot/logs.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "6f1e19707bd7fc96baa7c6534871e9c18ff403610ea0b9690f02490a411d0c34"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/grok/fixture.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "481a04801d1ef77304db9df7f0910167f4c574b4c35c0436431a78befc7b8eab"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/grok/launch.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "7e5089ffb06c8107c98d8adfe317226aed7871866b71f097c0ae9a2fc1b66188"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/grok/logs.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "e87318df2a89cd031a080692ebb48f8a10a0476ac51490d7d9345832fc607b2f"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/grok/processes.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "1cb0d103b878123ea39a3a3bdc99507f4ecabd1ffc8adfe5b3d5a33cfa7638a0"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/index.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "47650d3878b024da633cc9dcd9bfd928da391c0fe854a355dcef9cb748169eea"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/opencode/fixture.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "0c671d78afc525ecab0df6fe300b4816d1ed6e4975b7ac6e016230726f02dbeb"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/opencode/launch.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "b03a397382f2643736b6f10ab22c450243b268699fa4490192637673831040d2"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/opencode/logs.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "fb2e767e866e318b3e07855d16083852ee55c302a18074430dbd1651d18c9b8f"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/opencode/processes.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "0001d5582fd5697396729d3f9f8c90e105b46289ed6fcbe3066785618b99b1ae"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/pi/credentials.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "87acab6b7cc82efacf722fcc5474483573395e044b7987cbc6938ab1b0c93e3b"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/pi/fixture.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "4a9ba56afe2a57ae0eaed0de68322c6d0adbfe2d516156fd957a18cfacc38b3a"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/pi/launch.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "ead5340d54c76e20c479da3b920d4af0eef5e055a312dced921baa4514107ba2"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/pi/logs.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "cc2eeb33215af40b26cbba1572a226d16bb43674416f7d47b0f67071a8f40d1a"
+      "mode": "0644"
     },
     {
       "path": "src/harnesses/pi/processes.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "a7396b4e0a24602e38d505a769b9e6395925eae70bbfbe44fa54a15c7364a784"
+      "mode": "0644"
     },
     {
       "path": "src/model.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "a6afcb34e28ad5bcb26cd404f169895158506709a146639f3b10ff5788b41c30"
+      "mode": "0644"
     },
     {
       "path": "src/providers/anthropic.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "1d2e23c672b0e1751b60b7a0c80a14362014b7c2a9670cdaa82cbed6e2192d60"
+      "mode": "0644"
     },
     {
       "path": "src/providers/common.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "a95496581379f673204a507d77ff16613bb7aef7054c8dd851a5b96a7ee16030"
+      "mode": "0644"
     },
     {
       "path": "src/providers/github.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "316fd41678e61e223f6da46c0a89ffaf7553c1ef4f284106c09ad65243195601"
+      "mode": "0644"
     },
     {
       "path": "src/providers/index.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "7db2bf3cfef96f89f83b0ec5c48f1daceb5ee656af21d436a03406617395a8b8"
+      "mode": "0644"
     },
     {
       "path": "src/providers/openai.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "e49679a4a2dc76f93c410172ad7ea5b7a27882eeccbb4df303908b9a7628f379"
+      "mode": "0644"
     },
     {
       "path": "src/providers/readings.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "d7211ca884a799e5d918228c8bd09fa660e6b8883b3b9179b8139d25487493ec"
+      "mode": "0644"
     },
     {
       "path": "src/providers/xai.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "8ccd42ca171faf92596a62e434e29548f73e99eb90ebfa1c01562c45075199e4"
+      "mode": "0644"
     },
     {
       "path": "src/providers/zai.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "84bd28c9ce9a9393655296ddaf3ccb04ffeea91c7fe2b0916002bb3524cb9d45"
+      "mode": "0644"
     },
     {
       "path": "src/repos/index.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "8cab53538f0b7599c6460daea1991985d4501c9c2473efa4be0bdbdd5eb49cfa"
+      "mode": "0644"
     },
     {
       "path": "src/repos/provenance.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "d8857b81fe78b48b3cc57e7970e8727bd444560890d80a2cdd1da38da8be2254"
+      "mode": "0644"
     },
     {
       "path": "src/repos/session-size.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "d1c91dfe2acfb05d7f2c9d226e0389d9c7ed10a0244e2831395a34851899d192"
+      "mode": "0644"
     },
     {
       "path": "test/config/paths.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/config/repos.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/config/routes.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/config/subscriptions.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-provenance.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-0e9c7bc9a9f0/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-0e9c7bc9a9f0/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-0e9c7bc9a9f0/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "f3ab4c2e1325f2cc666d245dcae4902488d9cae53936d266e4dc5561772b43b4"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-0e9c7bc9a9f0/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-0e9c7bc9a9f0/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-0e9c7bc9a9f0/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-155048ba3f8d/chat_history.jsonl",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "d2b0f5d122f18c4c872c1e30aa3073cf99ae7330324b5be1bc06b4ccd234b108"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-155048ba3f8d/events.jsonl",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-155048ba3f8d/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-155048ba3f8d/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-2a784357d051/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-2a784357d051/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-2a784357d051/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "a64e10bdbe3f45ce518e63586ab5b2943523ea22e8843b689b9696387a807875"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-2a784357d051/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-2a784357d051/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-4d78a8cd8004/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-4d78a8cd8004/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-4d78a8cd8004/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "44a3dcd93e8ccac65920ad2624d91dfaa37fcbd9d1514b52aa658cc7d13c3168"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-4d78a8cd8004/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-4d78a8cd8004/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-4d78a8cd8004/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-ca0c91c464a4/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-ca0c91c464a4/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-ca0c91c464a4/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "fa6adf07c5c1c35dc65edbccdbb9fe5455b717088f171e84b3d79934ad5a04ed"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-ca0c91c464a4/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-ca0c91c464a4/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-ca0c91c464a4/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "52ebe6663a00cdab69c71f76094cc59ad5f4a37655e11fa102fa9c0e2c37c1b9"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-ffb30061d01e/chat_history.jsonl",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "d2b0f5d122f18c4c872c1e30aa3073cf99ae7330324b5be1bc06b4ccd234b108"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-ffb30061d01e/events.jsonl",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok/%2Ffixture%2Fproject/fixture-ffb30061d01e/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-launch-result/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-launch-result/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-launch-result/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "52ebe6663a00cdab69c71f76094cc59ad5f4a37655e11fa102fa9c0e2c37c1b9"
+      "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-launch-result/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-launch-result/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-launch-result/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-launch-result-input.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-missing-signals/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-missing-signals/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-missing-signals/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-missing-signals/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixture-variants/grok-missing-signals/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/claude/project/d87437e1-d40c-4c63-aa05-9f9c3b05b112/subagents/agent-af6a91c5b23d86561.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/claude/project/d87437e1-d40c-4c63-aa05-9f9c3b05b112/subagents/agent-af6a91c5b23d86561.meta.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/claude/project/d87437e1-d40c-4c63-aa05-9f9c3b05b112.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/codex/2002/02/24/rollout-2002-02-24T18-46-32-623fe08c-f089-4457-ab98-839fdfaf83f1.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/codex/2002/02/24/rollout-2002-02-24T19-11-08-a3046390-1f4b-4091-a97b-a34eff4e6571.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/copilot/bab59557-2671-41ea-a96d-9a78bca8ccc8/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/copilot/bab59557-2671-41ea-a96d-9a78bca8ccc8/workspace.yaml",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "44819a119f6958b428d03f39e0e5d20c775ad5e1a2db21dce69a4bd73259745d"
+      "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-0f4b269dc6e9/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "91b01bac8781e2e6c340686019c061fd65e7371c5a3c39329c05955da06d55a4"
+      "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-1637ebfa5882/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "77aead924210511d7000e27408403cebac8c61e84fac8481a3a48a21172a9e30"
+      "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-31f6cff95531/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "a90e467f014eb95e4518583587db7a00b49f8d8f0e23937c16595c3b7409cb0b"
+      "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-7e460b209ab3/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a33254bd3946/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a33254bd3946/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a33254bd3946/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "74cabd515f99c33f2e26afb001c18cc1aebc8249cc63cc23bb85a93348e6d478"
+      "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a33254bd3946/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a33254bd3946/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-a33254bd3946/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/chat_history.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/events.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/signals.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "52ebe6663a00cdab69c71f76094cc59ad5f4a37655e11fa102fa9c0e2c37c1b9"
+      "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/summary.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/updates.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/grok/%2Ffixture%2Fproject/fixture-da1dfc3f5e31/usage.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/opencode/opencode.db",
-      "origin": "public",
       "mode": "0644",
       "approvedBinary": "pseudonymized-sqlite",
       "binarySha256": "23207f89877bb7651b69e4c42bbc8d6f891bb5aa32622e65af49582d07439658"
     },
     {
       "path": "test/fixtures/pi/--project--/2002-03-06T16-44-34-574Z_bab8cde5-cd5d-4886-aa1f-58e007677dbb.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/fixtures/repo.bundle",
-      "origin": "source",
       "mode": "0644",
-      "sha256": "26048c96790ae2418d6e97372837d5573e02bc6ddea5dea1a81d25cfc61c8ecf",
       "approvedBinary": "synthetic-git-bundle",
       "binarySha256": "26048c96790ae2418d6e97372837d5573e02bc6ddea5dea1a81d25cfc61c8ecf"
     },
     {
       "path": "test/fixtures/usage-readings.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-1-claude-job.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-1-claude.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-1-codex.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-1-copilot.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-1-grok.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-1-opencode.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-1-pi.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-10.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-11-claude.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-11-codex.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-11-copilot.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-11-grok.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-11-opencode.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-11-pi.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-13.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-15.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-17.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-18.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-19-claude.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-19-codex.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-19-copilot.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-19-grok.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-19-opencode.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-19-pi.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-2-claude.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-2-codex.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-2-copilot.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-2-grok.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-2-opencode.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-2-pi.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-20-repository-cases.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-20.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-21.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-3-claude.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-3-codex.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-3-copilot.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-3-grok.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-3-opencode.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-3-pi.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-4-claude.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-4-codex.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-4-copilot.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-4-grok.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-4-opencode.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-4-pi.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-5-claude.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-5-codex.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-5-copilot.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-5-grok.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-5-opencode.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-5-pi.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-7.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-9-size-cases.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden/uc-9.txt",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/golden.test.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/grok.test.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/guards.test.ts",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "aeb33b9c4ee7548923f5a31e7fcc86f3d9379b6be186ececb6d463ad91ff39a7"
+      "mode": "0644"
     },
     {
       "path": "test/job-fixtures/claude/jobs/81ef5f5d/state.json",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/job-fixtures/claude/project/4d3082b6-f739-4197-a814-7b0865b2a577.jsonl",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/result-links.test.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "test/tables.test.ts",
-      "origin": "public",
       "mode": "0644"
     },
     {
       "path": "tsconfig.json",
-      "origin": "source",
-      "mode": "0644",
-      "sha256": "2a63130ae781f9cc6fcde8af5780c313b21f52b354771b50524bda7b1cd67042"
+      "mode": "0644"
     }
   ]
 }
