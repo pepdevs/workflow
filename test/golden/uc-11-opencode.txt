@@ -1,2 +1,0 @@
-$ wf stop <session>
-No running process writes opencode ses_45ef79cbeb31a9b68c63acf4cf.

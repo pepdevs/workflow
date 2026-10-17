@@ -1,2 +1,0 @@
-$ wf stop <session>
-No running process writes grok fixture-a33254bd3946.

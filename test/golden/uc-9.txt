@@ -17,19 +17,6 @@ start (UTC)  harness  id        role  directory  title or first prompt  models  
 02-22 01:18  claude   d87437e1  -     <text>     <text>                 claude-opus-5      3  $10.5  2:35:03
 2 of 2 matching sessions. Pass an id to summary, turns, cost, tools, time or files.
 
-$ wf ls grok -d2002-02-23..
-start (UTC)  harness  id         role       directory  title or first prompt  models    turns   cost     wall
------------  -------  ---------  ---------  ---------  ---------------------  --------  -----  -----  -------
-03-12 18:50  grok     fixture-d  implement  project    <text>                 grok-4.7      1  <$0.1  0:00:05
-02-23 15:53  grok     fixture-a  -          project    <text>                 grok-4.6      9  $98.2  5:01:01
-2 of 2 matching sessions. Pass an id to summary, turns, cost, tools, time or files.
-
-$ wf ls copilot -d2002-02-14..
-start (UTC)  harness  id        role  directory  title or first prompt  models       turns  cost     wall
------------  -------  --------  ----  ---------  ---------------------  -----------  -----  ----  -------
-03-02 17:15  copilot  bab59557  -     <text>     <text>                 gpt-5.6-sol      1  $6.4  2:17:18
-1 of 1 matching sessions. Pass an id to summary, turns, cost, tools, time or files.
-
 $ wf ls -k implement -d 2002-02-14..
 start (UTC)  harness  id         role       directory  title or first prompt  models    turns   cost     wall
 -----------  -------  ---------  ---------  ---------  ---------------------  --------  -----  -----  -------

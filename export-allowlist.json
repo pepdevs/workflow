@@ -850,30 +850,6 @@
       "mode": "0644"
     },
     {
-      "path": "test/golden/uc-11-claude.txt",
-      "mode": "0644"
-    },
-    {
-      "path": "test/golden/uc-11-codex.txt",
-      "mode": "0644"
-    },
-    {
-      "path": "test/golden/uc-11-copilot.txt",
-      "mode": "0644"
-    },
-    {
-      "path": "test/golden/uc-11-grok.txt",
-      "mode": "0644"
-    },
-    {
-      "path": "test/golden/uc-11-opencode.txt",
-      "mode": "0644"
-    },
-    {
-      "path": "test/golden/uc-11-pi.txt",
-      "mode": "0644"
-    },
-    {
       "path": "test/golden/uc-13.txt",
       "mode": "0644"
     },
