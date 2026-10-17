@@ -182,6 +182,10 @@
       "mode": "0644"
     },
     {
+      "path": "src/commands/changes.ts",
+      "mode": "0644"
+    },
+    {
       "path": "src/commands/export.ts",
       "mode": "0644"
     },
@@ -399,6 +403,10 @@
     },
     {
       "path": "src/providers/zai.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "src/repos/changes.ts",
       "mode": "0644"
     },
     {
@@ -991,6 +999,10 @@
     },
     {
       "path": "test/claude.test.ts",
+      "mode": "0644"
+    },
+    {
+      "path": "test/golden/uc-22.txt",
       "mode": "0644"
     },
     {

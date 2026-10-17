@@ -1,0 +1,40 @@
+$ wf changes -d 2020-01-01.. <clone>
+{
+  "schema": 1,
+  "range": {
+    "from": "2020-01-01T00:00:00.000Z",
+    "to": null
+  },
+  "changes": [
+    {
+      "repository": "repo",
+      "pullRequest": "https://github.com/fixture/repo/pull/1",
+      "branch": "feat/one",
+      "mergedAt": "2020-01-03T00:00:00.000Z",
+      "merge": "<sha>",
+      "commits": 1,
+      "added": {
+        "code": 5,
+        "test": 2
+      },
+      "reworkAt": "2020-01-17T00:00:00.000Z",
+      "surviving": {
+        "code": 3,
+        "test": 2
+      }
+    },
+    {
+      "repository": "repo",
+      "pullRequest": null,
+      "branch": "fix/two",
+      "mergedAt": "2020-01-20T00:00:00.000Z",
+      "merge": "<sha>",
+      "commits": 1,
+      "added": {
+        "docs": 3
+      },
+      "reworkAt": "2020-02-03T00:00:00.000Z",
+      "surviving": null
+    }
+  ]
+}

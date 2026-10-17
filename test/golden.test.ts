@@ -58,9 +58,9 @@ for (const useCase of useCases) {
 }
 
 // Commands over every session read all fixtures. `archive` writes, `run`
-// launches a model, and `usage` reads providers.
+// launches a model, `usage` reads providers, and `repo` and `changes` read a clone.
 for (const useCase of useCases) {
-  const allSessions = useCase.commands.filter((c) => !c.includes("<session>") && !["archive", "run", "usage", "repo"].includes(c[0]));
+  const allSessions = useCase.commands.filter((c) => !c.includes("<session>") && !["archive", "run", "usage", "repo", "changes"].includes(c[0]));
   if (allSessions.length === 0) continue;
   const file = `${useCase.id}.txt`;
   expected.add(file);
@@ -96,6 +96,59 @@ test("uc-18 repository size", () => {
     assert.match(String(run(["repo", `${root}/missing-clone`])), /directory does not exist/);
     if (update) writeFileSync("test/golden/uc-18.txt", output);
     assert.equal(output, readFileSync("test/golden/uc-18.txt", "utf8"));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("uc-22 merged changes and the lines still theirs", () => {
+  const root = mkdtempSync(join(tmpdir(), "workflow-changes-golden-"));
+  const gitEnv = { ...process.env, GIT_DIR: undefined, GIT_WORK_TREE: undefined, GIT_INDEX_FILE: undefined, GIT_COMMON_DIR: undefined, GIT_PREFIX: undefined };
+  const git = (at: string, ...args: string[]) => {
+    const env = { ...gitEnv, GIT_AUTHOR_NAME: "Fixture", GIT_AUTHOR_EMAIL: "fixture@example.test", GIT_COMMITTER_NAME: "Fixture", GIT_COMMITTER_EMAIL: "fixture@example.test", GIT_AUTHOR_DATE: at, GIT_COMMITTER_DATE: at };
+    const result = spawnSync("git", args, { cwd: root, env, encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+  };
+  const write = (path: string, lines: string[]) => {
+    mkdirSync(join(root, path, ".."), { recursive: true });
+    writeFileSync(join(root, path), lines.map((l) => `${l}\n`).join(""));
+  };
+  try {
+    git("2020-01-01T00:00:00Z", "init", "-q", "-b", "main");
+    git("2020-01-01T00:00:00Z", "remote", "add", "origin", "git@github.com:fixture/repo.git");
+    write("src/a.ts", ["export const a = 1;", "export const b = 2;"]);
+    git("2020-01-01T00:00:00Z", "add", ".");
+    git("2020-01-01T00:00:00Z", "commit", "-qm", "Start");
+    // A pull request branch adds code, a test and a lock file, and edits one line.
+    git("2020-01-02T00:00:00Z", "checkout", "-q", "-b", "feat/one");
+    write("src/b.ts", ["export const c = 3;", "export const d = 4;", "export const e = 5;", "export const f = 6;"]);
+    write("test/b.test.ts", ["const c = 3;", "console.log(c);"]);
+    write("package-lock.json", ["{}"]);
+    write("src/a.ts", ["export const a = 10;", "export const b = 2;"]);
+    git("2020-01-02T00:00:00Z", "add", ".");
+    git("2020-01-02T00:00:00Z", "commit", "-qm", "Add b");
+    git("2020-01-03T00:00:00Z", "checkout", "-q", "main");
+    git("2020-01-03T00:00:00Z", "merge", "-q", "--no-ff", "feat/one", "-m", "Merge pull request #1 from fixture/feat/one");
+    // Two of its lines are rewritten within the rework window, and one after it.
+    write("src/b.ts", ["export const c = 30;", "export const d = 40;", "export const e = 5;", "export const f = 6;"]);
+    git("2020-01-05T00:00:00Z", "commit", "-qam", "Rework b");
+    write("src/b.ts", ["export const c = 30;", "export const d = 40;", "export const e = 50;", "export const f = 6;"]);
+    git("2020-01-19T00:00:00Z", "commit", "-qam", "Late change");
+    // A local branch merged five days before now is still pending.
+    git("2020-01-20T00:00:00Z", "checkout", "-q", "-b", "fix/two");
+    write("docs/two.md", ["# Two", "", "Notes."]);
+    git("2020-01-20T00:00:00Z", "add", ".");
+    git("2020-01-20T00:00:00Z", "commit", "-qm", "Add notes");
+    git("2020-01-20T00:00:00Z", "checkout", "-q", "main");
+    git("2020-01-20T00:00:00Z", "merge", "-q", "--no-ff", "fix/two", "-m", "Merge branch 'fix/two'");
+    const now = Date.parse("2020-01-25T00:00:00Z");
+    const output = `$ wf changes -d 2020-01-01.. <clone>\n${run(["changes", "-d", "2020-01-01..", root], now)}\n`.replace(/"[0-9a-f]{40}"/g, '"<sha>"');
+    const doc = JSON.parse(output.split("\n").slice(1).join("\n"));
+    assert.deepEqual(doc.changes.map((c: { branch: string }) => c.branch), ["feat/one", "fix/two"]);
+    assert.deepEqual(doc.changes[0].added, { code: 5, test: 2 });
+    assert.deepEqual(doc.changes[0].surviving, { code: 3, test: 2 });
+    assert.equal(doc.changes[1].surviving, null);
+    assert.throws(() => run(["changes", join(root, "missing")], now), /no such directory/);
+    if (update) writeFileSync("test/golden/uc-22.txt", output);
+    assert.equal(output, readFileSync("test/golden/uc-22.txt", "utf8"));
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -203,6 +256,7 @@ test("uc-1 and uc-9 recorded, estimated and missing repository sizes", () => {
 
 test("every golden file belongs to a use case", () => {
   expected.add("uc-18.txt");
+  expected.add("uc-22.txt");
   expected.add("uc-9-size-cases.txt");
   expected.add("uc-20-repository-cases.txt");
   expected.add("uc-1-claude-job.txt");

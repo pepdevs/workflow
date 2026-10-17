@@ -142,6 +142,18 @@ const HELP: Record<string, Help> = {
       "and text. The output holds prompt text. schema rises when a field changes.",
     ],
   },
+  changes: {
+    group: "Across sessions", args: "", line: "merged branches and the lines still theirs, as JSON",
+    detail: [
+      "wf changes [-d when] [clone ...]",
+      `${WHEN}; 30 days by default. Clones default to the repository catalog.`,
+      "One JSON document with each branch merged into a clone's default branch in the range,",
+      "as last fetched: repository, pull request, branch, merge time and commit, commit count",
+      "and added lines by category. surviving counts the added lines git blame still credits",
+      "to the branch's commits reworkDays after the merge, or null before then. Lock files",
+      "and binary files are left out. schema rises when a field changes.",
+    ],
+  },
   subscriptions: {
     group: "Across sessions", args: "", line: "plan prices, next bills, use this period and this week",
     detail: [

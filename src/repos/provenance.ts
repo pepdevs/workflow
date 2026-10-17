@@ -138,7 +138,7 @@ export class ProvenanceCall {
 
 // The repository name in a remote URL (https, ssh or scp form), a local clone's
 // absolute path, or an owner/name pair; null for anything else, such as a redacted placeholder.
-function repositoryOfRemote(remote: string | undefined): string | null {
+export function repositoryOfRemote(remote: string | undefined): string | null {
   const local = remote?.trim().match(/^(?:file:\/\/)?\/(?:[^/]+\/)*([\w.-]+?)(?:\.git)?\/?$/);
   if (local) return local[1];
   const match = remote?.trim().match(/^(?:[a-z+]+:\/\/[^/]+\/|[\w.-]+@[\w.-]+:|[\w.-]+\/)(?:[\w.-]+\/)*([\w.-]+?)(?:\.git)?\/?$/i);
