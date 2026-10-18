@@ -90,8 +90,7 @@ export class ProvenanceCall {
     const found = this.nameOf(session, readClones);
     const former = found && startedAt !== null ? Object.entries(this.entries).find(([, entry]) => entry.formerly?.some((f) => f.name === found && startedAt < Date.parse(f.until))) : undefined;
     const name = former ? former[0].split("/").at(-1)! : found;
-    const including = name ? Object.entries(this.entries).find(([, entry]) => entry.includes?.includes(name)) : undefined;
-    return including ? including[0].split("/").at(-1)! : name;
+    return name ? includedName(name, this.entries) : name;
   }
 
   private nameOf(session: Session, readClones: boolean): string | null {
@@ -148,6 +147,12 @@ export class ProvenanceCall {
 
 // The repository name in a remote URL (https, ssh or scp form), a local clone's
 // absolute path, or an owner/name pair; null for anything else, such as a redacted placeholder.
+// The name a repository reports: the catalog entry that includes it, or its own.
+export function includedName(name: string, entries: Record<string, RepositoryEntry> = repositoryEntries): string {
+  const including = Object.entries(entries).find(([, entry]) => entry.includes?.includes(name));
+  return including ? including[0].split("/").at(-1)! : name;
+}
+
 export function repositoryOfRemote(remote: string | undefined): string | null {
   const local = remote?.trim().match(/^(?:file:\/\/)?\/(?:[^/]+\/)*([\w.-]+?)(?:\.git)?\/?$/);
   if (local) return local[1];
