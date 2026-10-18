@@ -85,12 +85,13 @@ export class ProvenanceCall {
   // Git repository's origin, then its main checkout. Anything else is null, so a
   // folder name never stands in for a repository. Custom log roots skip Git reads.
   // A session that started before a rename reports the catalog repository that
-  // held the name then.
+  // held the name then, and a repository another entry includes reports that entry.
   repositoryName(session: Session, readClones: boolean, startedAt: number | null = null): string | null {
-    const name = this.nameOf(session, readClones);
-    if (!name || startedAt === null) return name;
-    const former = Object.entries(this.entries).find(([, entry]) => entry.formerly?.some((f) => f.name === name && startedAt < Date.parse(f.until)));
-    return former ? former[0].split("/").at(-1)! : name;
+    const found = this.nameOf(session, readClones);
+    const former = found && startedAt !== null ? Object.entries(this.entries).find(([, entry]) => entry.formerly?.some((f) => f.name === found && startedAt < Date.parse(f.until))) : undefined;
+    const name = former ? former[0].split("/").at(-1)! : found;
+    const including = name ? Object.entries(this.entries).find(([, entry]) => entry.includes?.includes(name)) : undefined;
+    return including ? including[0].split("/").at(-1)! : name;
   }
 
   private nameOf(session: Session, readClones: boolean): string | null {

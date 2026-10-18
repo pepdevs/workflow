@@ -22,7 +22,8 @@ const thresholds = readData("thresholds");
 const webBackends = readData("web-backends");
 const paths = readData("paths");
 // formerly lists the names a repository had before a rename, each until the ISO time it changed.
-export type RepositoryEntry = { path: string; worktrees?: string[]; formerly?: { name: string; until: string }[]; categories?: Partial<Record<"code" | "test" | "test data" | "docs" | "data" | "config", string[]>>; domains?: Record<string, string[]> };
+// includes lists other repositories whose sessions report this entry's name.
+export type RepositoryEntry = { path: string; worktrees?: string[]; formerly?: { name: string; until: string }[]; includes?: string[]; categories?: Partial<Record<"code" | "test" | "test data" | "docs" | "data" | "config", string[]>>; domains?: Record<string, string[]> };
 export const repositoryEntries: Record<string, RepositoryEntry> = readData("repos");
 
 // Micro-USD per million tokens. `long` applies to the whole call once its

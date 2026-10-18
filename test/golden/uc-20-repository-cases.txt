@@ -11,4 +11,5 @@ missing directory without evidence: null
 redacted logged repository: null
 session before its repository's rename: "former"
 session after its repository's rename: "repo"
+repository another entry includes: "whole"
 placeholder model rows: 1, sessions under null: 0
