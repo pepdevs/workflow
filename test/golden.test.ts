@@ -339,6 +339,16 @@ test("uc-20 repository and model cases", () => {
       }
     };
 
+    // The catalog's other clone takes in the sessions of "repo".
+    const included = () => {
+      repositoryEntries["fixture/whole"] = { path: other, includes: ["repo"] };
+      try {
+        return repository(clone);
+      } finally {
+        delete repositoryEntries["fixture/whole"];
+      }
+    };
+
     const cases: [string, () => string | null][] = [
       ["catalog clone", () => repository(clone)],
       ["repository outside the catalog", () => repository(other)],
@@ -352,6 +362,7 @@ test("uc-20 repository and model cases", () => {
       ["redacted logged repository", () => repository(join(root, "gone"), "<text>")],
       ["session before its repository's rename", () => renamed("9999-01-01T00:00:00Z")],
       ["session after its repository's rename", () => renamed("2000-01-01T00:00:00Z")],
+      ["repository another entry includes", included],
     ];
     const lines = cases.map(([label, read]) => `${label}: ${JSON.stringify(read())}`);
     const call = session.modelCalls[0];
