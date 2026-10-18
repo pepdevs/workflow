@@ -27,6 +27,23 @@ test("Claude Code compaction summaries start notification turns", () => {
   }
 });
 
+test("Claude Code records appended again count once", () => {
+  const root = mkdtempSync("test/claude-repeat-");
+  try {
+    const id = "00000000-0000-4000-8000-000000000003";
+    const record = (uuid: string, at: string, content: string) =>
+      JSON.stringify({ type: "user", sessionId: id, uuid, timestamp: at, message: { role: "user", content } });
+    const first = record("u1", "2002-02-14T10:00:00.000Z", "Add the chart.");
+    const second = record("u2", "2002-02-14T10:05:00.000Z", "Merge it.");
+    mkdirSync(join(root, "project"));
+    writeFileSync(join(root, "project", `${id}.jsonl`), [first, second, first, second, record("u3", "2002-02-14T10:10:00.000Z", "Ship it.")].join("\n") + "\n");
+    const session = ADAPTERS.claude.load(id, [root]);
+    assert.deepEqual(session.turns.map((t) => t.id), ["u1", "u2", "u3"]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("Claude Code web calls carry their query or URL and form chains", () => {
   const root = mkdtempSync("test/claude-web-");
   try {

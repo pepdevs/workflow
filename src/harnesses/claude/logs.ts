@@ -52,11 +52,15 @@ export function sessionFiles(idOrPath: string, roots: string[]): [string, string
   return [[rootRel, index.get(rootRel)!], ...[...index].filter(([rel]) => rel.startsWith(subPrefix)).sort()];
 }
 
+// Claude Code can append earlier records to a live session again with their uuids,
+// so a repeated uuid is read once.
 export function readRecords(file: string): any[] {
+  const seen = new Set<string>();
   return readFileSync(file, "utf8")
     .split("\n")
     .filter(Boolean)
-    .map((l) => JSON.parse(l));
+    .map((l) => JSON.parse(l))
+    .filter((r) => typeof r.uuid !== "string" || (!seen.has(r.uuid) && seen.add(r.uuid)));
 }
 
 // Claude Code injects a slash-invoked skill's body as a meta message starting with this.
