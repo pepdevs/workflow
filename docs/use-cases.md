@@ -104,7 +104,7 @@ wf prompts -d 2002-02-14..2002-03-15
 
 Did the work hold? `wf changes` prints one JSON document with each branch merged into a clone's default branch in the range, as the clone last fetched it. A change is the commits one branch brought in by a merge commit: GitHub's `Merge pull request #N from owner/branch`, or git's `Merge branch 'name'`. Clones default to the repository catalog; named directories replace it.
 
-- Each change has `repository` (the origin's name), `pullRequest` (the GitHub URL, or `null` for a local merge), `branch`, `mergedAt`, `merge` (the merge commit), `commits` (the branch's commit count) and `added`: the lines the branch added or changed since its merge base, by `wf repo` category. Lock files and binary files are left out.
+- Each change has `repository` (the origin's name, or the catalog entry that includes it), `pullRequest` (the GitHub URL, or `null` for a local merge), `branch`, `mergedAt`, `merge` (the merge commit), `commits` (the branch's commit count) and `added`: the lines the branch added or changed since its merge base, by `wf repo` category. Lock files and binary files are left out.
 - `surviving` counts, per category, the added lines that `git blame -w` on the default branch still credits to the branch's commits at `reworkAt`, `reworkDays` (`data/thresholds.json`, 14) after the merge. It is `null` while `reworkAt` lies ahead. A file moved or deleted since keeps none of its lines.
 - `schema` rises when a field changes meaning or goes away, and `range` gives the window's bounds.
 

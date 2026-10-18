@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process";
 import { basename, resolve } from "node:path";
 import { REWORK_DAYS, repositoryEntries } from "../catalog.ts";
 import { categoryOf, isLockfile, type Category } from "./index.ts";
-import { repositoryOfRemote } from "./provenance.ts";
+import { includedName, repositoryOfRemote } from "./provenance.ts";
 
 export type Lines = Partial<Record<Category, number>>;
 
@@ -43,7 +43,7 @@ const add = (lines: Lines, category: Category, n: number) => { if (n) lines[cate
 export function changesOf(clone: string, from: number, to: number, now: number): Change[] {
   const dir = resolve(clone);
   const origin = git(dir, ["remote", "get-url", "origin"])?.trim();
-  const repository = repositoryOfRemote(origin) ?? basename(dir);
+  const repository = includedName(repositoryOfRemote(origin) ?? basename(dir));
   // owner/name on a GitHub host, from an SSH or HTTPS origin.
   const hosted = /(github\.com)[:/]([\w.-]+\/[\w.-]+?)(?:\.git)?$/.exec(origin ?? "");
   const entry = Object.values(repositoryEntries).find((e) => resolve(e.path) === dir);

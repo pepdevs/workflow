@@ -147,6 +147,13 @@ test("uc-22 merged changes and the lines still theirs", () => {
     assert.deepEqual(doc.changes[0].surviving, { code: 3, test: 2 });
     assert.equal(doc.changes[1].surviving, null);
     assert.throws(() => run(["changes", join(root, "missing")], now), /no such directory/);
+    // A catalog entry that includes the repository names its changes.
+    repositoryEntries["fixture/whole"] = { path: join(root, "elsewhere"), includes: ["repo"] };
+    try {
+      assert.deepEqual(JSON.parse(String(run(["changes", "-d", "2020-01-01..", root], now))).changes.map((c: { repository: string }) => c.repository), ["whole", "whole"]);
+    } finally {
+      delete repositoryEntries["fixture/whole"];
+    }
     if (update) writeFileSync("test/golden/uc-22.txt", output);
     assert.equal(output, readFileSync("test/golden/uc-22.txt", "utf8"));
   } finally { rmSync(root, { recursive: true, force: true }); }
