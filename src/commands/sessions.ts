@@ -57,7 +57,7 @@ export function summary(s: Session, readClones = false, withSize = false): strin
   const compactionText = [...compactionCalls.map((c) => {
     const info = c.compaction!;
     const cost = callCost(c);
-    return `${info.trigger} ${info.preTokens.toLocaleString("en-US")} → ${info.postTokens.toLocaleString("en-US")} tokens · ${cost === null ? "unpriced" : `$${cost.toFixed(2)} est.`}`;
+    return `${info.trigger} ${info.preTokens.toLocaleString("en-US")} → ${info.postTokens.toLocaleString("en-US")} tokens · ${cost === null ? "unpriced" : `${usd(cost)} est.`}`;
   }), ...s.compactions.map((c) => `${c.trigger} ${c.preTokens.toLocaleString("en-US")} → ${c.postTokens.toLocaleString("en-US")} tokens · charge unreported`)].join("; ");
   const rows: [string, string][] = [
     ["Session", `${s.harness} ${s.id}`],
@@ -77,7 +77,7 @@ export function summary(s: Session, readClones = false, withSize = false): strin
     ["Tokens", missingGrokUsage ? "unknown" : `input ${tok(u.input)} · cache read ${tok(u.cacheRead)} (${pct(u.cacheRead, totalIn)} of input) · cache write ${tok(u.cacheWrite)} (1h ${tok(u.cacheWrite1h)}) · output ${tok(u.output)} (reasoning ${tok(u.reasoning)})`],
     ["Context", `peak ${peakText(turnCallsOnly.filter((c) => c.threadId === root))} in the root thread${s.threads.length > 1 ? `, ${peakText(turnCallsOnly.filter((c) => c.threadId !== root))} in subagents` : ""} · ${missingGrokUsage ? "budget classification unknown" : overText} · ${compactions} compactions`],
     ...(compactionText ? [["Compactions", compactionText] as [string, string]] : []),
-    ["Cost", missingGrokUsage ? "unknown · reported by harness unknown" : `computed ${usd(sum(computed.map((c) => c ?? 0)))}${hasAggregate ? " est." : ""}${compactionCalls.some((c) => c.compaction?.estimated) ? ` (includes $${estimated.toFixed(2)} est. compactions)` : ""} · reported by harness ${usd(s.reportedCostUsd)} · ${unpriced} of ${calls.length} calls unpriced`],
+    ["Cost", missingGrokUsage ? "unknown · reported by harness unknown" : `computed ${usd(sum(computed.map((c) => c ?? 0)))}${hasAggregate ? " est." : ""}${compactionCalls.some((c) => c.compaction?.estimated) ? ` (includes ${usd(estimated)} est. compactions)` : ""} · reported by harness ${usd(s.reportedCostUsd)} · ${unpriced} of ${calls.length} calls unpriced`],
     ["Turn time", s.harness === "grok" && turns.length === 0 ? "unknown wall in root turns; model time unknown" : `${dur(wall)} wall in root turns; across all threads: model ${calls.length ? dur(sum(calls.map(callMs))) : "unknown"}, tools ${dur(sum(s.toolCalls.filter((t) => t.category !== "user_interaction" && t.category !== "agent").map(toolMs)))}, waiting on subagents ${dur(sum(s.toolCalls.filter((t) => t.category === "agent").map(toolMs)))}, waiting on user ${dur(sum(s.toolCalls.filter((t) => t.category === "user_interaction").map(toolMs)))}`],
     ["Skills", skills || "-"],
     ["Incidents", incidents || "-"],

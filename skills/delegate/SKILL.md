@@ -89,8 +89,9 @@ tool running 30; a spiralling flag names the pattern. End a run that makes no pr
 
 ## Check the result
 
-`<run.txt>` holds each session id, exit, cost, peak context and reply. With a done check, require
-the check to pass; it can pass after a failed harness exit. Otherwise, require exit code 0 and a reply.
+`<run.txt>` holds each session id, exit, cost, peak context and reply. Money uses one decimal;
+elapsed time uses h:mm:ss. With a done check, require the check to pass; it can pass after a failed
+harness exit. Otherwise, require exit code 0 and a reply.
 Then judge the actual artifacts yourself: the worktree, the pushed branch, the PR head and
 its comments. A successful exit is not acceptance. For a failed or stopped run, read
 `wf summary <session-id-prefix>` and the worktree before another launch.

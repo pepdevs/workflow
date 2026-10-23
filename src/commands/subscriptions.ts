@@ -3,7 +3,7 @@ import { billingPeriods, monthlyEur, monthlyUsd, SUBSCRIPTIONS, subscriptionOf, 
 import { type QuotaReading, type Session } from "../model.ts";
 import { windowKey, type PlanUsage } from "../providers/index.ts";
 import { type Range } from "./find.ts";
-import { clock, day, eur, table, times, usd } from "./format.ts";
+import { clock, day, dur, eur, table, times, usd } from "./format.ts";
 import { callCost, callCount, sum } from "../facts.ts";
 
 type PricedCall = { at: number; sub: Subscription | null; provider: string; model: string; cost: number | null; count: number };
@@ -148,7 +148,7 @@ function stepSamplesCommand(sessions: Session[], when: Range, recorded: QuotaRea
       const share = cost > 0 ? ` ${Math.round((modelCost / cost) * 100)}%` : "";
       rows.push({
         at: b.at,
-        cells: [sub.name, windowName(b.windowMinutes), `${day(a.at)} ${clock(a.at)}`, `${day(b.at)} ${clock(b.at)}`, `${Math.round(a.usedPercent)}-${Math.round(b.usedPercent)}%`, usd(cost), `$${(cost / points).toFixed(2)}`, times(weekly?.multiplier ?? null), `${model}${share}`],
+        cells: [sub.name, windowName(b.windowMinutes), `${day(a.at)} ${clock(a.at)}`, `${day(b.at)} ${clock(b.at)}`, `${Math.round(a.usedPercent)}-${Math.round(b.usedPercent)}%`, usd(cost), usd(cost / points), times(weekly?.multiplier ?? null), `${model}${share}`],
       });
     }
   }
@@ -189,11 +189,6 @@ function modelRows(calls: PricedCall[]): string[][] {
   return plans.flatMap((p) => [p.total, ...p.models].map((r) => r.cells));
 }
 
-const DAY_MS = 86_400_000;
-
-// Time from `now` to `at` in whole days, or hours under a day.
-const until = (now: number, at: number) => (at - now < DAY_MS ? `${Math.ceil((at - now) / 3_600_000)}h` : `${Math.floor((at - now) / DAY_MS)}d`);
-
 const monthDay = (ms: number) => day(ms).slice(5);
 
 // uc-7 default view: the plans running at `now`, with their price, next bill,
@@ -208,7 +203,7 @@ function overview(calls: PricedCall[], windows: ReturnType<typeof limitWindows>,
     return {
       end: period.end,
       used,
-      cells: [sub.name, `${eur(monthlyEur(sub))}/month`, `${monthDay(period.end)} (in ${until(now, period.end)})`, usd(used), times(used / monthlyUsd(sub)), live ? `${Math.round(live.usedPercent)}%` : "-", live ? `${monthDay(live.resetsAt)} ${clock(live.resetsAt)}` : "-"],
+      cells: [sub.name, `${eur(monthlyEur(sub))}/month`, `${monthDay(period.end)} (in ${dur(period.end - now)})`, usd(used), times(used / monthlyUsd(sub)), live ? `${Math.round(live.usedPercent)}%` : "-", live ? `${monthDay(live.resetsAt)} ${clock(live.resetsAt)}` : "-"],
     };
   });
   rows.sort((a, b) => a.end - b.end);
@@ -219,7 +214,7 @@ function overview(calls: PricedCall[], windows: ReturnType<typeof limitWindows>,
     `Paying ${eur(monthly)} a month on ${running.length} plans, as of ${day(now)} ${clock(now)} UTC`,
     "Used: API-equivalent cost of the current billing period's calls. Week: share of the current weekly limit used, and when it resets (UTC).",
     "",
-    table(["plan", "price", "next bill", "used", "multiplier", "week", "resets"], [...rows.map((r) => r.cells), total], [3, 4, 5]),
+    table(["plan", "price", "next bill", "used", "multiplier", "week", "resets"], [...rows.map((r) => r.cells), total], [1, 3, 4, 5]),
   ].join("\n");
 }
 
@@ -257,7 +252,7 @@ function history(calls: PricedCall[], hits: { sub: Subscription; at: number }[],
     "Value of each subscription, most usage per euro first",
     "Used: the logged calls at API prices against the price paid. Full window: a weekly limit's worth, from the share each window used. Full multiplier: a month of full windows against the price.",
     "",
-    table(["plan", "price", "paid", "used", "used multiplier", "windows", "full window", "full multiplier", "limit hits"], plans.map((p) => p.cells), [2, 3, 4, 5, 6, 7, 8]),
+    table(["plan", "price", "paid", "used", "used multiplier", "windows", "full window", "full multiplier", "limit hits"], plans.map((p) => p.cells), [1, 2, 3, 4, 5, 6, 7, 8]),
     "",
     "Per billing period",
     "",

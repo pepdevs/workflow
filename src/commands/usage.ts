@@ -2,7 +2,7 @@
 // the pace that uses each weekly window up by its reset, and what a full window is worth.
 import { monthlyUsd } from "../catalog.ts";
 import type { PlanUsage } from "../providers/index.ts";
-import { table, times, usd } from "./format.ts";
+import { dur, table, times, usd } from "./format.ts";
 import { windowProjection } from "./subscriptions.ts";
 
 const DAY_MS = 86_400_000;
@@ -13,8 +13,7 @@ const windowName = (minutes: number | null) =>
 
 const resetsIn = (ms: number | null, now: number) => {
   if (ms === null) return "-";
-  const minutes = Math.max(0, Math.round((ms - now) / 60_000));
-  return minutes >= 1440 ? `${Math.floor(minutes / 1440)}d ${Math.floor((minutes % 1440) / 60)}h` : `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
+  return dur(Math.max(0, ms - now));
 };
 
 // Points ahead (+) or behind (-) an even burn of the window to 100% at reset,
@@ -54,7 +53,7 @@ export function usageCommand(usages: PlanUsage[], flags: Record<string, string>,
     `Plan usage reported by each provider now${(flags.w ?? "7d") === "all" ? "" : `, ${flags.w ?? "7d"} windows only (-w all shows every window)`}. Pace: points ahead or behind an even burn to 100% by reset.`,
     ...(spent === null ? [] : ["Spent: API-equivalent cost of the logged calls since the weekly window started. Full window: spent over the share used. Multiplier: a month of full windows over the plan's price."]),
     "",
-    table(columns.filter(keep), rows.map((r) => r.filter(keep)), spent === null ? [2, 4, 5] : [2, 4, 5, 6, 7, 8]),
+    table(columns.filter(keep), rows.map((r) => r.filter(keep)), spent === null ? [2, 3, 4, 5] : [2, 3, 4, 5, 6, 7, 8]),
     ...(spent === null ? [] : ["", "Use outside these logs counts toward the limit without adding cost, so the full window and multiplier are lower bounds."]),
   ].join("\n");
 }

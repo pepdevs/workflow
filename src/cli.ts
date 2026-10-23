@@ -23,6 +23,7 @@ import { repoCommand } from "./commands/repo.ts";
 import { subscriptionsCommand, weeklySpend } from "./commands/subscriptions.ts";
 
 // Pure functions the table tests reach through this entry point.
+export { usd, eur, dur, table } from "./commands/format.ts";
 export { parseAmount, parseAt, parseWhen } from "./commands/find.ts";
 export { parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseXaiBilling, parseZaiQuota } from "./providers/index.ts";
 export { modelRows, modelTable, routeCounts } from "./commands/models.ts";
