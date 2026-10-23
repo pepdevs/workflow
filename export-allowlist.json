@@ -850,6 +850,10 @@
       "mode": "0644"
     },
     {
+      "path": "test/golden/uc-13-reserved.txt",
+      "mode": "0644"
+    },
+    {
       "path": "test/golden/uc-13.txt",
       "mode": "0644"
     },

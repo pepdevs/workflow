@@ -38,7 +38,7 @@ test("resultFromReply", () => {
 });
 import { usd, eur, dur, table, categoryOf, planMatches, launchHeader, launchOf, gitLaunchInfo, repoFromRemote, parseRunCompletion, modelRows, modelTable, routeCounts, routesFrom, parseRouteEntry, run, summary, sessionProvenance, costCommand, filesCommand, turnsCommand, timeCommand, parentFromEnv, parseAmount, parseAt, parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseWhen, parseXaiBilling, parseZaiQuota, rankRoutes, readGithubEvaluations, usageCommand, windowPace, windowProjection, stepSpans, changedLines, parseReadings, readingLines, sessionStatus, statusPresentation, subagentStatus } from "../src/cli.ts";
 import { checkMeasurement } from "../src/check.ts";
-import { displayPath, CONTEXT_BUDGET, SIZE_BAND_M_MAX, SIZE_BAND_S_MAX, billingPeriods, classifyApiError, computeCostUsd, familyOf, modelName, SUBSCRIPTIONS, shellCategory, shellProgram, subscriptionOf, commandBranches, type Subscription, isRetired, routeList } from "../src/catalog.ts";
+import { displayPath, CONTEXT_BUDGET, SIZE_BAND_M_MAX, SIZE_BAND_S_MAX, billingPeriods, classifyApiError, computeCostUsd, familyOf, modelName, SUBSCRIPTIONS, shellCategory, shellProgram, subscriptionOf, commandBranches, type Subscription, isRetired, routeList, ROUTE_RESERVED_PLANS } from "../src/catalog.ts";
 
 test("Claude captures the first root record's branch once", () => {
   for (const initialBranch of [undefined, "initial-branch"]) {
@@ -824,6 +824,27 @@ test("Grok Build and Pi route against one Example Xai window", () => {
   assert.deepEqual(exhausted.filter((r) => r.plan === plan).map((r) => [r.harness, r.used, r.limitedUntil]), [
     ["pi", 100, now + 3_600_000], ["grok", 100, now + 3_600_000],
   ]);
+  const reserved = [...ROUTE_RESERVED_PLANS];
+  const rows: [string[], string, boolean][] = [
+    [[], "implement", true],
+    [[plan.name], "implement", false],
+    [[plan.name], "evaluate", false],
+    [[plan.name], "unlisted", false],
+    [["Another plan"], "implement", true],
+  ];
+  try {
+    usages[0] = reading("xai", 5);
+    const observed = [...sessions, session("opencode", "xai", "grok-4.6"), session("pi", "openrouter", "grok-4.6")];
+    for (const [names, skill, included] of rows) {
+      ROUTE_RESERVED_PLANS.splice(0, ROUTE_RESERVED_PLANS.length, ...names);
+      const available = routesFrom(observed, skill, [], now, usages);
+      assert.equal(available.filter((r) => r.plan === plan).length, included ? 3 : 0, `${names} ${skill}`);
+      assert.ok(available.some((r) => r.model === "openrouter/grok-4.6" && r.plan === null));
+      assert.ok(available.some((r) => r.harness === "codex"));
+    }
+  } finally {
+    ROUTE_RESERVED_PLANS.splice(0, ROUTE_RESERVED_PLANS.length, ...reserved);
+  }
   const retired = session("codex", "openai", "gpt-5.6-sol");
   assert.equal(routesFrom([retired], "evaluate", [], now, usages).some((r) => r.name === "gpt-5.6-sol"), false);
 });

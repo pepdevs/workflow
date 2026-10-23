@@ -20,6 +20,9 @@ first row unless the user named a model or [routing](references/routing.md) call
 Pass every model that authored the work to `-x`: yours, each builder's, and each critic's that
 revised the plan. Record why you took a later route.
 
+`wf route` excludes plans named in `routes.json`'s `reservedPlans`. An explicit `wf run` can still
+launch a route on a reserved plan when the user names it.
+
 ## Prepare the workspace
 
 Commit the source the worker must read. Create a git worktree for a worker that edits, runs checks

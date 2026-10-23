@@ -7,7 +7,7 @@ import { cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writ
 import { test } from "node:test";
 import { ADAPTERS, HARNESS_NAMES } from "../src/harnesses/index.ts";
 import { COMMAND_NAMES, run, usageCommand } from "../src/cli.ts";
-import { repositoryEntries, subscriptionOf } from "../src/catalog.ts";
+import { repositoryEntries, ROUTE_RESERVED_PLANS, subscriptionOf } from "../src/catalog.ts";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -98,6 +98,46 @@ for (const useCase of useCases) {
     assert.equal(output, readFileSync(`test/golden/${file}`, "utf8"));
   });
 }
+
+expected.add("uc-13-reserved.txt");
+test("uc-13 reserved plans allow explicit uc-12 launches", () => {
+  const reserved = [...ROUTE_RESERVED_PLANS];
+  const env = { ...process.env };
+  const dir = mkdtempSync(join(tmpdir(), "workflow-reserved-"));
+  const originals = { grok: { ...ADAPTERS.grok }, pi: { ...ADAPTERS.pi } };
+  try {
+    for (const name of ["GROK_SESSION_ID", "OPENCODE_PID", "PI_SESSION_FILE", "CODEX_THREAD_ID", "CLAUDE_CODE_SESSION_ID"]) delete process.env[name];
+    process.env.CODEX_THREAD_ID = "fixture-parent";
+    ROUTE_RESERVED_PLANS.push("Example Xai");
+    const outputs = ["implement", "critique", "unlisted"].map((skill) => {
+      const args = ["route", skill, "-d", "2002-02-14..", "--root", "test/fixtures"];
+      const output = String(run(args, Date.parse("2026-09-27T12:00:00Z")));
+      assert.doesNotMatch(output, /Example Xai|xai\/grok|grok-4\.6/);
+      return `$ wf ${args.join(" ")}\n${output}\n`;
+    });
+    writeFileSync(join(dir, "task.md"), "Read the daily feed.");
+    for (const [harness, model] of [["grok", "grok-4.6"], ["pi", "xai/grok-4.6"]] as const) {
+      ADAPTERS[harness].launch = (options) => {
+        assert.equal(options.model, model);
+        assert.match(options.prompt, /Read the daily feed\./);
+        return { command: process.execPath, args: ["-e", "console.log('Reserved plan launched.')"] };
+      };
+      ADAPTERS[harness].result = (stdout) => ({ id: null, reply: stdout.trim() });
+      const output = String(run(["run", harness, model, "-i", join(dir, "task.md"), "-r", "read", "-p", dir]));
+      assert.match(output, /Reserved plan launched\./);
+      outputs.push(`$ wf run ${harness} ${model} -i <task file> -r read\n${output.replaceAll(dir, "<worktree>").replace(/(Exit\s+.* after )\S+/g, "$1<duration>")}\n`);
+    }
+    const output = outputs.join("\n");
+    if (update) writeFileSync("test/golden/uc-13-reserved.txt", output);
+    assert.equal(output, readFileSync("test/golden/uc-13-reserved.txt", "utf8"));
+  } finally {
+    process.env = env;
+    ROUTE_RESERVED_PLANS.splice(0, ROUTE_RESERVED_PLANS.length, ...reserved);
+    Object.assign(ADAPTERS.grok, originals.grok);
+    Object.assign(ADAPTERS.pi, originals.pi);
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
 
 test("uc-18 repository size", () => {
   const root = mkdtempSync("test/repo-golden-");
