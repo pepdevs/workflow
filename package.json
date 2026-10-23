@@ -14,11 +14,14 @@
     "showcase": "node --import ./scripts/test-config.ts scripts/showcase.ts"
   },
   "devDependencies": {
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.5",
     "typescript": "^7.0.2"
   },
   "dependencies": {
-    "gpt-tokenizer": "^4.0.0"
+    "gpt-tokenizer": "^4.1.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "overrides": {
+    "undici-types": "^8.12.3"
+  }
 }

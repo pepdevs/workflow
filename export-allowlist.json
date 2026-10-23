@@ -2,6 +2,10 @@
   "schema": 1,
   "files": [
     {
+      "path": ".github/dependabot.yml",
+      "mode": "0644"
+    },
+    {
       "path": ".gitattributes",
       "mode": "0644"
     },
