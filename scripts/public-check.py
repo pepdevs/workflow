@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Audit approved public files, including textual SQLite cells and binary fingerprints,
-and optionally the messages of commits about to be pushed or text about to be published."""
+"""Audit approved public files, outgoing commit trees and messages, or text about to be published."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -31,7 +30,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--denylist', type=Path, help=f'External JSON array of private literal terms; keep outside the public tree. Default: {DEFAULT_DENYLIST} when it exists')
     parser.add_argument('--require-denylist', action='store_true', help='Fail when no denylist is found, as the pre-push hook does')
-    parser.add_argument('--commits', metavar='RANGE', action='append', default=[], help='Also scan the messages of the commits these git log revisions select, such as "a..b" or "SHA --not --remotes=origin"')
+    parser.add_argument('--commits', metavar='RANGE', action='append', default=[], help='Also scan trees and messages of the selected commits, such as "a..b" or "SHA --not --remotes=origin"')
     parser.add_argument('--text', type=Path, metavar='FILE', help='Scan only this text, such as a pull request body; - reads standard input')
     args = parser.parse_args()
     patterns = [('personal path', LOCAL), ('credential', SECRET), ('private network host', PRIVATE_HOST)]
@@ -66,7 +65,7 @@ def main() -> int:
     failures.extend(f'unapproved file: {name}' for name in sorted(actual - approved.keys()))
     failures.extend(f'missing approved file: {name}' for name in sorted(approved.keys() - actual))
 
-    def scan(label: str, body: str, file: str) -> None:
+    def scan(label: str, body: str) -> None:
         for kind, pattern in patterns:
             for match in pattern.finditer(body):
                 # These two documented path examples exercise cross-platform display behavior.
@@ -74,39 +73,70 @@ def main() -> int:
                 line = body.count('\n', 0, match.start()) + 1
                 failures.append(f'{label}:{line}: {kind}')
 
-    binary_count = 0
-    for name in sorted(actual & approved.keys()):
-        file = ROOT / name
-        record = approved[name]
-        raw = file.read_bytes()
+    def scan_content(label: str, raw: bytes, record: dict) -> None:
         if record.get('approvedBinary'):
-            binary_count += 1
             if hashlib.sha256(raw).hexdigest() != record['binarySha256']:
-                failures.append(f'{name}: approved binary fingerprint changed')
+                failures.append(f'{label}: approved binary fingerprint changed')
+                return
             if record['approvedBinary'] == 'pseudonymized-sqlite':
-                with sqlite3.connect(f'file:{file}?mode=ro', uri=True) as database:
-                    if database.execute('PRAGMA freelist_count').fetchone()[0] != 0: failures.append(f'{name}: SQLite has unreviewed free pages')
+                with sqlite3.connect(':memory:') as database:
+                    database.deserialize(raw)
+                    database.execute('PRAGMA query_only=ON')
+                    if database.execute('PRAGMA freelist_count').fetchone()[0] != 0: failures.append(f'{label}: SQLite has unreviewed free pages')
                     tables = [row[0] for row in database.execute("select name from sqlite_master where type='table'")]
                     for table in tables:
-                        for index, row in enumerate(database.execute(f'SELECT * FROM "{table}"')):
+                        quoted = table.replace('"', '""')
+                        for index, row in enumerate(database.execute(f'SELECT * FROM "{quoted}"')):
                             for value in row:
-                                if isinstance(value, str): scan(f'{name}:{table}:{index}', value, name)
+                                if isinstance(value, str): scan(f'{label}:{table}:{index}', value)
             elif record['approvedBinary'] != 'synthetic-git-bundle':
-                failures.append(f'{name}: unknown binary approval')
-            continue
-        try: scan(name, raw.decode('utf-8'), name)
-        except UnicodeDecodeError: failures.append(f'{name}: unapproved binary content')
+                failures.append(f'{label}: unknown binary approval')
+            return
+        try: scan(label, raw.decode('utf-8'))
+        except UnicodeDecodeError: failures.append(f'{label}: unapproved binary content')
+
+    binary_count = 0
+    for name in sorted(actual & approved.keys()):
+        record = approved[name]
+        binary_count += bool(record.get('approvedBinary'))
+        scan_content(name, (ROOT / name).read_bytes(), record)
+
+    def git(*args: str) -> bytes:
+        return subprocess.run(['git', '--no-replace-objects', *args], cwd=ROOT, capture_output=True, check=True).stdout
+
+    seen = set()
     for revisions in args.commits:
-        log = subprocess.run(['git', 'log', '--format=%H%x00%B%x00', *revisions.split()], cwd=ROOT, capture_output=True, text=True, check=True).stdout
-        parts = log.split('\0')
-        for sha, message in zip(parts[0::2], parts[1::2]):
-            scan(f'commit {sha.strip()[:12]} message', message, sha)
+        try:
+            parts = git('log', '--format=%H%x00%B%x00', *revisions.split()).decode('utf-8').split('\0')
+            for sha, message in zip(parts[0::2], parts[1::2]):
+                sha = sha.strip()
+                scan(f'commit {sha[:12]} message', message)
+                for entry in git('ls-tree', '-rz', '--full-tree', sha).split(b'\0'):
+                    if not entry: continue
+                    metadata, path = entry.split(b'\t', 1)
+                    mode, kind, oid = metadata.decode('ascii').split()
+                    name = path.decode('utf-8')
+                    key = (name, mode, oid)
+                    if key in seen: continue
+                    seen.add(key)
+                    label = f'commit {sha[:12]} {name}'
+                    scan(f'{label} path', name)
+                    record = approved.get(name, {})
+                    if not record: failures.append(f'{label}: unapproved file: {name}')
+                    if kind != 'blob' or mode not in {'100644', '100755'}:
+                        failures.append(f'{label}: resource mode {mode} needs review')
+                        continue
+                    if record and mode != f"100{record['mode'][1:]}":
+                        failures.append(f'{label}: approved file mode changed')
+                    scan_content(label, git('cat-file', 'blob', oid), record)
+        except (subprocess.CalledProcessError, UnicodeDecodeError, ValueError):
+            failures.append('cannot read selected commit objects')
     if failures:
         print('\n'.join(failures), file=sys.stderr)
         return 1
     print(f'Public boundary: {len(actual)} approved files, including {binary_count} approved binary fixtures; sensitive signatures absent.')
     if terms: print(f'External export audit: {len(terms)} private terms checked; no matches.')
-    if args.commits: print(f'Commit messages in {", ".join(args.commits)}: no matches.')
+    if args.commits: print(f'Commit trees and messages in {", ".join(args.commits)}: no matches.')
     return 0
 
 
