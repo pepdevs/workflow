@@ -8,6 +8,8 @@ Each use case is a question the operator asks about agent sessions, and the comm
 - A golden file that no use case produces fails the test. Removing a use case removes its golden files.
 
 `wf` stands for `node src/cli.ts`, which `npm run setup` installs as `wf`.
+CLI text removes terminal escape sequences and cursor controls before printing log-derived values.
+Provider JSON bodies stop at 256 KiB; installed-harness login and rate-limit output stops at 1 MiB.
 
 ## uc-18 Repository size
 
@@ -148,7 +150,7 @@ wf route implement -d 2002-02-14..
 
 ## uc-12 Run a skill with another model
 
-Run a skill such as critique with a chosen model in the harness that suits it, in a fresh session, and get its reply, session id and cost. Read mode allows reading tools only; `--write` turns every permission check off, so the caller passes a worktree with `-p`. Grok Build read mode allows `read_file`, `list_dir` and `grep` under plan permission mode. Grok Build write mode approves tool calls without prompting. `-r <role>` records a role, such as implement, that has no installed skill, and leaves out the line telling the session to use that skill. `wf run` records the skill or role, the launching session and, with `--plan`, the plan in the first line of the prompt, which `wf status` and `wf summary` read back. The same line records `repo=<owner/name>` from the effective directory's `origin` and `commit=<full HEAD sha>` when each is available. Grok Build exposes its launching session as `GROK_SESSION_ID` to tools.
+Run a skill such as critique with a chosen model in the harness that suits it, in a fresh session, and get its reply, session id and cost. Read mode allows reading tools only; `--write` turns every permission check off, so the caller passes a worktree with `-p`. Claude read mode limits available built-in tools to `Read,Grep,Glob,WebFetch,WebSearch` and excludes configured MCP servers. Grok Build read mode allows `read_file`, `list_dir` and `grep` under plan permission mode. Grok Build write mode approves tool calls without prompting. `-r <role>` records a role, such as implement, that has no installed skill, and leaves out the line telling the session to use that skill. `wf run` records the skill or role, the launching session and, with `--plan`, the plan in the first line of the prompt, which `wf status` and `wf summary` read back. The same line records `repo=<owner/name>` from the effective directory's `origin` and `commit=<full HEAD sha>` when each is available. Grok Build exposes its launching session as `GROK_SESSION_ID` to tools.
 
 How can a long task continue until its report exists or its validation passes? Pair `--max-attempts <count>` with either `--done-file <path>` or `--done-command <shell command>`. The count includes the first session. The check runs before launching and after every attempt, in the `-p` directory. A file check requires a regular file; a command check passes on exit 0 through `sh -c`. A passing check exits 0 even when the harness failed. Otherwise, each fresh session gets the original task and a short note naming the previous session and attempt. Work stays in the same directory. Each attempt reports its session id, cost and reply; exhaustion exits non-zero. Without a done check, one session runs as usual. `test/golden/uc-12.txt` proves the loop with a fake harness.
 
@@ -223,7 +225,7 @@ wf files <session>
 
 ## uc-6 Keep sessions after harnesses delete logs
 
-Codex, Claude Code, Pi, Grok Build and GitHub Copilot CLI can delete old logs. Copy them to the archive so every command still answers for old sessions and Grok Build subagents. `npm run check:real` runs it on real logs; it has no golden file.
+Codex, Claude Code, Pi, Grok Build and GitHub Copilot CLI can delete old logs. Copy them to the archive so every command still answers for old sessions and Grok Build subagents. New archive directories use mode 0700; copied files use mode 0600 from creation. `npm run check:real` runs it on real logs; it has no golden file.
 
 ```
 wf archive

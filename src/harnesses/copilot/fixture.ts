@@ -1,5 +1,5 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { closeSync, constants, lstatSync, mkdirSync, openSync, writeFileSync } from "node:fs";
+import { basename, dirname, join } from "node:path";
 import { TEXT, redactCommand, redactError, redactJson, skillPath } from "../common/redact.ts";
 import { SHELLS, copilotRoots, findCopilotSession, readEvents } from "./logs.ts";
 
@@ -17,6 +17,13 @@ const TEXT_KEYS = new Set([
 export function cutCopilotFixture(idOrPath: string, outDir: string, roots = copilotRoots()): void {
   const file = findCopilotSession(idOrPath, roots);
   const events = readEvents(file);
+  const id: unknown = events.find((e) => e.type === "session.start")?.data?.sessionId ?? basename(dirname(file));
+  if (typeof id !== "string" || !/^[A-Za-z0-9_-][A-Za-z0-9_.-]*$/.test(id)) {
+    throw new Error("invalid Copilot fixture session id");
+  }
+  const target = join(outDir, id);
+  mkdirSync(target, { recursive: true });
+  if (!lstatSync(target).isDirectory()) throw new Error("Copilot fixture destination must be a directory");
   const out = events.map((e) => {
     const r = redactJson(e, TEXT_KEYS) as any;
     const d = e.data ?? {};
@@ -31,9 +38,10 @@ export function cutCopilotFixture(idOrPath: string, outDir: string, roots = copi
     if (e.type === "tool.execution_complete" && d.error) r.data.error = { message: TEXT };
     return JSON.stringify(r);
   });
-  const id = events.find((e) => e.type === "session.start")?.data?.sessionId ?? idOrPath;
-  const target = join(outDir, id);
-  mkdirSync(target, { recursive: true });
-  writeFileSync(join(target, "events.jsonl"), out.join("\n") + "\n");
-  writeFileSync(join(target, "workspace.yaml"), `id: ${id}\nname: ${TEXT}\n`);
+  const flag = constants.O_WRONLY | constants.O_CREAT | constants.O_TRUNC | constants.O_NOFOLLOW;
+  for (const [name, body] of [["events.jsonl", out.join("\n") + "\n"], ["workspace.yaml", `id: ${id}\nname: ${TEXT}\n`]]) {
+    const fd = openSync(join(target, name), flag);
+    try { writeFileSync(fd, body); }
+    finally { closeSync(fd); }
+  }
 }

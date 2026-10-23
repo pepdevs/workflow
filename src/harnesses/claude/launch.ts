@@ -1,13 +1,16 @@
 import { type Launch, type LaunchOptions, type RunResult } from "../common/launch.ts";
 
 // Print mode ends with one JSON result naming the session and its reply.
-// Read mode allows only tools that read; print mode denies the rest.
+// Read mode restricts tool availability as well as permission approvals.
 export function launchClaude(o: LaunchOptions): Launch {
   return {
     command: "claude",
     args: [
       "-p", o.prompt, "--model", o.model, "--output-format", "json",
-      ...(o.write ? ["--dangerously-skip-permissions"] : ["--allowedTools", "Read,Grep,Glob,WebFetch,WebSearch"]),
+      ...(o.write ? ["--dangerously-skip-permissions"] : [
+        "--tools", "Read,Grep,Glob,WebFetch,WebSearch", "--strict-mcp-config",
+        "--allowedTools", "Read,Grep,Glob,WebFetch,WebSearch",
+      ]),
       ...(o.effort ? ["--effort", o.effort] : []),
     ],
   };

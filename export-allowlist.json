@@ -1060,6 +1060,10 @@
     {
       "path": "test/public-check.test.ts",
       "mode": "0644"
+    },
+    {
+      "path": "test/security.test.ts",
+      "mode": "0644"
     }
   ]
 }

@@ -36,7 +36,7 @@ test("resultFromReply", () => {
   ];
   for (const [name, reply, expected] of rows) assert.equal(resultFromReply(reply)?.status ?? null, expected, name);
 });
-import { usd, eur, dur, table, categoryOf, planMatches, launchHeader, launchOf, gitLaunchInfo, repoFromRemote, parseRunCompletion, modelRows, modelTable, routeCounts, routesFrom, parseRouteEntry, run, summary, sessionProvenance, costCommand, filesCommand, turnsCommand, timeCommand, parentFromEnv, parseAmount, parseAt, parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseWhen, parseXaiBilling, parseZaiQuota, rankRoutes, readGithubEvaluations, usageCommand, windowPace, windowProjection, stepSpans, changedLines, parseReadings, readingLines, sessionStatus, statusPresentation, subagentStatus } from "../src/cli.ts";
+import { terminalText, usd, eur, dur, table, categoryOf, planMatches, launchHeader, launchOf, gitLaunchInfo, repoFromRemote, parseRunCompletion, modelRows, modelTable, routeCounts, routesFrom, parseRouteEntry, run, summary, sessionProvenance, costCommand, filesCommand, turnsCommand, timeCommand, parentFromEnv, parseAmount, parseAt, parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseWhen, parseXaiBilling, parseZaiQuota, rankRoutes, readGithubEvaluations, usageCommand, windowPace, windowProjection, stepSpans, changedLines, parseReadings, readingLines, sessionStatus, statusPresentation, subagentStatus } from "../src/cli.ts";
 import { checkMeasurement } from "../src/check.ts";
 import { displayPath, CONTEXT_BUDGET, SIZE_BAND_M_MAX, SIZE_BAND_S_MAX, billingPeriods, classifyApiError, computeCostUsd, familyOf, modelName, SUBSCRIPTIONS, shellCategory, shellProgram, subscriptionOf, commandBranches, type Subscription, isRetired, routeList } from "../src/catalog.ts";
 
@@ -557,7 +557,7 @@ test("onlyWrittenSince", () => {
 test("launch", () => {
   const o = { model: "m", prompt: "task", effort: null };
   const rows: [keyof typeof ADAPTERS, boolean, string][] = [
-    ["claude", false, "claude -p task --model m --output-format json --allowedTools Read,Grep,Glob,WebFetch,WebSearch"],
+    ["claude", false, "claude -p task --model m --output-format json --tools Read,Grep,Glob,WebFetch,WebSearch --strict-mcp-config --allowedTools Read,Grep,Glob,WebFetch,WebSearch"],
     ["claude", true, "claude -p task --model m --output-format json --dangerously-skip-permissions"],
     ["codex", false, "codex exec --skip-git-repo-check --json -m m -s read-only task"],
     ["codex", true, "codex exec --skip-git-repo-check --json -m m --dangerously-bypass-approvals-and-sandbox task"],
@@ -1194,4 +1194,15 @@ test("usage reset countdowns", () => {
     }], { w: "all" }, now);
     assert.ok(text.trimEnd().endsWith(expected), text);
   }
+});
+
+test("terminal text removes escape sequences and cursor controls", () => {
+  const rows = [
+    ["plain\ntext\twith €", "plain\ntext\twith €"],
+    ["before\x1b[2Jafter", "beforeafter"],
+    ["\x1b]52;c;ZHVtbXk=\x07safe", "safe"],
+    ["\x1b]8;;https://example.invalid\x1b\\link\x1b]8;;\x1b\\", "link"],
+    ["a\rb\bc\x00\x7f\x9bd", "abcd"],
+  ];
+  for (const [input, expected] of rows) assert.equal(terminalText(input), expected);
 });

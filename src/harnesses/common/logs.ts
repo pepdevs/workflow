@@ -1,5 +1,5 @@
 // Log files shared by every harness: the archive, file indexes and prompt markers.
-import { existsSync, readdirSync, statSync } from "node:fs";
+import { existsSync, lstatSync, readdirSync, statSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, relative } from "node:path";
 import { webAction } from "../../catalog.ts";
@@ -38,8 +38,9 @@ export function unionFiles(roots: string[], keep: (rel: string) => boolean): Map
     const walk = (dir: string) => {
       for (const name of readdirSync(dir)) {
         const p = join(dir, name);
-        if (statSync(p).isDirectory()) walk(p);
-        else {
+        const s = lstatSync(p);
+        if (s.isDirectory()) walk(p);
+        else if (s.isFile()) {
           const rel = relative(root, p);
           if (keep(rel) && !out.has(rel)) out.set(rel, p);
         }
