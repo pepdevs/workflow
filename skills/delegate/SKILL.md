@@ -42,6 +42,8 @@ Keep conversation history out and link durable artifacts instead. Keep it under 
 wf run <harness> <model> -i <capsule.md> (-k <skill> | -r <role>) -p <worktree> [--plan <owner/repo>#<number>] [--write] [-e <effort>] > <run.txt>
 ```
 
+Claude read mode exposes only `Read,Grep,Glob,WebFetch,WebSearch` and excludes configured MCP servers.
+
 - `-k <skill>` tells the session to use that installed skill. `-r <role>` records a role with no
   skill, such as `implement`. Both feed `wf models` and `wf route`.
 - Without `--write` the session may only read: use it for research and review that publishes nothing.

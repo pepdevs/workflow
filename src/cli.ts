@@ -21,9 +21,12 @@ import { webCommand, webJson } from "./commands/web.ts";
 import { stopCommand } from "./commands/stop.ts";
 import { repoCommand } from "./commands/repo.ts";
 import { subscriptionsCommand, weeklySpend } from "./commands/subscriptions.ts";
+import { terminalText } from "./commands/format.ts";
 
 // Pure functions the table tests reach through this entry point.
-export { usd, eur, dur, table } from "./commands/format.ts";
+export { usd, eur, dur, table, terminalText } from "./commands/format.ts";
+export { getJson } from "./providers/common.ts";
+export { archiveTree } from "./commands/archive.ts";
 export { parseAmount, parseAt, parseWhen } from "./commands/find.ts";
 export { parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseXaiBilling, parseZaiQuota } from "./providers/index.ts";
 export { modelRows, modelTable, routeCounts } from "./commands/models.ts";
@@ -215,10 +218,10 @@ function show(command: string, session: Session, readClones: boolean, withSize: 
 if (import.meta.main) {
   try {
     // A blank line parts the output from the command that asked for it.
-    const output = await run(process.argv.slice(2), Date.now(), (attempt) => console.log(`\n${attempt}`));
-    console.log(`\n${output}`);
+    const output = await run(process.argv.slice(2), Date.now(), (attempt) => console.log(terminalText(`\n${attempt}`)));
+    console.log(terminalText(`\n${output}`));
   } catch (e) {
-    console.error((e as Error).message);
+    console.error(terminalText((e as Error).message));
     process.exit(2);
   }
 }

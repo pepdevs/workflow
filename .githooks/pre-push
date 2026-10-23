@@ -1,6 +1,6 @@
 #!/bin/sh
 # Blocks a push when the public audit finds a private term or sensitive signature in the
-# tracked files or the pushed commit messages, or when type checking or a test fails.
+# checkout or pushed commit trees and messages, or when type checking or a test fails.
 # Enable with `npm run setup`. The private terms live outside the public tree.
 zero=0000000000000000000000000000000000000000
 while read -r local_ref local_sha remote_ref remote_sha; do

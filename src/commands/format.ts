@@ -1,5 +1,8 @@
 // Text formatting shared by the commands.
+import { stripVTControlCharacters } from "node:util";
 
+// Preserve line breaks and tabs while removing terminal commands and cursor controls.
+export const terminalText = (text: string) => stripVTControlCharacters(text).replace(/[\x00-\x08\x0b-\x1f\x7f-\x9f]/g, "");
 
 const money = (n: number | null, currency: string) =>
   n === null ? "-" : `${currency}${n.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`;

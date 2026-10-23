@@ -124,9 +124,16 @@ export function descendants(pid: number): number[] {
 export function capture(command: string, args: string[], timeoutMs: number): Promise<string> {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, { stdio: ["ignore", "pipe", "ignore"], timeout: timeoutMs });
-    let out = "";
-    child.stdout.on("data", (d) => (out += d));
+    const chunks: Buffer[] = [];
+    let size = 0;
+    child.stdout.on("data", (chunk: Buffer) => {
+      size += chunk.length;
+      if (size > 1024 * 1024) {
+        child.kill("SIGKILL");
+        reject(new Error(`${command} output too large`));
+      } else chunks.push(chunk);
+    });
     child.on("error", () => reject(new Error(`${command} could not start`)));
-    child.on("close", (code, signal) => (code === 0 ? resolve(out.trim()) : reject(new Error(signal ? `${command} timed out` : `${command} exited with ${code}`))));
+    child.on("close", (code, signal) => (code === 0 ? resolve(Buffer.concat(chunks).toString("utf8").trim()) : reject(new Error(signal ? `${command} timed out` : `${command} exited with ${code}`))));
   });
 }

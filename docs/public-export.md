@@ -12,7 +12,9 @@ terms outside the public tree. Pattern scanning supplements review; it cannot es
 arbitrary prose has no confidential fact.
 
 - The pre-push hook runs it with `--require-denylist`, so a push fails without the terms file, and
-  with `--commits` over the pushed commits, so their messages are scanned too.
+  with `--commits` over the pushed commits. It scans every selected tree and message, including
+  deleted files and intermediate content, against the current approvals and private terms.
+  The selected ref can differ from the checkout. Unreadable objects fail the check.
 - Pull request titles, bodies and comments are public as soon as they are posted. Pipe each one
   through `python3 scripts/public-check.py --text -` first.
 

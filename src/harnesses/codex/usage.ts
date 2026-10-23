@@ -10,18 +10,24 @@ export function codexRateLimits(): Promise<unknown> {
     const child = spawn("codex", ["app-server"], { stdio: ["pipe", "pipe", "ignore"] });
     const timer = setTimeout(() => finish(new Error("codex app-server timed out")), TIMEOUT_MS);
     let buffer = "";
+    let bytes = 0;
     let done = false;
     const finish = (error: Error | null, value?: unknown) => {
       if (done) return;
       done = true;
       clearTimeout(timer);
-      child.kill("SIGTERM");
+      child.kill("SIGKILL");
       error ? reject(error) : resolve(value);
     };
     const send = (m: object) => child.stdin.write(`${JSON.stringify(m)}\n`);
     child.on("error", () => finish(new Error("codex could not start")));
     child.on("close", () => finish(new Error("codex app-server ended before answering")));
-    child.stdout.on("data", (d) => {
+    child.stdout.setEncoding("utf8");
+    child.stdin.on("error", () => finish(new Error("codex app-server input closed")));
+    child.stdout.on("data", (d: string) => {
+      if (done) return;
+      bytes += Buffer.byteLength(d);
+      if (bytes > 1024 * 1024) return finish(new Error("codex app-server output too large"));
       buffer += d;
       let nl: number;
       while ((nl = buffer.indexOf("\n")) >= 0) {

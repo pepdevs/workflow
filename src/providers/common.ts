@@ -51,8 +51,24 @@ export async function request(url: string, options: RequestInit): Promise<Respon
 // GET one of the fixed usage endpoints and parse its JSON body.
 export async function getJson(url: string, headers: Record<string, string>): Promise<unknown> {
   const res = await request(url, { headers: { Accept: "application/json", ...headers } });
-  const text = await res.text();
-  if (text.length > MAX_BODY) throw new UsageError("response too large");
+  const reader = res.body?.getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  try {
+    if (reader) {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        size += value.byteLength;
+        if (size > MAX_BODY) throw new UsageError("response too large");
+        chunks.push(value);
+      }
+    }
+  } catch (error) {
+    await reader?.cancel().catch(() => {});
+    throw error instanceof UsageError ? error : new UsageError((error as Error).name === "TimeoutError" ? "timeout" : "network error");
+  } finally { reader?.releaseLock(); }
+  const text = Buffer.concat(chunks, size).toString("utf8");
   try {
     return JSON.parse(text);
   } catch {

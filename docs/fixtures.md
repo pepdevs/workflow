@@ -31,6 +31,7 @@ Grok entries can add `children`, `omitSignals`, or `launchResult` with `prompt` 
 A Claude job uses `"harness": "claude-job"` and a separate `session` field. The script invokes
 the existing adapter cutters. It also regenerates the synthetic repository bundle.
 This command reads the chosen logs and is separate from normal checks.
+Copilot session identities must be single filename components; linked output directories and files are rejected.
 
 ## Review and pseudonymize
 
