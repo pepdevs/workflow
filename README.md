@@ -51,6 +51,17 @@ checks.
 
 ## Delegate skill
 
+Keep a long task running until its report exists, with at most four fresh sessions:
+
+```sh
+wf run codex <model> -i task.md -k security-audit -p <worktree> --write --done-file REPORT.md --max-attempts 4
+```
+
+Each continuation gets the same task and a short note to continue the saved work. Each attempt
+prints its session id and cost. The check runs before launch and after each attempt, relative to
+`-p`. Use `--done-command 'test -f REPORT.md && test -f findings.json'` for a shell check instead.
+A passing check exits 0; exhausting the attempts exits non-zero. Without a check, `wf run` runs one session.
+
 [`skills/delegate`](skills/delegate/SKILL.md) teaches an agent to route, launch, watch and check
 sessions through `wf`. Install it with the [Skills CLI](https://github.com/vercel-labs/skills), and
 its companions from [pepdevs/skills](https://github.com/pepdevs/skills):

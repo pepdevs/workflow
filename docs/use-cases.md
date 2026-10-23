@@ -148,10 +148,14 @@ wf route implement -d 2002-02-14..
 
 ## uc-12 Run a skill with another model
 
-Run a skill such as critique with a chosen model in the harness that suits it, in a fresh session, and get its reply, session id and cost. Read mode allows reading tools only; `--write` turns every permission check off, so the caller passes a worktree with `-p`. Grok Build read mode allows `read_file`, `list_dir` and `grep` under plan permission mode. Grok Build write mode approves tool calls without prompting. `-r <role>` records a role, such as implement, that has no installed skill, and leaves out the line telling the session to use that skill. `wf run` records the skill or role, the launching session and, with `--plan`, the plan in the first line of the prompt, which `wf status` and `wf summary` read back. The same line records `repo=<owner/name>` from the effective directory's `origin` and `commit=<full HEAD sha>` when each is available. Grok Build exposes its launching session as `GROK_SESSION_ID` to tools. It has no golden file because it launches a model.
+Run a skill such as critique with a chosen model in the harness that suits it, in a fresh session, and get its reply, session id and cost. Read mode allows reading tools only; `--write` turns every permission check off, so the caller passes a worktree with `-p`. Grok Build read mode allows `read_file`, `list_dir` and `grep` under plan permission mode. Grok Build write mode approves tool calls without prompting. `-r <role>` records a role, such as implement, that has no installed skill, and leaves out the line telling the session to use that skill. `wf run` records the skill or role, the launching session and, with `--plan`, the plan in the first line of the prompt, which `wf status` and `wf summary` read back. The same line records `repo=<owner/name>` from the effective directory's `origin` and `commit=<full HEAD sha>` when each is available. Grok Build exposes its launching session as `GROK_SESSION_ID` to tools.
+
+How can a long task continue until its report exists or its validation passes? Pair `--max-attempts <count>` with either `--done-file <path>` or `--done-command <shell command>`. The count includes the first session. The check runs before launching and after every attempt, in the `-p` directory. A file check requires a regular file; a command check passes on exit 0 through `sh -c`. A passing check exits 0 even when the harness failed. Otherwise, each fresh session gets the original task and a short note naming the previous session and attempt. Work stays in the same directory. Each attempt reports its session id, cost and reply; exhaustion exits non-zero. Without a done check, one session runs as usual. `test/golden/uc-12.txt` proves the loop with a fake harness.
 
 ```
 wf run <harness> <model> -i <task file> -k <skill>
+wf run <harness> <model> -i <task file> -k <skill> -p <worktree> --write --done-file REPORT.md --max-attempts 4
+wf run <harness> <model> -i <task file> -k <skill> -p <worktree> --write --done-command 'test -f REPORT.md && test -f findings.json' --max-attempts 4
 ```
 
 ## uc-1 Session at a glance

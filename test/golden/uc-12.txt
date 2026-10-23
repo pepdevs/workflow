@@ -1,0 +1,144 @@
+File check passes after a failed harness exit
+Attempt 1/3
+Session    codex fake-1
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 1 after <duration>
+Cost       $12.8 · peak context 203k · 11 turns
+
+Reply
+Progress saved.
+
+Attempt 2/3
+Session    codex fake-2
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 1 after <duration>
+Cost       $12.8 · peak context 203k · 11 turns
+
+Reply
+Progress saved.
+
+Done check passed.
+Exit status: 0
+
+Existing result skips every launch
+Done check passed before launch; no attempts needed.
+Exit status: 0
+
+Shell check passes in the worktree
+Attempt 1/3
+Session    codex fake-1
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 1 after <duration>
+Cost       $12.8 · peak context 203k · 11 turns
+
+Reply
+Progress saved.
+
+Attempt 2/3
+Session    codex fake-2
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 1 after <duration>
+Cost       $12.8 · peak context 203k · 11 turns
+
+Reply
+Progress saved.
+
+Done check passed.
+Exit status: 0
+
+A successful harness exit still exhausts the attempts
+Attempt 1/2
+Session    codex fake-1
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 0 after <duration>
+Cost       $12.8 · peak context 203k · 11 turns
+
+Reply
+All done.
+
+Attempt 2/2
+Session    codex fake-2
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 0 after <duration>
+Cost       $12.8 · peak context 203k · 11 turns
+
+Reply
+All done.
+
+Done check failed after 2 attempts.
+Exit status: 1
+
+A directory is not a report; missing logs and replies still retry
+Attempt 1/2
+Session    codex fake-1
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 0 after <duration>
+Cost       -
+
+Reply
+-
+
+Attempt 2/2
+Session    codex fake-2
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 0 after <duration>
+Cost       -
+
+Reply
+-
+
+Done check failed after 2 attempts.
+Exit status: 1
+
+A failing shell check exhausts the attempts
+Attempt 1/1
+Session    codex fake-1
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 0 after <duration>
+Cost       -
+
+Reply
+-
+
+Done check failed after 1 attempts.
+Exit status: 1
+
+Single-session behavior stays available
+Session    codex fake-1
+Directory  <worktree>
+Mode       write, skill audit, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#12
+Exit       code 0 after <duration>
+Cost       -
+
+Reply
+Finished.
+Exit status: 0
