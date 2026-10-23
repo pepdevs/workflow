@@ -1,11 +1,12 @@
 // Text formatting shared by the commands.
 
 
-export const usd = (n: number | null) =>
-  n === null ? "-" : n > 0 && n < 0.05 ? "<$0.1" : `$${n.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`;
+const money = (n: number | null, currency: string) =>
+  n === null ? "-" : `${currency}${n.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`;
 
-export const eur = (n: number | null) =>
-  n === null ? "-" : `€${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+export const usd = (n: number | null) => n !== null && n > 0 && n < 0.05 ? "<$0.1" : money(n, "$");
+
+export const eur = (n: number | null) => money(n, "€");
 
 export const tok = (n: number) => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(0)}k` : String(n));
 

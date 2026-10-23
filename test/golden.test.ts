@@ -6,8 +6,8 @@ import assert from "node:assert/strict";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { test } from "node:test";
 import { ADAPTERS, HARNESS_NAMES } from "../src/harnesses/index.ts";
-import { COMMAND_NAMES, run } from "../src/cli.ts";
-import { repositoryEntries } from "../src/catalog.ts";
+import { COMMAND_NAMES, run, usageCommand } from "../src/cli.ts";
+import { repositoryEntries, subscriptionOf } from "../src/catalog.ts";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -56,6 +56,34 @@ for (const useCase of useCases) {
     });
   }
 }
+
+// Provider reads are replaced by synthetic readings for uc-14's text tables.
+expected.add("uc-14.txt");
+test("uc-14 plan usage tables", () => {
+  const now = Date.UTC(2026, 8, 27);
+  const usages = [
+    { provider: "anthropic", plan: subscriptionOf("anthropic", now), error: null, windows: [
+      { minutes: 300, usedPercent: 10, resetsAt: now + 61_000 },
+      { minutes: 7 * 1440, usedPercent: 40, resetsAt: now + 90_061_000 },
+    ] },
+    { provider: "xai", plan: subscriptionOf("xai", now), error: null, windows: [
+      { minutes: 7 * 1440, usedPercent: null, resetsAt: null },
+    ] },
+    { provider: "openai", plan: subscriptionOf("openai", now), error: null, windows: [
+      { minutes: 7 * 1440, usedPercent: 100, resetsAt: now - 1000 },
+    ] },
+    { provider: "zai", plan: subscriptionOf("zai", now), error: "unavailable", windows: [] },
+  ].map((u) => ({ ...u, source: "fixture", planType: null }));
+  const output = useCases.find((u) => u.id === "uc-14")!.commands
+    .filter((c) => !c.includes("--json"))
+    .map((c) => {
+      const text = usageCommand(usages, c.includes("all") ? { w: "all" } : {}, now,
+        c.includes("--value") ? new Map([["Example Anthropic", 1234.56], ["Example OpenAI Pro", 0.01]]) : null);
+      return `$ wf ${c.join(" ")}\n${text}\n`;
+    }).join("\n");
+  if (update) writeFileSync("test/golden/uc-14.txt", output);
+  assert.equal(output, readFileSync("test/golden/uc-14.txt", "utf8"));
+});
 
 // Commands over every session read all fixtures. `archive` writes, `run`
 // launches a model, `usage` reads providers, and `repo` and `changes` read a clone.
@@ -387,7 +415,7 @@ test("uc-1 Claude job prefixes", () => {
     const other = `${prefix}${job.endsWith("0") ? "1" : "0"}`;
     const output = run(["summary", job, "--root", root]);
     assert.match(String(output), /2 compactions/);
-    assert.match(String(output), /376,930 → 8,896 tokens · \$0\.25 est\./);
+    assert.match(String(output), /376,930 → 8,896 tokens · \$0\.3 est\./);
     assert.match(String(run(["cost", job, "--root", root])), /377k\s+9k\s+\$0\.3 est\./);
     const golden = `$ wf summary ${job}\n${run(["summary", job, "--root", "test/job-fixtures"])}\n`;
     if (update) writeFileSync("test/golden/uc-1-claude-job.txt", golden);

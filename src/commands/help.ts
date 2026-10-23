@@ -74,10 +74,11 @@ const HELP: Record<string, Help> = {
     ],
   },
   usage: {
-    group: "Choose a route", args: "", line: "plan limits used, time to reset, weekly pace and value",
+    group: "Choose a route", args: "", line: "plan limits, reset time, pace and value",
     detail: [
       "wf usage [-w 7d|5h|all] [--value] | --json",
       "-w window  7d (default), 5h or all",
+      "resets in  h:mm:ss until reset",
       "pace       points ahead or behind an even burn to 100% by reset",
       "needs/day  share per day that uses the rest",
       "--value    adds, per weekly window, reading 7 days of logs:",
@@ -162,7 +163,7 @@ const HELP: Record<string, Help> = {
     ],
   },
   web: {
-    group: "Across sessions", args: "", line: "web searches per tool and how often agents searched again",
+    group: "Across sessions", args: "", line: "web searches and repeated searches",
     detail: [
       "wf web [-d when] [--json] [--root dir]",
       `${WHEN}; 30 days by default`,
@@ -175,7 +176,7 @@ const HELP: Record<string, Help> = {
     ],
   },
   subscriptions: {
-    group: "Across sessions", args: "", line: "plan prices, next bills, use this period and this week",
+    group: "Across sessions", args: "", line: "plan prices, bills and usage",
     detail: [
       "wf subscriptions [--history] [--weeks [--json]] [--models] [-d when] [-s points] [--root dir]",
       "The running plans: price in euros, next bill, API-equivalent use of this billing period,",

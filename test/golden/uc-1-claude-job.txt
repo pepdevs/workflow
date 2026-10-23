@@ -13,8 +13,8 @@ Tool calls    0, 0 failed
 Models        claude-opus-5-5 (4)
 Tokens        input 4 · cache read 559k (100% of input) · cache write 2k (1h 2k) · output 3k (reasoning 1k)
 Context       peak 375k in the root thread · 1 of 2 calls above 200k, costing $0.1 (67%) · 2 compactions
-Compactions   manual 376,930 → 8,896 tokens · $0.25 est.; manual 190,097 → 13,618 tokens · $0.31 est.
-Cost          computed $0.8 (includes $0.56 est. compactions) · reported by harness - · 0 of 4 calls unpriced
+Compactions   manual 376,930 → 8,896 tokens · $0.3 est.; manual 190,097 → 13,618 tokens · $0.3 est.
+Cost          computed $0.8 (includes $0.6 est. compactions) · reported by harness - · 0 of 4 calls unpriced
 Turn time     0:00:00 wall in root turns; across all threads: model 0:00:00, tools 0:00:00, waiting on subagents 0:00:00, waiting on user 0:00:00
 Skills        -
 Incidents     -

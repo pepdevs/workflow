@@ -36,7 +36,7 @@ test("resultFromReply", () => {
   ];
   for (const [name, reply, expected] of rows) assert.equal(resultFromReply(reply)?.status ?? null, expected, name);
 });
-import { categoryOf, planMatches, launchHeader, launchOf, gitLaunchInfo, repoFromRemote, parseRunCompletion, modelRows, modelTable, routeCounts, routesFrom, parseRouteEntry, run, summary, sessionProvenance, costCommand, filesCommand, turnsCommand, timeCommand, parentFromEnv, parseAmount, parseAt, parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseWhen, parseXaiBilling, parseZaiQuota, rankRoutes, readGithubEvaluations, usageCommand, windowPace, windowProjection, stepSpans, changedLines, parseReadings, readingLines, sessionStatus, statusPresentation, subagentStatus } from "../src/cli.ts";
+import { usd, eur, dur, table, categoryOf, planMatches, launchHeader, launchOf, gitLaunchInfo, repoFromRemote, parseRunCompletion, modelRows, modelTable, routeCounts, routesFrom, parseRouteEntry, run, summary, sessionProvenance, costCommand, filesCommand, turnsCommand, timeCommand, parentFromEnv, parseAmount, parseAt, parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseWhen, parseXaiBilling, parseZaiQuota, rankRoutes, readGithubEvaluations, usageCommand, windowPace, windowProjection, stepSpans, changedLines, parseReadings, readingLines, sessionStatus, statusPresentation, subagentStatus } from "../src/cli.ts";
 import { checkMeasurement } from "../src/check.ts";
 import { displayPath, CONTEXT_BUDGET, SIZE_BAND_M_MAX, SIZE_BAND_S_MAX, billingPeriods, classifyApiError, computeCostUsd, familyOf, modelName, SUBSCRIPTIONS, shellCategory, shellProgram, subscriptionOf, commandBranches, type Subscription, isRetired, routeList } from "../src/catalog.ts";
 
@@ -1110,9 +1110,9 @@ test("usageCommand keeps plans without the chosen window", () => {
   // A weekly row with spend shows it, the full window and the multiplier; 5h rows and plans without spend show none.
   const priced = { provider: "anthropic", plan: subscriptionOf("anthropic", now), windows: [window(300), window(7 * 1440)] } as never;
   const text = usageCommand([priced, usage("Both", [window(7 * 1440)])], { w: "all" }, now, new Map([["Example Anthropic", 30]]));
-  assert.match(text, /Example Anthropic\s+5h\s+10%\s+1h 0m\n/);
+  assert.match(text, /Example Anthropic\s+5h\s+10%\s+1:00:00\n/);
   assert.match(text, /\s+7d\s+10%.*\$30\.0\s+\$300\.0\s+\d+\.\dx/);
-  assert.match(text, /Both\s+7d\s+10%\s+1h 0m\s+-?\d+\s+\d+%\/d\n/);
+  assert.match(text, /Both\s+7d\s+10%\s+1:00:00\s+-?\d+\s+\d+%\/d\n/);
 });
 
 test("planMatches", () => {
@@ -1144,4 +1144,54 @@ test("categoryOf", () => {
   for (const [path, expected] of rows) assert.equal(categoryOf(path), expected, path);
   assert.equal(categoryOf("notes/plan.txt", { path: "", categories: { data: ["notes/**"] } }), "data");
   assert.equal(categoryOf("test/fixtures/guide.md", { path: "", categories: { code: ["test/**"], "test data": ["test/fixtures/**"] } }), "test data");
+});
+
+
+test("money formatters", () => {
+  const rows: [number | null, string, string][] = [
+    [null, "-", "-"],
+    [0, "$0.0", "€0.0"],
+    [0.01, "<$0.1", "€0.0"],
+    [0.05, "$0.1", "€0.1"],
+    [12.34, "$12.3", "€12.3"],
+    [1234.56, "$1,234.6", "€1,234.6"],
+  ];
+  for (const [value, dollars, euros] of rows) {
+    assert.equal(usd(value), dollars);
+    assert.equal(eur(value), euros);
+  }
+});
+
+test("duration formatter", () => {
+  const rows: [number | null, string][] = [
+    [null, "-"], [-1, "-"], [0, "0:00:00"], [499, "0:00:00"],
+    [500, "0:00:01"], [59_500, "0:01:00"], [3_599_500, "1:00:00"],
+    [90_061_000, "25:01:01"], [360_000_000, "100:00:00"],
+  ];
+  for (const [value, expected] of rows) assert.equal(dur(value), expected);
+});
+
+test("table aligns money and duration columns", () => {
+  assert.equal(table(["plan", "price", "wall"], [
+    ["A", eur(9), dur(1000)], ["Long", eur(1234.56), dur(90_061_000)],
+  ], [1, 2]), [
+    "plan     price      wall",
+    "----  --------  --------",
+    "A         €9.0   0:00:01",
+    "Long  €1,234.6  25:01:01",
+  ].join("\n"));
+});
+
+test("usage reset countdowns", () => {
+  const now = Date.UTC(2026, 8, 27);
+  const rows: [number | null, string][] = [
+    [null, "-"], [-1000, "0:00:00"], [0, "0:00:00"], [1000, "0:00:01"],
+    [3_661_000, "1:01:01"], [90_061_000, "25:01:01"],
+  ];
+  for (const [remaining, expected] of rows) {
+    const text = usageCommand([{ source: "fixture", provider: "test", plan: null, planType: null, error: null,
+      windows: [{ minutes: 300, usedPercent: 10, resetsAt: remaining === null ? null : now + remaining }],
+    }], { w: "all" }, now);
+    assert.ok(text.trimEnd().endsWith(expected), text);
+  }
 });

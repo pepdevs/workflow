@@ -1,0 +1,33 @@
+$ wf usage
+Plan usage reported by each provider now, 7d windows only (-w all shows every window). Pace: points ahead or behind an even burn to 100% by reset.
+
+plan                window  used  resets in  pace  needs/day  problem
+------------------  ------  ----  ---------  ----  ---------  -----------
+Example Anthropic   7d       40%   25:01:01   -45      58%/d
+Example Xai         7d         -          -
+Example OpenAI Pro  7d      100%    0:00:00     0       0%/d
+Example Zai Pro     -          -          -                   unavailable
+
+$ wf usage -w all
+Plan usage reported by each provider now. Pace: points ahead or behind an even burn to 100% by reset.
+
+plan                window  used  resets in  pace  needs/day  problem
+------------------  ------  ----  ---------  ----  ---------  -----------
+Example Anthropic   5h       10%    0:01:01
+                    7d       40%   25:01:01   -45      58%/d
+Example Xai         7d         -          -
+Example OpenAI Pro  7d      100%    0:00:00     0       0%/d
+Example Zai Pro     -          -          -                   unavailable
+
+$ wf usage --value
+Plan usage reported by each provider now, 7d windows only (-w all shows every window). Pace: points ahead or behind an even burn to 100% by reset.
+Spent: API-equivalent cost of the logged calls since the weekly window started. Full window: spent over the share used. Multiplier: a month of full windows over the plan's price.
+
+plan                window  used  resets in  pace  needs/day     spent  full window  multiplier  problem
+------------------  ------  ----  ---------  ----  ---------  --------  -----------  ----------  -----------
+Example Anthropic   7d       40%   25:01:01   -45      58%/d  $1,234.6     $3,086.4      429.5x
+Example Xai         7d         -          -
+Example OpenAI Pro  7d      100%    0:00:00     0       0%/d     <$0.1        <$0.1        0.0x
+Example Zai Pro     -          -          -                                                      unavailable
+
+Use outside these logs counts toward the limit without adding cost, so the full window and multiplier are lower bounds.

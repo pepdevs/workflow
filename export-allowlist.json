@@ -850,6 +850,10 @@
       "mode": "0644"
     },
     {
+      "path": "test/golden/uc-14.txt",
+      "mode": "0644"
+    },
+    {
       "path": "test/golden/uc-15.txt",
       "mode": "0644"
     },
