@@ -1,6 +1,6 @@
 // uc-12: launch a skill in a fresh headless session of any harness and model.
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import { ADAPTERS, type HarnessName } from "../harnesses/index.ts";
 import { type Session } from "../model.ts";
@@ -26,6 +26,29 @@ export function parentFromEnv(env: Record<string, string | undefined>, openCodeS
 }
 
 const RUN_BUFFER = 256 * 1024 * 1024;
+
+type RunCompletion = { check: { kind: "file" | "command"; value: string }; maxAttempts: number };
+
+export function parseRunCompletion(flags: Record<string, string>): RunCompletion | null {
+  const file = flags["done-file"];
+  const command = flags["done-command"];
+  const count = flags["max-attempts"];
+  if (file === undefined && command === undefined && count === undefined) return null;
+  const check = file !== undefined && command === undefined ? { kind: "file" as const, value: file }
+    : command !== undefined && file === undefined ? { kind: "command" as const, value: command } : null;
+  if (!check?.value.trim()) {
+    throw new Error("wf run needs exactly one of --done-file <path> or --done-command <shell command>");
+  }
+  if (!count || !/^[1-9]\d*$/.test(count) || !Number.isSafeInteger(Number(count))) {
+    throw new Error("wf run needs --max-attempts <positive integer> with a done check");
+  }
+  return { check, maxAttempts: Number(count) };
+}
+
+function checkDone(check: RunCompletion["check"], cwd: string): boolean {
+  if (check.kind === "file") return statSync(resolve(cwd, check.value), { throwIfNoEntry: false })?.isFile() ?? false;
+  return spawnSync("sh", ["-c", check.value], { cwd, stdio: "ignore" }).status === 0;
+}
 
 // Keep only a repository path. Remote usernames, passwords and hosts stay out
 // of the prompt and its harness log.
@@ -60,18 +83,40 @@ export function gitLaunchInfo(cwd: string): Pick<LaunchInfo, "repo" | "commit"> 
   return { ...(repo ? { repo } : {}), ...(commit ? { commit } : {}) };
 }
 
-// Runs one fresh headless session and waits for it. The harness keeps its log,
-// so every other command reads the session afterwards.
-export function runCommand(harness: HarnessName, model: string, flags: Record<string, string>, write: boolean, plan: string | null = null): string {
+// Runs fresh sessions until the done check passes or the attempt limit is reached.
+// Each harness keeps its logs for later commands.
+export function runCommand(harness: HarnessName, model: string, flags: Record<string, string>, write: boolean, plan: string | null = null, completion: RunCompletion | null = null, report?: (output: string) => void): string {
   if (!flags.i) throw new Error("wf run needs -i <file> with the task");
   const input = readFileSync(flags.i, "utf8");
   const parent = parentFromEnv(process.env, (pid) => ADAPTERS.opencode.running().find((r) => r.pid === pid)?.id ?? null);
   const cwd = resolve(flags.p ?? ".");
-  // -r records a role, such as implement, that has no installed skill to load.
-  const header = launchHeader({ skill: flags.k ?? flags.r ?? null, parent, plan, ...gitLaunchInfo(cwd) });
-  const prompt = `${header}\n${flags.k ? `${skillLine(flags.k)}\n\n` : ""}${input}`;
   const env = { ...process.env };
   for (const v of [...SESSION_VARS, "OPENCODE", "CLAUDECODE"]) delete env[v];
+  if (!completion) {
+    const result = runAttempt(harness, model, flags, write, plan, parent, cwd, env, input);
+    if (result.failed) process.exitCode = 1;
+    return result.output;
+  }
+  if (checkDone(completion.check, cwd)) return "Done check passed before launch; no attempts needed.";
+  const outputs: string[] = [];
+  let previousId: string | null = null;
+  for (let attempt = 1; attempt <= completion.maxAttempts; attempt++) {
+    const note = attempt === 1 ? "" : `\n\n## Continue the earlier run\n\nAttempt ${attempt}/${completion.maxAttempts}. Previous session: ${harness} ${previousId ?? "unknown"}.\nThe done check has not passed (${completion.check.kind}: ${completion.check.value}).\nContinue the same task in this directory from the saved work.\nRead the existing artifacts first and finish the task.\n`;
+    const result = runAttempt(harness, model, flags, write, plan, parent, cwd, env, input + note);
+    const output = `Attempt ${attempt}/${completion.maxAttempts}\n${result.output}`;
+    if (report) report(output);
+    else outputs.push(output);
+    if (checkDone(completion.check, cwd)) return [...outputs, "Done check passed."].join("\n\n");
+    previousId = result.id;
+  }
+  process.exitCode = 1;
+  return [...outputs, `Done check failed after ${completion.maxAttempts} attempts.`].join("\n\n");
+}
+
+function runAttempt(harness: HarnessName, model: string, flags: Record<string, string>, write: boolean, plan: string | null, parent: LaunchInfo["parent"], cwd: string, env: NodeJS.ProcessEnv, task: string): { id: string | null; failed: boolean; output: string } {
+  // -r records a role, such as implement, that has no installed skill to load.
+  const header = launchHeader({ skill: flags.k ?? flags.r ?? null, parent, plan, ...gitLaunchInfo(cwd) });
+  const prompt = `${header}\n${flags.k ? `${skillLine(flags.k)}\n\n` : ""}${task}`;
   const { command, args } = ADAPTERS[harness].launch({ model, prompt, write, effort: flags.e ?? null });
   const started = Date.now();
   const r = spawnSync(command, args, { cwd, encoding: "utf8", maxBuffer: RUN_BUFFER, stdio: ["ignore", "pipe", "pipe"], env });
@@ -82,7 +127,6 @@ export function runCommand(harness: HarnessName, model: string, flags: Record<st
     if (id) s = ADAPTERS[harness].load(id);
   } catch {}
   const failed = r.status !== 0 || reply === null;
-  if (failed) process.exitCode = 1;
   const peak = s ? peakContext(s.modelCalls) : null;
   const rows: [string, string][] = [
     ["Session", `${harness} ${id ?? "unknown"}`],
@@ -95,5 +139,5 @@ export function runCommand(harness: HarnessName, model: string, flags: Record<st
   ];
   const w = Math.max(...rows.map((x) => x[0].length));
   const errors = failed && r.stderr ? ["", "Standard error (last 20 lines)", ...r.stderr.trimEnd().split("\n").slice(-20)] : [];
-  return [...rows.map(([k, v]) => `${k.padEnd(w)}  ${v}`), ...errors, "", "Reply", reply ?? "-"].join("\n");
+  return { id, failed, output: [...rows.map(([k, v]) => `${k.padEnd(w)}  ${v}`), ...errors, "", "Reply", reply ?? "-"].join("\n") };
 }

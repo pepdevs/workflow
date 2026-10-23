@@ -46,6 +46,10 @@ wf run <harness> <model> -i <capsule.md> (-k <skill> | -r <role>) -p <worktree> 
   limits. Use it only inside the worktree.
 - `wf run` waits for the session. Run it in the background when the host allows and keep working.
 - Pass `--plan` when the work serves a numbered plan, so `wf plan <number>` counts its cost.
+- For a long task, pair `--max-attempts <count>` with `--done-file <path>` or `--done-command '<shell command>'`.
+  The count includes the first session. Checks run before launch and after each attempt in the worktree.
+  Continuations get the original capsule and a short note to continue the saved work.
+  Every attempt prints its session id, cost and reply. A passing check exits 0; exhaustion exits non-zero.
 
 ## Critique a plan
 
@@ -85,7 +89,8 @@ tool running 30; a spiralling flag names the pattern. End a run that makes no pr
 
 ## Check the result
 
-`<run.txt>` holds the session id, exit, cost, peak context and the reply. Require exit code 0 and a
-reply. Then judge the actual artifacts yourself: the worktree, the pushed branch, the PR head and
+`<run.txt>` holds each session id, exit, cost, peak context and reply. With a done check, require
+the check to pass; it can pass after a failed harness exit. Otherwise, require exit code 0 and a reply.
+Then judge the actual artifacts yourself: the worktree, the pushed branch, the PR head and
 its comments. A successful exit is not acceptance. For a failed or stopped run, read
 `wf summary <session-id-prefix>` and the worktree before another launch.

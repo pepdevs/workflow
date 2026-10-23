@@ -36,7 +36,7 @@ test("resultFromReply", () => {
   ];
   for (const [name, reply, expected] of rows) assert.equal(resultFromReply(reply)?.status ?? null, expected, name);
 });
-import { categoryOf, planMatches, launchHeader, launchOf, gitLaunchInfo, repoFromRemote, modelRows, modelTable, routeCounts, routesFrom, parseRouteEntry, run, summary, sessionProvenance, costCommand, filesCommand, turnsCommand, timeCommand, parentFromEnv, parseAmount, parseAt, parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseWhen, parseXaiBilling, parseZaiQuota, rankRoutes, readGithubEvaluations, usageCommand, windowPace, windowProjection, stepSpans, changedLines, parseReadings, readingLines, sessionStatus, statusPresentation, subagentStatus } from "../src/cli.ts";
+import { categoryOf, planMatches, launchHeader, launchOf, gitLaunchInfo, repoFromRemote, parseRunCompletion, modelRows, modelTable, routeCounts, routesFrom, parseRouteEntry, run, summary, sessionProvenance, costCommand, filesCommand, turnsCommand, timeCommand, parentFromEnv, parseAmount, parseAt, parseChatGptUsage, parseClaudeUsage, parseCodexRateLimits, parseWhen, parseXaiBilling, parseZaiQuota, rankRoutes, readGithubEvaluations, usageCommand, windowPace, windowProjection, stepSpans, changedLines, parseReadings, readingLines, sessionStatus, statusPresentation, subagentStatus } from "../src/cli.ts";
 import { checkMeasurement } from "../src/check.ts";
 import { displayPath, CONTEXT_BUDGET, SIZE_BAND_M_MAX, SIZE_BAND_S_MAX, billingPeriods, classifyApiError, computeCostUsd, familyOf, modelName, SUBSCRIPTIONS, shellCategory, shellProgram, subscriptionOf, commandBranches, type Subscription, isRetired, routeList } from "../src/catalog.ts";
 
@@ -588,6 +588,33 @@ test("result", () => {
     ["opencode", '{"type":"step_start","sessionID":"s1"}\n{"type":"text","sessionID":"s1","part":{"text":"old"}}\n{"type":"step_start","sessionID":"s1"}\n{"type":"text","sessionID":"s1","part":{"text":"ok"}}', "s1", "ok"],
   ];
   for (const [h, stdout, id, reply] of rows) assert.deepEqual(ADAPTERS[h].result(stdout), { id, reply }, `${h} ${stdout.slice(0, 30)}`);
+});
+
+test("parseRunCompletion", () => {
+  const rows: [Record<string, string>, ReturnType<typeof parseRunCompletion>][] = [
+    [{}, null],
+    [{ plan: "fixture/workflow#12" }, null],
+    [{ "done-file": "report with spaces.md", "max-attempts": "1" }, { check: { kind: "file", value: "report with spaces.md" }, maxAttempts: 1 }],
+    [{ "done-command": "test -f report.md && test -f findings.json", "max-attempts": "4" }, { check: { kind: "command", value: "test -f report.md && test -f findings.json" }, maxAttempts: 4 }],
+  ];
+  for (const [flags, expected] of rows) assert.deepEqual(parseRunCompletion(flags), expected);
+  const invalid: Record<string, string>[] = [
+    { "max-attempts": "2" },
+    { "done-file": "REPORT.md" },
+    { "done-command": "true" },
+    { "done-file": "REPORT.md", "done-command": "true", "max-attempts": "2" },
+    { "done-file": "", "max-attempts": "2" },
+    { "done-command": "  ", "max-attempts": "2" },
+    ...["0", "-1", "1.5", "NaN", "2abc", "Infinity", "9007199254740992"].map((count) => ({ "done-file": "REPORT.md", "max-attempts": count })),
+  ];
+  for (const flags of invalid) assert.throws(() => parseRunCompletion(flags), /wf run needs/);
+  for (const args of [
+    ["--done-file"], ["--done-command"], ["--max-attempts"],
+    ["--done-file", "--max-attempts", "2"],
+    ["--done-file", "REPORT.md", "--done-file", "OTHER.md", "--max-attempts", "2"],
+    ["--done-file", "REPORT.md", "--done-command", "true", "--max-attempts", "2"],
+    ["--done-file", "REPORT.md"], ["--max-attempts", "2"],
+  ]) assert.throws(() => run(["run", "codex", "fake-model", "-i", "missing-task.md", ...args]), /wf run/);
 });
 
 test("launchOf", () => {

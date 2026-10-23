@@ -261,6 +261,112 @@ test("uc-1 and uc-9 recorded, estimated and missing repository sizes", () => {
   }
 });
 
+expected.add("uc-12.txt");
+test("uc-12 done checks with a fake harness", () => {
+  const dir = mkdtempSync(join(tmpdir(), "workflow-run-"));
+  const original = { ...ADAPTERS.codex };
+  const env = { ...process.env };
+  const exitCode = process.exitCode;
+  const session = original.load(original.list(["test/fixtures/codex"])[0].ref, ["test/fixtures/codex"]);
+  const prompts: string[] = [];
+  let finishAt = 2;
+  let harnessExit = 1;
+  let reply: string | null = "Progress saved.";
+  let costKnown = true;
+  let reports: string[] | null = null;
+  const outputs: string[] = [];
+  try {
+    for (const name of ["GROK_SESSION_ID", "OPENCODE_PID", "PI_SESSION_FILE", "CODEX_THREAD_ID", "CLAUDE_CODE_SESSION_ID"]) delete process.env[name];
+    process.env.CLAUDE_CODE_SESSION_ID = "fixture-parent";
+    writeFileSync(join(dir, "task.md"), "Write REPORT.md and findings.json.\n");
+    ADAPTERS.codex.launch = (options) => {
+      if (reports) assert.equal(reports.length, prompts.length, "report each attempt before launching the next");
+      prompts.push(options.prompt);
+      assert.deepEqual({ ...options, prompt: "task" }, { model: "fake-model", prompt: "task", write: true, effort: "high" });
+      return { command: process.execPath, args: ["-e", `
+        const fs = require('node:fs');
+        if (${prompts.length} === ${finishAt}) {
+          fs.writeFileSync('REPORT.md', 'Report');
+          fs.writeFileSync('findings.json', '[]');
+        }
+        console.log(${JSON.stringify(JSON.stringify({ id: `fake-${prompts.length}`, reply }))});
+        process.exit(${harnessExit});
+      `] };
+    };
+    ADAPTERS.codex.result = (stdout) => JSON.parse(stdout);
+    ADAPTERS.codex.load = () => {
+      if (!costKnown) throw new Error("Log unavailable");
+      return session;
+    };
+    const invoke = (args: string[]) => {
+      process.exitCode = undefined;
+      const progress = reports;
+      return String(run(["run", "codex", "fake-model", "-i", join(dir, "task.md"), "-k", "audit", "-p", dir, "-e", "high", "--write", "--plan", "fixture/workflow#12", ...args], undefined, progress ? (output) => progress.push(output) : undefined));
+    };
+    const record = (name: string, output: string) => outputs.push(`${name}\n${output.replaceAll(dir, "<worktree>").replace(/(Exit\s+.* after )\S+/g, "$1<duration>")}\nExit status: ${process.exitCode ?? 0}\n`);
+    const fileArgs = ["--done-file", "REPORT.md", "--max-attempts", "3"];
+    const continued = invoke(fileArgs);
+    assert.equal(process.exitCode, undefined);
+    assert.equal(prompts.length, 2);
+    assert.match(prompts[0], /^\[wf run skill=audit parent=claude:fixture-parent plan=fixture\/workflow#12\]/);
+    assert.match(prompts[0], /Write REPORT.md and findings.json\.\n$/);
+    assert.match(prompts[1], /Write REPORT.md and findings.json\.[\s\S]*Continue[\s\S]*fake-1/);
+    assert.match(continued, /Attempt 1\/3[\s\S]*Session\s+codex fake-1[\s\S]*Cost\s+\$[\s\S]*Attempt 2\/3[\s\S]*Session\s+codex fake-2[\s\S]*Cost\s+\$/);
+    record("File check passes after a failed harness exit", continued);
+    record("Existing result skips every launch", invoke(fileArgs));
+    assert.equal(prompts.length, 2);
+    rmSync(join(dir, "REPORT.md"));
+    rmSync(join(dir, "findings.json"));
+    prompts.length = 0;
+    const commandArgs = ["--done-command", "test -f REPORT.md && test -f findings.json", "--max-attempts", "3"];
+    record("Shell check passes in the worktree", invoke(commandArgs));
+    assert.equal(process.exitCode, undefined);
+    assert.equal(prompts.length, 2);
+    rmSync(join(dir, "REPORT.md"));
+    prompts.length = 0;
+    reports = [];
+    finishAt = 2;
+    const summary = invoke(fileArgs);
+    assert.equal(reports.length, 2);
+    assert.equal(summary, "Done check passed.");
+    assert.equal(process.exitCode, undefined);
+    reports = null;
+    rmSync(join(dir, "REPORT.md"));
+    prompts.length = 0;
+    finishAt = 99;
+    harnessExit = 0;
+    reply = "All done.";
+    record("A successful harness exit still exhausts the attempts", invoke(["--done-file", "REPORT.md", "--max-attempts", "2"]));
+    assert.equal(process.exitCode, 1);
+    assert.equal(prompts.length, 2);
+    mkdirSync(join(dir, "REPORT.md"));
+    prompts.length = 0;
+    reply = null;
+    costKnown = false;
+    record("A directory is not a report; missing logs and replies still retry", invoke(["--done-file", "REPORT.md", "--max-attempts", "2"]));
+    assert.equal(process.exitCode, 1);
+    assert.equal(prompts.length, 2);
+    rmSync(join(dir, "REPORT.md"), { recursive: true });
+    prompts.length = 0;
+    record("A failing shell check exhausts the attempts", invoke(["--done-command", "exit 7", "--max-attempts", "1"]));
+    assert.equal(process.exitCode, 1);
+    assert.equal(prompts.length, 1);
+    prompts.length = 0;
+    reply = "Finished.";
+    record("Single-session behavior stays available", invoke([]));
+    assert.equal(process.exitCode, undefined);
+    assert.equal(prompts.length, 1);
+    const output = outputs.join("\n");
+    if (update) writeFileSync("test/golden/uc-12.txt", output);
+    assert.equal(output, readFileSync("test/golden/uc-12.txt", "utf8"));
+  } finally {
+    Object.assign(ADAPTERS.codex, original);
+    process.env = env;
+    process.exitCode = exitCode;
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("every golden file belongs to a use case", () => {
   expected.add("uc-18.txt");
   expected.add("uc-22.txt");

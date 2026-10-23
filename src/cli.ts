@@ -9,7 +9,7 @@ import { modelsCommand } from "./commands/models.ts";
 import { routeCommand } from "./commands/route.ts";
 import { usageCommand, usageJson } from "./commands/usage.ts";
 import { READINGS_FILE, readUsage, recordUsage, recordedReadings, type PlanUsage } from "./providers/index.ts";
-import { runCommand } from "./commands/run.ts";
+import { parseRunCompletion, runCommand } from "./commands/run.ts";
 import { filesCommand } from "./commands/files.ts";
 import { costCommand, lsCommand, summary, timeCommand, toolsCommand, turnsCommand } from "./commands/sessions.ts";
 import { statusCommand } from "./commands/status.ts";
@@ -35,7 +35,7 @@ export { usageCommand, usageJson, windowPace } from "./commands/usage.ts";
 export { stepSpans, windowProjection } from "./commands/subscriptions.ts";
 export { changedLines, parseReadings, readingLines } from "./providers/index.ts";
 export { planMatches } from "./commands/plan.ts";
-export { gitLaunchInfo, parentFromEnv, repoFromRemote } from "./commands/run.ts";
+export { gitLaunchInfo, parentFromEnv, repoFromRemote, parseRunCompletion } from "./commands/run.ts";
 export { sessionStatus, statusPresentation, subagentStatus } from "./commands/status.ts";
 export { launchHeader, launchOf } from "./facts.ts";
 export { categoryOf } from "./repos/index.ts";
@@ -100,7 +100,7 @@ const recorded = (now: number) => (usage: PlanUsage[]) => {
 // arguments. `now` sets the end of relative `-d` windows.
 // `usage`, `route` and `models` with implement sessions on default logs read providers
 // and return a promise. Commands with custom log roots read only local files.
-export function run(argv: string[], now = Date.now()): string | Promise<string> {
+export function run(argv: string[], now = Date.now(), report?: (output: string) => void): string | Promise<string> {
   const { args: parsed, roots } = parseRoots(argv);
   const withSize = parsed.includes("--size") && (parsed[0] === "ls" || parsed[0] === "summary" || parsed[0] === "models");
   const args = withSize ? parsed.filter((arg) => arg !== "--size") : parsed;
@@ -113,13 +113,20 @@ export function run(argv: string[], now = Date.now()): string | Promise<string> 
   if (command === "repo") return repoCommand(args.slice(1));
   if (command === "run" && roots === undefined) {
     const write = args.includes("--write");
-    const at = args.indexOf("--plan");
-    const plan = at === -1 ? null : args[at + 1];
-    if (plan === undefined || plan?.startsWith("-")) throw new Error(commandHelp(command));
-    const { words, flags } = parseFlags(args.slice(1).filter((a, i) => a !== "--write" && i + 1 !== at && i + 1 !== at + 1));
+    const options: Record<string, string> = {};
+    const remaining: string[] = [];
+    for (let i = 1; i < args.length; i++) {
+      const arg = args[i];
+      if (["--plan", "--done-file", "--done-command", "--max-attempts"].includes(arg)) {
+        const value = args[++i];
+        if (!value || value.startsWith("-") || options[arg.slice(2)] !== undefined) throw new Error(commandHelp(command));
+        options[arg.slice(2)] = value;
+      } else if (arg !== "--write") remaining.push(arg);
+    }
+    const { words, flags } = parseFlags(remaining);
     const [h, model, ...rest] = words;
     if (!h || !isHarnessName(h) || !model || rest.length || Object.keys(flags).some((f) => !["i", "k", "r", "p", "e"].includes(f)) || (flags.k && flags.r)) throw new Error(commandHelp(command));
-    return runCommand(h, model, flags, write, plan);
+    return runCommand(h, model, flags, write, options.plan ?? null, parseRunCompletion(options), report);
   }
   if (command === "route" && base !== null) {
     const { words, flags } = parseFlags(args.slice(1));
@@ -207,7 +214,8 @@ function show(command: string, session: Session, readClones: boolean, withSize: 
 if (import.meta.main) {
   try {
     // A blank line parts the output from the command that asked for it.
-    console.log(`\n${await run(process.argv.slice(2))}`);
+    const output = await run(process.argv.slice(2), Date.now(), (attempt) => console.log(`\n${attempt}`));
+    console.log(`\n${output}`);
   } catch (e) {
     console.error((e as Error).message);
     process.exit(2);
