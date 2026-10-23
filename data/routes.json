@@ -1,6 +1,7 @@
 {
   "note": "Configure ordered per-skill or default routes in the local routes.json override. Unlisted routes can still derive from session logs.",
   "paceMargin": 10,
+  "reservedPlans": ["SuperGrok"],
   "providers": {
     "codex": "openai",
     "claude": "anthropic",

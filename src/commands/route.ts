@@ -1,6 +1,6 @@
 // uc-13: rank harnesses and models for a skill.
 import { isHarnessName, type HarnessName } from "../harnesses/index.ts";
-import { familyOf, isRetired, ROUTE_PACE_MARGIN, ROUTE_PROVIDERS, routeList, subscriptionOf, type Subscription } from "../catalog.ts";
+import { familyOf, isRetired, ROUTE_PACE_MARGIN, ROUTE_PROVIDERS, ROUTE_RESERVED_PLANS, routeList, subscriptionOf, type Subscription } from "../catalog.ts";
 import { type QuotaReading, type Session } from "../model.ts";
 import { modelCounts, rootTurns } from "../facts.ts";
 import type { PlanUsage } from "../providers/index.ts";
@@ -118,7 +118,7 @@ export function routesFrom(sessions: Session[], skill: string, authors: string[]
     const hit = hits.filter((h) => h.sub === r.plan && h.at + LIMIT_BLOCK_MS > now).map((h) => h.at + LIMIT_BLOCK_MS);
     if (full.length || hit.length) r.limitedUntil = Math.max(...full, ...hit);
   }
-  return [...routes.values()];
+  return [...routes.values()].filter((r) => !r.plan || !ROUTE_RESERVED_PLANS.includes(r.plan.name));
 }
 
 export function routeCommand(skill: string, flags: Record<string, string>, base: string | undefined, now: number, usage: PlanUsage[] | null): string | Promise<string> {

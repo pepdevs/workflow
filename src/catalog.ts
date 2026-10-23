@@ -359,6 +359,7 @@ export const STATUS: { window: number; quiet: number; tool: number; repeat: numb
 // Ordered routes for each skill, with a default for skills without their own list.
 export const ROUTE_PROVIDERS: Record<string, string> = routes.providers;
 export const ROUTE_PACE_MARGIN: number = routes.paceMargin;
+export const ROUTE_RESERVED_PLANS: string[] = routes.reservedPlans ?? [];
 export const routeList = (skill: string): string[] => routes.skills[skill] ?? routes.default;
 const RETIRED: string[] = routes.retired;
 
