@@ -5,3 +5,7 @@ $ wf time <session>
 2  16:46  0:00:54  0:00:41          75%  0:00:14      0:00:00          0:00:00  recorded
 
 Time between turns (the person's time): total 0:00:08, longest 0:00:08
+
+thread  model          calls  output  model time  output tok/s  p50 call  p95 call  longest call
+------  -------------  -----  ------  ----------  ------------  --------  --------  ------------
+root    glm-5.3-flash     31      5k     0:02:13          33.7   0:00:04   0:00:09       0:00:11

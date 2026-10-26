@@ -128,6 +128,17 @@ export function loadCopilot(idOrPath: string, roots = copilotRoots(), { counts =
   const skillSizes = new Map<string, ResultSize>();
   const spawns = new Map<string, string>();
   const compacting = new Map<string, number>();
+  // Each `assistant.turn_start` begins one model call, which ends at its last message.
+  const callStart = new Map<string, number>();
+  const callEnd = new Map<string, number>();
+  const callDurations = new Map<string, number[]>();
+  const closeCall = (threadId: string) => {
+    const begun = callStart.get(threadId);
+    const ended = callEnd.get(threadId);
+    if (begun !== undefined && ended !== undefined) callDurations.set(threadId, [...(callDurations.get(threadId) ?? []), ended - begun]);
+    callStart.delete(threadId);
+    callEnd.delete(threadId);
+  };
   const awaitingTask = new Set<string>();
   let lastReply: string | null = null;
   let shutdown: { at: number; data: any } | null = null;
@@ -196,11 +207,14 @@ export function loadCopilot(idOrPath: string, roots = copilotRoots(), { counts =
       }
       case "assistant.turn_start":
         if (turn) turn.outcome = "unknown";
+        closeCall(threadId);
+        callStart.set(threadId, at);
         break;
       case "assistant.turn_end":
         if (turn?.outcome === "unknown") turn.outcome = "completed";
         break;
       case "assistant.message":
+        if (callStart.has(threadId)) callEnd.set(threadId, at);
         if (d.model) modelOf.set(threadId, d.model);
         if (threadId === id && typeof d.content === "string" && d.content) lastReply = d.content;
         break;
@@ -291,7 +305,8 @@ export function loadCopilot(idOrPath: string, roots = copilotRoots(), { counts =
   }
   session.skills.push(...pendingSkills);
   session.result = lastReply ? resultFromReply(lastReply) : null;
-  if (shutdown) session.modelCalls.push(...aggregates(session, shutdown, lastAt));
+  for (const threadId of callStart.keys()) closeCall(threadId);
+  if (shutdown) session.modelCalls.push(...aggregates(session, shutdown, lastAt, callDurations));
   session.reportedCostUsd = session.modelCalls.length ? session.modelCalls.reduce((n, c) => n + (c.reportedCostUsd ?? 0), 0) : null;
   return session;
 }
@@ -300,7 +315,7 @@ export function loadCopilot(idOrPath: string, roots = copilotRoots(), { counts =
 // gets one aggregate, in its turn when the thread has one turn. Versions before agentMetrics
 // report the whole session under the root. A session without a shutdown,
 // still running or ended by a crash, has no usage.
-function aggregates(session: Session, shutdown: { at: number; data: any }, lastAt: Map<string, number>): ModelCall[] {
+function aggregates(session: Session, shutdown: { at: number; data: any }, lastAt: Map<string, number>, callDurations: Map<string, number[]>): ModelCall[] {
   const d = shutdown.data;
   const root = session.id;
   const agents: [string, any][] = d.agentMetrics && Object.keys(d.agentMetrics).length
@@ -334,6 +349,7 @@ function aggregates(session: Session, shutdown: { at: number; data: any }, lastA
       reportedCostUsd: nanoAiuToUsd(metrics.totalNanoAiu),
       callCount: modelUsages.reduce((n, m) => n + m.callCount, 0),
       apiDurationMs: metrics.totalApiDurationMs ?? 0,
+      callDurationsMs: callDurations.get(threadId) ?? [],
       contextObservation: threadId === root && Number.isFinite(d.currentTokens) ? { tokens: d.currentTokens, at: shutdown.at } : null,
       modelUsages,
     });

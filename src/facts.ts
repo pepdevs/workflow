@@ -42,6 +42,30 @@ export const toolMs = (t: ToolCall) => (t.startedAt !== null && t.endedAt !== nu
 
 export const callMs = (c: ModelCall) => c.kind === "turn_aggregate" ? c.apiDurationMs : c.startedAt !== null ? Math.max(0, c.endedAt - c.startedAt) : 0;
 
+// Durations of the individual calls a measurement holds, or null when the log
+// does not keep them. An aggregate of one call lasts its API duration.
+export const callDurations = (c: ModelCall): number[] | null => c.kind === "turn_aggregate"
+  ? c.callDurationsMs ?? (c.callCount === 1 ? [c.apiDurationMs] : null)
+  : c.startedAt !== null ? [Math.max(0, c.endedAt - c.startedAt)] : null;
+
+// Nearest-rank percentile of unsorted values, or null for none.
+export const percentile = (xs: number[], p: number): number | null => {
+  if (!xs.length) return null;
+  const sorted = [...xs].sort((a, b) => a - b);
+  return sorted[Math.max(0, Math.ceil((p / 100) * sorted.length) - 1)];
+};
+
+// A subagent shows as its agent type, or as subagent when the harness logs
+// none. Labels that several subagents share get a number in logged order.
+export function threadLabels(s: Session): Map<string, string> {
+  const subagents = s.threads.filter((t) => t.parentId !== null);
+  const base = (t: (typeof subagents)[number]) => t.agentType ?? "subagent";
+  return new Map(subagents.map((t) => {
+    const same = subagents.filter((x) => base(x) === base(t));
+    return [t.id, same.length > 1 ? `${base(t)} ${same.indexOf(t) + 1}` : base(t)];
+  }));
+}
+
 // An individual call's context, or an aggregate's separate observation.
 export const contextOf = (c: ModelCall): number | null => c.kind === "turn_aggregate"
   ? c.contextObservation?.tokens ?? null : c.usage.input + c.usage.cacheRead + c.usage.cacheWrite;
