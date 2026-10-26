@@ -12,3 +12,10 @@ $ wf time <session>
 9  01:05  0:00:38  0:00:31          82%  0:00:07      0:00:00          0:00:00  API duration
 
 Time between turns (the person's time): total 28:11:27, longest 28:01:48
+
+thread       model     calls  output  model time  output tok/s  p50 call  p95 call  longest call
+-----------  --------  -----  ------  ----------  ------------  --------  --------  ------------
+root         grok-4.6    811    1.1M     5:55:27          53.2         -         -             -
+subagent 8   grok-4.6     16     32k     0:10:44          49.1         -         -             -
+subagent 10  grok-4.6      7     11k     0:03:18          53.9         -         -             -
+subagent 12  grok-4.6      5      3k     0:01:13          45.1         -         -             -

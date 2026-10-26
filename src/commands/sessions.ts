@@ -4,7 +4,7 @@ import { aggregateCostParts, CONTEXT_BUDGET, costParts, shellProgram } from "../
 import { type ModelCall, type Session, type ToolCall } from "../model.ts";
 import { type Found, findSessions, parseAmount, parseWhen, shortIds } from "./find.ts";
 import { clock, dur, folderName, oneLine, pct, table, thousands, tok, usd } from "./format.ts";
-import { type LaunchInfo, callCost, listCost, callCount, callMs, contextOf, countBy, launchOf, modelCounts, peakContext, rootThread, rootTurns, spawnedThreads, sum, titleOf, toolMs, turnCalls } from "../facts.ts";
+import { type LaunchInfo, callCost, listCost, callCount, callDurations, callMs, contextOf, countBy, launchOf, modelCounts, peakContext, percentile, rootThread, rootTurns, spawnedThreads, sum, threadLabels, titleOf, toolMs, turnCalls } from "../facts.ts";
 import { sessionProvenance } from "../repos/provenance.ts";
 import { SessionSizeCall } from "../repos/session-size.ts";
 
@@ -212,7 +212,30 @@ export function timeCommand(s: Session): string {
     table(["#", "start", "wall", "model", "model share", "tools", "agent tools", "waiting on user", "call start"], rows, [0, 2, 3, 4, 5, 6, 7]),
     "",
     `Time between turns (the person's time): total ${dur(sum(gaps))}, longest ${dur(Math.max(0, ...gaps))}`,
+    "",
+    speedTable(s),
   ].join("\n");
+}
+
+// uc-5: output rate and call durations per thread.
+function speedTable(s: Session): string {
+  const labels = threadLabels(s);
+  const missingGrokUsage = s.harness === "grok" && s.modelCalls.length === 0;
+  const rows = s.threads.flatMap((thread) => {
+    const calls = s.modelCalls.filter((c) => c.threadId === thread.id && c.purpose === "turn");
+    if (!calls.length) return [];
+    const models = new Map<string, number>();
+    for (const c of calls) for (const [m, n] of modelCounts(c)) models.set(m, (models.get(m) ?? 0) + n);
+    const model = [...models].sort((a, b) => b[1] - a[1])[0][0];
+    const output = sum(calls.map((c) => c.usage.output));
+    const ms = sum(calls.map(callMs));
+    const each = calls.map(callDurations);
+    const durations = each.every((d) => d !== null) ? each.flat() as number[] : [];
+    return [[oneLine(labels.get(thread.id) ?? "root", 24), model, String(sum(calls.map(callCount))), tok(output), dur(ms), ms > 0 ? (output / (ms / 1000)).toFixed(1) : "-", dur(percentile(durations, 50)), dur(percentile(durations, 95)), dur(percentile(durations, 100))]];
+  });
+  if (missingGrokUsage) return "Speed unknown: no usage recorded.";
+  if (!rows.length) return "Speed: no model calls with usage.";
+  return table(["thread", "model", "calls", "output", "model time", "output tok/s", "p50 call", "p95 call", "longest call"], rows, [2, 3, 4, 5, 6, 7, 8]);
 }
 
 type Listed = { found: Found; s: Session; start: number; end: number; cost: number; wall: number };

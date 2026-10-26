@@ -211,6 +211,8 @@ How much of each turn is the model, tools, subagents, and waiting on the person,
 
 Model time for a turn aggregate uses its reported API duration. Root-turn wall time uses turn endpoints. Durations use h:mm:ss, with hours continuing past 24 and numeric columns right-aligned.
 
+How fast does each thread's model answer? A speed table gives one row per thread, the root first and subagents labelled as in uc-19: the model with most calls, calls, output tokens, model time, output tokens per second of model time, and the p50, p95 and longest call. Model time includes the wait for the first token, so the rate is end-to-end throughput. A call's duration runs from its logged start to its end. Copilot reports usage per thread only at shutdown, so a Copilot session without a shutdown has no rows, and its call durations run from each `assistant.turn_start` to that call's last `assistant.message`. They include retries and stalls the reported API duration leaves out, so the longest call can exceed the model time. A Grok Build turn aggregate gives a call duration only when it holds one call. Compaction calls stay out. `-` marks a measure the log does not keep.
+
 ```
 wf time <session>
 ```

@@ -4,7 +4,7 @@ import { CHARS_PER_TOKEN, displayPath, PATH_ALIASES } from "../catalog.ts";
 import { ADAPTER_OF } from "./find.ts";
 import { type Session, type ToolCall } from "../model.ts";
 import { folderName, oneLine, table, tok } from "./format.ts";
-import { peakContext, rootThread, rootTurns, spawnedThreads, sum } from "../facts.ts";
+import { peakContext, rootThread, rootTurns, spawnedThreads, sum, threadLabels } from "../facts.ts";
 
 // A skill tool call has a path when its harness logs the SKILL.md it loaded.
 const isRead = (t: ToolCall) => (t.category === "file_read" || t.category === "skill" || t.shellCategory === "read") && t.paths.length > 0;
@@ -43,14 +43,7 @@ export function filesCommand(s: Session, all = false): string {
     turnOf.set(t.id, i + 1);
     for (const id of spawnedThreads(s, t)) threadTurn.set(id, i + 1);
   });
-  // A subagent shows as its agent type, or as subagent when the harness logs
-  // none. Labels that several subagents share get a number in logged order.
-  const subagents = s.threads.filter((t) => t.parentId !== null);
-  const baseLabel = (t: (typeof subagents)[number]) => t.agentType ?? "subagent";
-  const labels = new Map(subagents.map((t) => {
-    const same = subagents.filter((x) => baseLabel(x) === baseLabel(t));
-    return [t.id, same.length > 1 ? `${baseLabel(t)} ${same.indexOf(t) + 1}` : baseLabel(t)];
-  }));
+  const labels = threadLabels(s);
   const threadName = (id: string) => oneLine(labels.get(id) ?? "root", 24);
   // Harnesses record a compaction as an event or as a model call.
   const compactions = (thread: string) => [

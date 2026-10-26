@@ -63,6 +63,8 @@ export type ModelCall = Measurement & (
       compaction?: never;
       callCount: number;
       apiDurationMs: number;
+      // Each call's duration when the harness logs call endpoints apart from the totals.
+      callDurationsMs?: number[];
       contextObservation: { tokens: number; at: number } | null;
       modelUsages: { provider: string; model: string; callCount: number; usage: Usage }[];
       reportedCostUsd: number;
