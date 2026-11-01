@@ -14,7 +14,7 @@
     "showcase": "node --import ./scripts/test-config.ts scripts/showcase.ts"
   },
   "devDependencies": {
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "typescript": "^7.0.2"
   },
   "dependencies": {
