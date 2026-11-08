@@ -2,7 +2,7 @@ import { mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { TEXT, redactCommand, redactError, redactJson } from "../common/redact.ts";
-import { DB_NAME, databaseOf, openCodeRoots, sessionRows, withDatabase } from "./logs.ts";
+import { DB_NAME, databaseOf, openCodeRoots, type Schema, sessionRows, withDatabase } from "./logs.ts";
 
 // Keys whose string values are free text, however short.
 const TEXT_KEYS = new Set(["text", "input", "output", "metadata", "summary", "system", "title", "raw", "prompt", "description"]);
@@ -23,23 +23,59 @@ function redactMessage(m: any): any {
   return r;
 }
 
+// A schema 2 reply keeps its tool calls in `content`; each keeps what the
+// adapter reads, as redactPart does for schema 1.
+function redactContent(c: any): any {
+  if (c.type !== "tool") return redactJson({ ...c, native: undefined }, TEXT_KEYS);
+  const r = redactJson({ ...c, native: undefined, state: undefined }, TEXT_KEYS) as any;
+  const input: Record<string, unknown> = {};
+  if (c.name === "bash") input.command = redactCommand(String(c.state?.input?.command ?? ""));
+  if (c.name === "skill") input.name = c.state?.input?.name;
+  const sessionId = c.name === "task" ? c.state?.metadata?.sessionId ?? null : null;
+  r.state = { status: c.state?.status, input, metadata: sessionId ? { sessionId } : {}, content: [] };
+  return r;
+}
+
+function redactMessage2(m: any): any {
+  const r = redactMessage({ ...m, content: undefined, native: undefined, snapshot: undefined });
+  if (Array.isArray(m.content)) r.content = m.content.map(redactContent);
+  return r;
+}
+
+const TABLES: Record<Schema, { session: string; rows: [table: string, redact: (row: any) => any][] }> = {
+  1: {
+    session: "session",
+    rows: [
+      ["message", (m) => ({ ...m, data: JSON.stringify(redactMessage(JSON.parse(m.data))) })],
+      ["part", (p) => ({ ...p, data: JSON.stringify(redactPart(JSON.parse(p.data))) })],
+    ],
+  },
+  2: {
+    session: "session_v2",
+    rows: [["session_message", (m) => ({ ...m, data: JSON.stringify(redactMessage2(JSON.parse(m.data))) })]],
+  },
+};
+
 // Writes outDir/opencode.db holding only the session's and its descendants'
-// session, message and part rows, with text replaced by placeholders.
+// session and message rows, with text replaced by placeholders.
 export function cutOpenCodeFixture(sessionId: string, outDir: string, roots = openCodeRoots()): void {
   mkdirSync(outDir, { recursive: true });
   const target = join(outDir, DB_NAME);
   rmSync(target, { force: true });
-  withDatabase(databaseOf(sessionId, roots), (src) => {
+  const { file, schema } = databaseOf(sessionId, roots);
+  const tables = TABLES[schema];
+  withDatabase(file, (src) => {
     const out = new DatabaseSync(target, { enableForeignKeyConstraints: false });
     try {
-      const tables = src.prepare("select sql from sqlite_master where type = 'table' and name in ('session', 'message', 'part')").all() as { sql: string }[];
-      for (const t of tables) out.exec(t.sql);
+      const names = [tables.session, ...tables.rows.map(([t]) => t)];
+      const ddl = src.prepare(`select sql from sqlite_master where type = 'table' and name in (${names.map(() => "?").join(", ")})`).all(...names) as { sql: string }[];
+      for (const t of ddl) out.exec(t.sql);
       const insert = (table: string, row: Record<string, any>) => {
         const cols = Object.keys(row);
         out.prepare(`insert into ${table} (${cols.join(", ")}) values (${cols.map(() => "?").join(", ")})`).run(...Object.values(row));
       };
-      for (const row of sessionRows(src, sessionId)) {
-        insert("session", {
+      for (const row of sessionRows(src, sessionId, schema)) {
+        insert(tables.session, {
           ...row,
           slug: TEXT,
           directory: "<path>",
@@ -51,11 +87,8 @@ export function cutOpenCodeFixture(sessionId: string, outDir: string, roots = op
           revert: null,
           permission: null,
         });
-        for (const m of src.prepare("select * from message where session_id = ?").all(row.id) as any[]) {
-          insert("message", { ...m, data: JSON.stringify(redactMessage(JSON.parse(m.data))) });
-        }
-        for (const p of src.prepare("select * from part where session_id = ?").all(row.id) as any[]) {
-          insert("part", { ...p, data: JSON.stringify(redactPart(JSON.parse(p.data))) });
+        for (const [table, redact] of tables.rows) {
+          for (const r of src.prepare(`select * from ${table} where session_id = ?`).all(row.id) as any[]) insert(table, redact(r));
         }
       }
       out.exec("vacuum");

@@ -1042,6 +1042,10 @@
       "mode": "0644"
     },
     {
+      "path": "test/opencode.test.ts",
+      "mode": "0644"
+    },
+    {
       "path": "test/job-fixtures/claude/jobs/81ef5f5d/state.json",
       "mode": "0644"
     },
