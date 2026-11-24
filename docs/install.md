@@ -53,8 +53,10 @@ root instead. The [use cases](use-cases.md) pair operator questions with command
 fixture output.
 
 `wf usage` reads provider usage through credentials already held by the supported harnesses.
-A timer or other headless caller sets `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`: the
-stored Claude Code login refreshes only while `claude` runs, and both `wf usage` and `wf run claude` honour it.
+The Claude plan needs `claude auth login`: the usage endpoint refuses the inference-only token of
+`claude setup-token`. Claude Code refreshes its login only when it runs, so `wf usage` makes one short
+`claude` call when the login is within 30 minutes of expiry. A timer that runs `wf run claude` sets
+`CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`, which the launched session uses.
 `wf route` can read provider headroom, and `wf models -k implement` can read GitHub evaluations
 through authenticated `gh`. These commands need the corresponding local clients and logins.
 `wf run` requires the chosen agent CLI and installed skills; it starts a fresh headless session.
