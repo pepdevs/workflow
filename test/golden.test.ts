@@ -435,6 +435,72 @@ test("uc-12 done checks with a fake harness", () => {
   }
 });
 
+expected.add("uc-12-remote.txt");
+test("uc-12 Remote Control start with a fake unit", () => {
+  const dir = mkdtempSync(join(tmpdir(), "workflow-remote-"));
+  const original = ADAPTERS.claude.remote;
+  const env = { ...process.env };
+  const exitCode = process.exitCode;
+  const outputs: string[] = [];
+  try {
+    for (const name of ["GROK_SESSION_ID", "OPENCODE_PID", "PI_SESSION_FILE", "CODEX_THREAD_ID", "CLAUDE_CODE_SESSION_ID"]) delete process.env[name];
+    process.env.CLAUDE_CODE_SESSION_ID = "fixture-parent";
+    process.env.CLAUDE_CODE_OAUTH_TOKEN = "fixture-token";
+    writeFileSync(join(dir, "task.md"), "Build the plan.\n");
+    let polls = 0;
+    let launched: { id: string; unit: string; env: Record<string, string> } | null = null;
+    ADAPTERS.claude.remote = {
+      launch: (o) => {
+        assert.match(o.prompt, /^\[wf run skill=implement parent=claude:fixture-parent plan=fixture\/workflow#17\]\nBuild the plan\./);
+        assert.deepEqual([o.model, o.name, o.effort, o.maxSeconds, o.cwd], ["fake-model", "fixture/workflow plan 0017", "high", 7200, dir]);
+        launched = o;
+        return { command: process.execPath, args: ["-e", ""] };
+      },
+      state: (id) => {
+        assert.equal(id, launched?.id);
+        polls++;
+        return { logged: polls >= 2, url: polls >= 3 ? "https://remote.example/session_fixture" : null };
+      },
+    };
+    const args = ["run", "claude", "fake-model", "-i", join(dir, "task.md"), "-r", "implement", "-p", dir, "-e", "high", "--plan", "fixture/workflow#17", "--remote-control", "--name", "fixture/workflow plan 0017", "--max-runtime", "7200"];
+    process.exitCode = undefined;
+    const output = String(run(args));
+    assert.equal(launched!.unit, `wf-${launched!.id}`);
+    assert.equal(launched!.env.CLAUDE_CODE_OAUTH_TOKEN, undefined, "a token login stays out of the unit");
+    assert.equal(launched!.env.CLAUDE_CODE_SESSION_ID, undefined, "the parent session stays out of the unit");
+    outputs.push(`Starts, waits for the logged prompt and the Remote Control URL\n${output.replaceAll(launched!.id, "<id>").replaceAll(dir, "<worktree>")}\nExit status: ${process.exitCode ?? 0}\n`);
+    for (const [label, extra] of [
+      ["Refuses --write", ["--remote-control", "--name", "x", "--write"]],
+      ["Needs a name", ["--remote-control"]],
+      ["Takes no done check", ["--remote-control", "--name", "x", "--done-file", "REPORT.md", "--max-attempts", "2"]],
+      ["Needs --remote-control for a name", ["--name", "x"]],
+    ] as const) {
+      let message = "";
+      try {
+        run(["run", "claude", "fake-model", "-i", join(dir, "task.md"), "-p", dir, ...extra]);
+      } catch (error) {
+        message = (error as Error).message;
+      }
+      outputs.push(`${label}\n${message}\n`);
+    }
+    let message = "";
+    try {
+      run(["run", "codex", "fake-model", "-i", join(dir, "task.md"), "-p", dir, "--remote-control", "--name", "x"]);
+    } catch (error) {
+      message = (error as Error).message;
+    }
+    outputs.push(`Starts Claude sessions only\n${message}\n`);
+    const output2 = outputs.join("\n");
+    if (update) writeFileSync("test/golden/uc-12-remote.txt", output2);
+    assert.equal(output2, readFileSync("test/golden/uc-12-remote.txt", "utf8"));
+  } finally {
+    ADAPTERS.claude.remote = original;
+    process.env = env;
+    process.exitCode = exitCode;
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("every golden file belongs to a use case", () => {
   expected.add("uc-18.txt");
   expected.add("uc-22.txt");

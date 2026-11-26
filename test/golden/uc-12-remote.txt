@@ -1,0 +1,25 @@
+Starts, waits for the logged prompt and the Remote Control URL
+Session    claude <id>
+Name       fixture/workflow plan 0017
+Directory  <worktree>
+Mode       remote control, role implement, effort high
+Parent     claude fixture-parent
+Plan       fixture/workflow#17
+Unit       wf-<id>.service, at most 2:00:00
+Remote     https://remote.example/session_fixture
+Exit status: 0
+
+Refuses --write
+--remote-control replaces --write: auto mode answers permission requests
+
+Needs a name
+wf run --remote-control needs --name <name>
+
+Takes no done check
+--remote-control starts one session and takes no done check
+
+Needs --remote-control for a name
+--name and --max-runtime go with --remote-control
+
+Starts Claude sessions only
+wf run --remote-control starts claude sessions only
