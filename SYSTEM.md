@@ -11,7 +11,7 @@ session and billing reports, and launches or stops supported agent sessions.
 | `src/commands/` | Session, file, model, route, usage, billing, run, status, stop, archive, repository, export, prompts and web use cases; help and shared formatting |
 | `src/harnesses/` | One adapter per agent; the only code that knows its logs, credentials, processes, launch commands, and fixture cutters |
 | `src/harnesses/index.ts` | Public adapter, login, process, launch, and fixture entry points |
-| `src/harnesses/common/` | Log/archive helpers, redaction, process and launch types |
+| `src/harnesses/common/` | Log/archive helpers, redaction, process and launch types, user units and launch records |
 | `src/providers/` | Provider usage and GitHub evaluation reads; persistent provider readings |
 | `src/repos/` | Local Git trees, repository identity/provenance, categories, token and size measurements |
 | `src/model.ts`, `src/facts.ts` | Session tree and derived facts |
@@ -19,6 +19,7 @@ session and billing reports, and launches or stops supported agent sessions.
 | `src/check.ts` | Live-session model validation |
 | `data/` | Public prices, thresholds and web tool backends; neutral paths, repositories, routes, and subscriptions defaults |
 | `test/config/` | Invented fixture-only catalog overrides |
+| `test/archive/` | Invented launch records the fixtures read |
 | `test/fixtures/`, `test/fixture-variants/`, `test/job-fixtures/` | Redacted and pseudonymized adapter records with a shifted timeline |
 | `test/fixture-provenance.json` | Fixture transformation format; no original mapping or time anchor |
 | `test/golden/` | Output of the use cases on fixtures |

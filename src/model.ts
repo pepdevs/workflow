@@ -167,7 +167,14 @@ export type Session = {
   quotaReadings: QuotaReading[];
   reportedCostUsd: number | null;
   result?: SessionResult | null;
+  // The launch facts `wf run --remote-control` recorded beside the archive,
+  // for a session whose prompt carries no launch header.
+  launchRecord?: LaunchRecord | null;
 };
+
+// What `wf run` knows at launch: the skill or role, the launching session, the
+// plan as <owner/repo>#<number>, and the starting repository and commit.
+export type LaunchRecord = { skill: string | null; parent: { harness: string; id: string } | null; plan?: string | null; repo?: string; commit?: string };
 
 export const emptyUsage = (): Usage => ({
   input: 0,

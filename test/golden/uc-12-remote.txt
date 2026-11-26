@@ -8,6 +8,8 @@ Plan       fixture/workflow#17
 Unit       wf-<id>.service, at most 2:00:00
 Remote     https://remote.example/session_fixture
 Exit status: 0
+Launch record
+{"skill":"implement","parent":{"harness":"claude","id":"fixture-parent"},"plan":"fixture/workflow#17"}
 
 Refuses --write
 --remote-control replaces --write: auto mode answers permission requests
@@ -20,6 +22,9 @@ Takes no done check
 
 Needs --remote-control for a name
 --name and --max-runtime go with --remote-control
+
+Refuses a directory Claude Code has not trusted
+Claude Code has not trusted <worktree>/untrusted, so the session would wait at its trust dialog. Run it in a folder inside a trusted checkout, or open <worktree>/untrusted once in Claude Code and trust it.
 
 Starts Claude sessions only
 wf run --remote-control starts claude sessions only

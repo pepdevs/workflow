@@ -10,7 +10,7 @@ $ wf export -d 2002-02-14..2002-03-15
       "day": "2002-02-22",
       "harness": "claude",
       "model": "claude-opus-5",
-      "skill": null,
+      "skill": "implement",
       "repository": null,
       "sessions": 1,
       "tokens": {

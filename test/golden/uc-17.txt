@@ -1,2 +1,10 @@
 $ wf plan 7 -d 2002-02-14..
-No wf run session names plan 7 in the window. Widen it with -d.
+Plan fixture/workflow#7: 1 session, $10.5.
+
+skill      sessions   cost
+---------  --------  -----
+implement         1  $10.5
+
+session   skill      harness  model           cost     time  pull request
+--------  ---------  -------  -------------  -----  -------  ------------
+d87437e1  implement  claude   claude-opus-5  $10.5  2:37:43  -

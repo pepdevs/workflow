@@ -18,7 +18,7 @@ import { planCommand } from "./commands/plan.ts";
 import { changesCommand } from "./commands/changes.ts";
 import { exportCommand, promptsCommand } from "./commands/export.ts";
 import { webCommand, webJson } from "./commands/web.ts";
-import { stopCommand } from "./commands/stop.ts";
+import { stopCommand, stopUnlogged } from "./commands/stop.ts";
 import { repoCommand } from "./commands/repo.ts";
 import { subscriptionsCommand, weeklySpend } from "./commands/subscriptions.ts";
 import { terminalText } from "./commands/format.ts";
@@ -204,7 +204,15 @@ export function run(argv: string[], now = Date.now(), report?: (output: string) 
   const all = command === "files" && args.includes("-a");
   const [, h, sid, ...extra] = all ? args.filter((a) => a !== "-a") : args;
   if (COMMANDS[command] && sid === undefined && extra.length === 0 && h !== undefined && base !== null && !isHarnessName(h)) {
-    const f = findByPrefix(h, base);
+    let f: ReturnType<typeof findByPrefix>;
+    try {
+      f = findByPrefix(h, base);
+    } catch (error) {
+      // A Remote Control session stuck before its first prompt has no log, only its unit.
+      const stopped = command === "stop" ? stopUnlogged(h) : null;
+      if (stopped === null) throw error;
+      return stopped;
+    }
     return show(command, ADAPTERS[f.harness].load(f.ref, f.roots, { counts: command === "files" }), roots === undefined, withSize, all);
   }
   if (!command || !COMMANDS[command] || !h || !isHarnessName(h) || !sid) throw new Error(commandHelp(command));

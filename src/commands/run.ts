@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
-import { ADAPTERS, type HarnessName } from "../harnesses/index.ts";
+import { ADAPTERS, type HarnessName, unitOf, writeLaunchRecord } from "../harnesses/index.ts";
 import { type Session } from "../model.ts";
 import { dur, tok, usd } from "./format.ts";
 import { type LaunchInfo, callCost, launchHeader, peakContext, rootTurns, skillLine, sum } from "../facts.ts";
@@ -34,9 +34,6 @@ const REMOTE_LOG_WAIT_MS = 60_000;
 const REMOTE_URL_WAIT_MS = 30_000;
 const POLL_MS = 250;
 const sleep = (ms: number) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
-
-// The user unit a Remote Control session runs in; `wf stop` stops it by this name.
-export const unitOf = (id: string) => `wf-${id}`;
 
 // Variables a remote session must not inherit: a harness's own session, and a
 // token login, which Remote Control refuses, in place of the stored login.
@@ -152,15 +149,18 @@ export function runCommand(harness: HarnessName, model: string, flags: Record<st
 }
 
 // Starts a session with Remote Control in its own user unit and returns once
-// its log holds the launch header, with its id and Remote Control URL. The
-// session runs on after `wf run` exits; `wf stop` ends it.
+// its log holds its first prompt, with its id and Remote Control URL. The
+// session runs on after `wf run` exits; `wf stop` ends it. The operator reads
+// the prompt on the phone, so the launch facts go to a launch record and the
+// prompt starts with the task.
 function startRemote(harness: HarnessName, model: string, flags: Record<string, string>, plan: string | null, parent: LaunchInfo["parent"], cwd: string, task: string, run: RemoteRun): { failed: boolean; output: string } {
   const remote = ADAPTERS[harness].remote;
   if (!remote) throw new Error(`wf run --remote-control starts ${HARNESS_WITH_REMOTE.join(", ")} sessions only`);
+  if (!remote.trusted(cwd)) throw new Error(`Claude Code has not trusted ${cwd}, so the session would wait at its trust dialog. Run it in a folder inside a trusted checkout, or open ${cwd} once in Claude Code and trust it.`);
   const id = randomUUID();
   const unit = unitOf(id);
-  const header = launchHeader({ skill: flags.k ?? flags.r ?? null, parent, plan, ...gitLaunchInfo(cwd) });
-  const prompt = `${header}\n${flags.k ? `${skillLine(flags.k)}\n\n` : ""}${task}`;
+  writeLaunchRecord(harness, id, { skill: flags.k ?? flags.r ?? null, parent, plan, ...gitLaunchInfo(cwd) });
+  const prompt = `${flags.k ? `${skillLine(flags.k)}\n\n` : ""}${task}`;
   // systemd takes only names a shell could export.
   const env = Object.fromEntries(Object.entries(process.env).filter((e): e is [string, string] => e[1] !== undefined && /^[A-Za-z_]\w*$/.test(e[0]) && !REMOTE_DROPPED.test(e[0])));
   const { command, args } = remote.launch({ model, prompt, effort: flags.e ?? null, name: run.name, id, unit, cwd, env, maxSeconds: run.maxSeconds });

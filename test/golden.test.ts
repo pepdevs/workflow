@@ -5,7 +5,7 @@
 import assert from "node:assert/strict";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { test } from "node:test";
-import { ADAPTERS, HARNESS_NAMES } from "../src/harnesses/index.ts";
+import { ADAPTERS, ARCHIVE_ROOT, HARNESS_NAMES, UNITS } from "../src/harnesses/index.ts";
 import { COMMAND_NAMES, run, usageCommand } from "../src/cli.ts";
 import { repositoryEntries, ROUTE_RESERVED_PLANS, subscriptionOf } from "../src/catalog.ts";
 import { spawnSync } from "node:child_process";
@@ -449,9 +449,12 @@ test("uc-12 Remote Control start with a fake unit", () => {
     writeFileSync(join(dir, "task.md"), "Build the plan.\n");
     let polls = 0;
     let launched: { id: string; unit: string; env: Record<string, string> } | null = null;
+    const untrusted = join(dir, "untrusted");
+    mkdirSync(untrusted);
     ADAPTERS.claude.remote = {
+      trusted: (d) => d === dir,
       launch: (o) => {
-        assert.match(o.prompt, /^\[wf run skill=implement parent=claude:fixture-parent plan=fixture\/workflow#17\]\nBuild the plan\./);
+        assert.equal(o.prompt, "Build the plan.\n", "the prompt the operator reads carries no launch header");
         assert.deepEqual([o.model, o.name, o.effort, o.maxSeconds, o.cwd], ["fake-model", "fixture/workflow plan 0017", "high", 7200, dir]);
         launched = o;
         return { command: process.execPath, args: ["-e", ""] };
@@ -468,7 +471,10 @@ test("uc-12 Remote Control start with a fake unit", () => {
     assert.equal(launched!.unit, `wf-${launched!.id}`);
     assert.equal(launched!.env.CLAUDE_CODE_OAUTH_TOKEN, undefined, "a token login stays out of the unit");
     assert.equal(launched!.env.CLAUDE_CODE_SESSION_ID, undefined, "the parent session stays out of the unit");
-    outputs.push(`Starts, waits for the logged prompt and the Remote Control URL\n${output.replaceAll(launched!.id, "<id>").replaceAll(dir, "<worktree>")}\nExit status: ${process.exitCode ?? 0}\n`);
+    const record = join(ARCHIVE_ROOT, "launches", "claude", `${launched!.id}.json`);
+    const recorded = readFileSync(record, "utf8");
+    rmSync(record);
+    outputs.push(`Starts, waits for the logged prompt and the Remote Control URL\n${output.replaceAll(launched!.id, "<id>").replaceAll(dir, "<worktree>")}\nExit status: ${process.exitCode ?? 0}\nLaunch record\n${recorded}`);
     for (const [label, extra] of [
       ["Refuses --write", ["--remote-control", "--name", "x", "--write"]],
       ["Needs a name", ["--remote-control"]],
@@ -483,6 +489,15 @@ test("uc-12 Remote Control start with a fake unit", () => {
       }
       outputs.push(`${label}\n${message}\n`);
     }
+    let refused = "";
+    const before = launched!.id;
+    try {
+      run(["run", "claude", "fake-model", "-i", join(dir, "task.md"), "-p", untrusted, "--remote-control", "--name", "x"]);
+    } catch (error) {
+      refused = (error as Error).message;
+    }
+    assert.equal(launched!.id, before, "an untrusted directory starts no unit");
+    outputs.push(`Refuses a directory Claude Code has not trusted\n${refused.replaceAll(dir, "<worktree>")}\n`);
     let message = "";
     try {
       run(["run", "codex", "fake-model", "-i", join(dir, "task.md"), "-p", dir, "--remote-control", "--name", "x"]);
@@ -498,6 +513,47 @@ test("uc-12 Remote Control start with a fake unit", () => {
     process.env = env;
     process.exitCode = exitCode;
     rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// A Remote Control session that never logged its prompt has only its unit.
+expected.add("uc-11-unlogged.txt");
+test("uc-11 stop a session that logged no prompt with fake units", () => {
+  const original = { ...UNITS };
+  const id = "0f1e2d3c-4b5a-4968-8776-655443322110";
+  let active = new Set([`wf-${id}.service`]);
+  let failure: string | null = null;
+  const stopped: string[] = [];
+  Object.assign(UNITS, {
+    active: (unit: string) => active.has(unit),
+    stop: (unit: string) => {
+      stopped.push(unit);
+      return failure;
+    },
+  });
+  const attempt = (label: string, arg: string) => {
+    let output: string;
+    try {
+      output = String(run(["stop", arg, "--root", "test/fixtures"]));
+    } catch (error) {
+      output = (error as Error).message;
+    }
+    return `${label}\n$ wf stop ${arg}\n${output}\n`;
+  };
+  try {
+    const outputs = [attempt("Stops the unit of a full id", id)];
+    assert.deepEqual(stopped, [`wf-${id}.service`]);
+    outputs.push(attempt("A prefix stops no unit", id.slice(0, 8)));
+    failure = "Unit not loaded.";
+    outputs.push(attempt("Reports a failed stop", id));
+    active = new Set();
+    outputs.push(attempt("No session and no active unit", id));
+    assert.equal(stopped.length, 2);
+    const output = outputs.join("\n");
+    if (update) writeFileSync("test/golden/uc-11-unlogged.txt", output);
+    assert.equal(output, readFileSync("test/golden/uc-11-unlogged.txt", "utf8"));
+  } finally {
+    Object.assign(UNITS, original);
   }
 });
 

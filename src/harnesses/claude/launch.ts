@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import { type Launch, type LaunchOptions, type RemoteOptions, type RunResult, inUserUnit } from "../common/launch.ts";
 
 // Print mode ends with one JSON result naming the session and its reply.
@@ -28,6 +31,25 @@ export function launchClaudeRemote(o: RemoteOptions): Launch {
       "--permission-mode", "auto", ...(o.effort ? ["--effort", o.effort] : []), o.prompt,
     ],
   });
+}
+
+// Claude Code's own settings, which record the folders the operator trusted.
+const claudeConfig = () => join(process.env.CLAUDE_CONFIG_DIR ?? homedir(), ".claude.json");
+
+// Claude Code starts without its trust dialog in a folder the operator trusted
+// or inside one. An interactive session in any other folder waits at that
+// dialog and never logs its prompt. Reads the settings and never changes them.
+export function claudeTrusted(dir: string, config = claudeConfig()): boolean {
+  let projects: Record<string, { hasTrustDialogAccepted?: unknown }> = {};
+  try {
+    projects = JSON.parse(readFileSync(config, "utf8"))?.projects ?? {};
+  } catch {
+    return false;
+  }
+  for (let d = resolve(dir); ; d = dirname(d)) {
+    if (projects[d]?.hasTrustDialogAccepted === true) return true;
+    if (dirname(d) === d) return false;
+  }
 }
 
 export function claudeResult(stdout: string): RunResult {

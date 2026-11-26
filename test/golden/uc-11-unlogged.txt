@@ -1,0 +1,15 @@
+Stops the unit of a full id
+$ wf stop 0f1e2d3c-4b5a-4968-8776-655443322110
+Stopping wf-0f1e2d3c-4b5a-4968-8776-655443322110.service: session 0f1e2d3c-4b5a-4968-8776-655443322110 has logged no prompt yet.
+
+A prefix stops no unit
+$ wf stop 0f1e2d3c
+no session id starts with 0f1e2d3c
+
+Reports a failed stop
+$ wf stop 0f1e2d3c-4b5a-4968-8776-655443322110
+systemctl --user stop wf-0f1e2d3c-4b5a-4968-8776-655443322110.service failed: Unit not loaded.
+
+No session and no active unit
+$ wf stop 0f1e2d3c-4b5a-4968-8776-655443322110
+no session id starts with 0f1e2d3c-4b5a-4968-8776-655443322110

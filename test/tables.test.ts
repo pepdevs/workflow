@@ -617,6 +617,24 @@ test("parseRunCompletion", () => {
   ]) assert.throws(() => run(["run", "codex", "fake-model", "-i", "missing-task.md", ...args]), /wf run/);
 });
 
+test("Claude Code trust", () => {
+  const dir = mkdtempSync(join(tmpdir(), "workflow-trust-"));
+  try {
+    const config = join(dir, "claude.json");
+    writeFileSync(config, JSON.stringify({ projects: { "/fixture/trusted": { hasTrustDialogAccepted: true }, "/fixture/declined": { hasTrustDialogAccepted: false } } }));
+    const rows: [string, string, string, boolean][] = [
+      ["trusted folder", "/fixture/trusted", config, true],
+      ["folder inside a trusted one", "/fixture/trusted/worktrees/a", config, true],
+      ["dialog not accepted", "/fixture/declined", config, false],
+      ["sibling of a trusted folder", "/fixture/trusted-not", config, false],
+      ["no settings file", "/fixture/trusted", join(dir, "missing.json"), false],
+    ];
+    for (const [name, folder, file, expected] of rows) assert.equal(ADAPTERS.claude.remote.trusted(folder, file), expected, name);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("launchOf", () => {
   type Session = Parameters<typeof launchOf>[0];
   const withPrompt = (promptText: string): Session => ({
@@ -639,6 +657,13 @@ test("launchOf", () => {
     ["[wf run skill=x parent=nowhere:1]", { skill: "x", parent: null }],
   ];
   for (const [prompt, launch] of rows) assert.deepEqual(launchOf(withPrompt(prompt)), launch, prompt);
+  const recordRows: [string, string, Parameters<typeof launchOf>[0]["launchRecord"], ReturnType<typeof launchOf>][] = [
+    ["record without header", "task", { skill: "review-gate", parent: { harness: "claude", id: "c6c4" }, plan: "fixture/workflow#7" }, { skill: "review-gate", parent: { harness: "claude", id: "c6c4" }, plan: "fixture/workflow#7" }],
+    ["header wins over record", "[wf run skill=critique parent=-]\ntask", { skill: "implement", parent: null }, { skill: "critique", parent: null }],
+    ["record with unknown parent harness", "task", { skill: "x", parent: { harness: "nowhere", id: "1" } }, { skill: "x", parent: null }],
+    ["record with a malformed commit", "task", { skill: null, parent: null, commit: "abc" }, null],
+  ];
+  for (const [name, prompt, launchRecord, launch] of recordRows) assert.deepEqual(launchOf({ ...withPrompt(prompt), launchRecord }), launch, name);
 });
 
 test("repoFromRemote", () => {
