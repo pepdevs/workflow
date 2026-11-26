@@ -36,6 +36,27 @@ export function listClaude(roots = claudeRoots()): SessionRef[] {
     .sort((a, b) => a.ref.localeCompare(b.ref));
 }
 
+// A Remote Control session's live log so far: whether it logged a prompt,
+// and the URL its bridge_status record names once Remote Control connected.
+export function claudeRemoteState(id: string, live = CLAUDE_LIVE): { logged: boolean; url: string | null } {
+  let projects: string[] = [];
+  try {
+    projects = readdirSync(live);
+  } catch {}
+  const file = projects.map((p) => join(live, p, `${id}.jsonl`)).find((f) => existsSync(f));
+  if (!file) return { logged: false, url: null };
+  // A live log can end in a line still being written.
+  const records = readFileSync(file, "utf8").split("\n").flatMap((l) => {
+    try {
+      return l.trim() ? [JSON.parse(l)] : [];
+    } catch {
+      return [];
+    }
+  });
+  const bridge = records.find((r) => r?.type === "system" && r.subtype === "bridge_status" && typeof r.url === "string" && r.url.startsWith("https:"));
+  return { logged: records.some((r) => r?.type === "user"), url: bridge?.url ?? null };
+}
+
 // The root file's path relative to its root, e.g. <project>/<session>.jsonl.
 function findClaudeSession(idOrPath: string, roots: string[]): string {
   for (const [rel, file] of claudeIndex(roots)) {

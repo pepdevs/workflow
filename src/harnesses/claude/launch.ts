@@ -1,4 +1,4 @@
-import { type Launch, type LaunchOptions, type RunResult } from "../common/launch.ts";
+import { type Launch, type LaunchOptions, type RemoteOptions, type RunResult, inUserUnit } from "../common/launch.ts";
 
 // Print mode ends with one JSON result naming the session and its reply.
 // Read mode restricts tool availability as well as permission approvals.
@@ -14,6 +14,20 @@ export function launchClaude(o: LaunchOptions): Launch {
       ...(o.effort ? ["--effort", o.effort] : []),
     ],
   };
+}
+
+// An interactive session with Remote Control on, named for the phone and
+// claude.ai/code. Auto mode answers permission requests; one it holds waits
+// for the operator over Remote Control. Without --no-chrome a Chrome extension
+// dialog blocks the start.
+export function launchClaudeRemote(o: RemoteOptions): Launch {
+  return inUserUnit(o, {
+    command: "claude",
+    args: [
+      "--rc", "--no-chrome", "--name", o.name, "--session-id", o.id, "--model", o.model,
+      "--permission-mode", "auto", ...(o.effort ? ["--effort", o.effort] : []), o.prompt,
+    ],
+  });
 }
 
 export function claudeResult(stdout: string): RunResult {

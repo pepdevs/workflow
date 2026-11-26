@@ -62,6 +62,15 @@ prints its session id and cost. The check runs before launch and after each atte
 `-p`. Use `--done-command 'test -f REPORT.md && test -f findings.json'` for a shell check instead.
 A passing check exits 0; exhausting the attempts exits non-zero. Without a check, `wf run` runs one session.
 
+Start a Claude session you follow from the phone, and return at once:
+
+```sh
+wf run claude <model> -i task.md -r implement -p <worktree> --remote-control --name "workflow plan 0017" --max-runtime 43200
+```
+
+It runs in auto mode with Remote Control on, in its own user unit `wf-<id>.service`, and prints its
+session id and Remote Control URL. `wf stop <id>` stops the unit; a session can run it on itself.
+
 [`skills/delegate`](skills/delegate/SKILL.md) teaches an agent to route, launch, watch and check
 sessions through `wf`. Install it with the [Skills CLI](https://github.com/vercel-labs/skills), and
 its companions from [pepdevs/skills](https://github.com/pepdevs/skills):

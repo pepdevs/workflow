@@ -43,7 +43,7 @@ wf status -a 2002-03-02T05:00 -w 30d
 
 ## uc-11 Stop a session
 
-Stop a session that is stuck or spiralling. `stop` sends SIGTERM to the harness process that writes the session and to the tools it runs, and waits up to 10 seconds for them to exit. It has no golden file because it reads and signals live processes.
+Stop a session that is stuck or spiralling. `stop` sends SIGTERM to the harness process that writes the session and to the tools it runs, and waits up to 10 seconds for them to exit. A session `wf run --remote-control` started runs in `wf-<id>.service`: `stop` stops that unit without waiting, which ends the session, its terminal and its tools, so a session can run `wf stop` on itself. It has no golden file because it reads and signals live processes.
 
 ```
 wf stop <session>
@@ -154,8 +154,11 @@ Run a skill such as critique with a chosen model in the harness that suits it, i
 
 How can a long task continue until its report exists or its validation passes? Pair `--max-attempts <count>` with either `--done-file <path>` or `--done-command <shell command>`. The count includes the first session. The check runs before launching and after every attempt, in the `-p` directory. A file check requires a regular file; a command check passes on exit 0 through `sh -c`. A passing check exits 0 even when the harness failed. Otherwise, each fresh session gets the original task and a short note naming the previous session and attempt. Work stays in the same directory. Each attempt reports its session id, cost and reply; exhaustion exits non-zero. Without a done check, one session runs as usual. `test/golden/uc-12.txt` proves the loop with a fake harness.
 
+How can a launcher start a Claude session the operator follows from the phone, and not wait for it? `--remote-control --name <name>` starts an interactive Claude Code session with Remote Control on, named `<name>` on claude.ai/code and the phone. It runs `claude --rc --no-chrome --name <name> --session-id <id> --model <model> --permission-mode auto` under `script`, which gives it a terminal, in the transient user unit `wf-<id>.service` (`systemd-run --user`), in the `-p` directory with the caller's environment less any harness session variable and token login, so the stored login starts it. Auto mode answers permission requests in place of `--write`; a request it holds waits in the session, where the operator answers it over Remote Control. `--max-runtime <seconds>` sets the unit's `RuntimeMaxSec`. The launch line is the same as any `wf run`, so `wf models`, `wf route`, `wf plan` and `wf status` count the session. `wf run` returns once the session's log holds its first prompt, up to 60 seconds, then waits up to 30 seconds more for Remote Control to connect, and prints the session id, unit and Remote Control URL. It exits non-zero when the unit cannot start or no prompt is logged in time. It takes no done check and starts only Claude sessions. A Claude session trusts a directory only under a folder the operator trusted, such as a worktree of a trusted checkout. `test/golden/uc-12-remote.txt` proves the start with a fake unit.
+
 ```
 wf run <harness> <model> -i <task file> -k <skill>
+wf run claude <model> -i <task file> -r implement -p <worktree> --plan <owner/repo>#<number> --remote-control --name "<repo> plan NNNN" --max-runtime 43200
 wf run <harness> <model> -i <task file> -k <skill> -p <worktree> --write --done-file REPORT.md --max-attempts 4
 wf run <harness> <model> -i <task file> -k <skill> -p <worktree> --write --done-command 'test -f REPORT.md && test -f findings.json' --max-attempts 4
 ```

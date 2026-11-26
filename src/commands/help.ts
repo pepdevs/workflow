@@ -15,7 +15,7 @@ const HELP: Record<string, Help> = {
   run: {
     group: "Launch and watch", args: "<harness> <model> -i <file>", line: "start a fresh headless session",
     detail: [
-      `wf run <${HARNESS_NAMES.join("|")}> <model> -i <task file> [-k skill | -r role] [-p dir] [-e effort] [--plan p] [--write]`,
+      `wf run <${HARNESS_NAMES.join("|")}> <model> -i <task file> [-k skill | -r role] [-p dir] [-e effort] [--plan p] [--write | --remote-control --name n]`,
       "Runs a fresh session, waits, and prints its id, cost and reply.",
       "Add (--done-file path | --done-command command) --max-attempts count to continue until done.",
       "--done-file path      pass when a regular file exists, relative to -p",
@@ -30,6 +30,9 @@ const HELP: Record<string, Help> = {
       "-e effort  reasoning effort, where the harness takes one",
       "--plan p   plan the session works on, as <owner/repo>#<number>; read back by wf plan",
       "--write    turn every permission check off; pass a worktree. Without it the session only reads.",
+      "--remote-control --name n [--max-runtime s]  claude only: start an interactive session with Remote Control",
+      "           on, named n, in user unit wf-<id>.service, in auto mode; return once its prompt is logged",
+      "           with its id and Remote Control URL. --max-runtime caps the unit in seconds.",
     ],
   },
   status: {
@@ -48,7 +51,7 @@ const HELP: Record<string, Help> = {
   },
   stop: {
     group: "Launch and watch", args: "<id>", line: "stop a session's process",
-    detail: ["wf stop <id>", "Sends SIGTERM to the harness process that writes the session and its tools, and waits up to 10s.", ...ONE_SESSION],
+    detail: ["wf stop <id>", "Sends SIGTERM to the harness process that writes the session and its tools, and waits up to 10s.", "A session wf run --remote-control started: stops its unit wf-<id>.service without waiting.", ...ONE_SESSION],
   },
   route: {
     group: "Choose a route", args: "<skill>", line: "rank harness and model for a skill",
