@@ -134,6 +134,8 @@ export type PromptSession = {
   // The priced calls; unpricedCalls counts the others, as unpricedRows in wf export.
   costUsd: number;
   unpricedCalls: number;
+  // Measured tokens of every call, subagents included, by type as in wf export.
+  tokens: Tokens;
   // The branches its logs name, in order of first appearance.
   branches: string[];
   // The first time each repeated-command and failed-tool flag of wf status fired.
@@ -155,6 +157,16 @@ function turnModel(s: Session, t: Turn): string | null {
 const costOf = (calls: Session["modelCalls"]) => {
   const costs = calls.map(callCost);
   return { costUsd: round(sum(costs.filter((c) => c !== null))), unpricedCalls: costs.filter((c) => c === null).length };
+};
+
+// Measured tokens by type; estimated compaction tokens stay out, as in wf export.
+const tokensOf = (calls: Session["modelCalls"]): Tokens => {
+  const tokens: Tokens = { input: 0, cacheRead: 0, cacheWrite: 0, output: 0 };
+  for (const c of calls) {
+    if (c.compaction?.estimated) continue;
+    for (const k of Object.keys(tokens) as (keyof Tokens)[]) tokens[k] += c.usage[k];
+  }
+  return tokens;
 };
 
 // The sessions active in the range, each whole: started in it, or a root turn
@@ -184,6 +196,7 @@ export function promptsCommand(flags: Record<string, string>, base: string | und
       skill: launch?.skill ?? (launchers.has(session) ? "orchestrator" : null),
       model: mainModel(s),
       ...costOf(s.modelCalls),
+      tokens: tokensOf(s.modelCalls),
       branches: branchesOf(s),
       flags: toolFlagHistory(s).map((f) => ({ kind: f.kind, at: new Date(f.at).toISOString(), detail: f.detail })),
       prompts: turns.flatMap((t, i) => {

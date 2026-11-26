@@ -17,6 +17,12 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "claude-opus-5",
       "costUsd": 10.4857,
       "unpricedCalls": 0,
+      "tokens": {
+        "input": 184,
+        "cacheRead": 10382692,
+        "cacheWrite": 361528,
+        "output": 78184
+      },
       "branches": [
         "main",
         "<text>"
@@ -64,6 +70,12 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "grok-4.6",
       "costUsd": 79.5603,
       "unpricedCalls": 0,
+      "tokens": {
+        "input": 9248391,
+        "cacheRead": 103300480,
+        "cacheWrite": 0,
+        "output": 1179423
+      },
       "branches": [],
       "flags": [
         {
@@ -185,6 +197,12 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "gpt-5.6-sol",
       "costUsd": 12.7789,
       "unpricedCalls": 0,
+      "tokens": {
+        "input": 414325,
+        "cacheRead": 23421312,
+        "cacheWrite": 0,
+        "output": 87653
+      },
       "branches": [
         "main"
       ],
@@ -330,6 +348,12 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "glm-5.3-flash",
       "costUsd": 0.2926,
       "unpricedCalls": 96,
+      "tokens": {
+        "input": 2035133,
+        "cacheRead": 8590324,
+        "cacheWrite": 0,
+        "output": 65250
+      },
       "branches": [],
       "flags": [
         {
@@ -506,6 +530,12 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "gpt-5.6-sol",
       "costUsd": 6.4488,
       "unpricedCalls": 0,
+      "tokens": {
+        "input": 91369,
+        "cacheRead": 7362155,
+        "cacheWrite": 411334,
+        "output": 54088
+      },
       "branches": [
         "<text>"
       ],
@@ -541,6 +571,12 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "glm-5.3-flash",
       "costUsd": 0.0185,
       "unpricedCalls": 0,
+      "tokens": {
+        "input": 21568,
+        "cacheRead": 432576,
+        "cacheWrite": 0,
+        "output": 4500
+      },
       "branches": [],
       "flags": [
         {
@@ -585,6 +621,12 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "model": "grok-4.7",
       "costUsd": 0.0347,
       "unpricedCalls": 0,
+      "tokens": {
+        "input": 8562,
+        "cacheRead": 32384,
+        "cacheWrite": 0,
+        "output": 233
+      },
       "branches": [],
       "flags": [],
       "prompts": [
