@@ -145,7 +145,7 @@ const HELP: Record<string, Help> = {
       `${WHEN}; 30 days by default`,
       "One JSON document with each session that started in the range or took a prompt in it.",
       "A session has its start day, parent (the session that launched it with wf run), harness,",
-      "repository, skill, model, cost and prompts. A prompt is a root turn the person started",
+      "repository, skill, model, cost, tokens by type and prompts. A prompt is a root turn the person started",
       "by typing. It has its start time, model, outcome, cost with spawned subagents, launch mark",
       "and text. The output holds prompt text. schema rises when a field changes.",
     ],
