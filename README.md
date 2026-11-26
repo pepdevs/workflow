@@ -69,7 +69,10 @@ wf run claude <model> -i task.md -r implement -p <worktree> --remote-control --n
 ```
 
 It runs in auto mode with Remote Control on, in its own user unit `wf-<id>.service`, and prints its
-session id and Remote Control URL. `wf stop <id>` stops the unit; a session can run it on itself.
+session id and Remote Control URL. The prompt on the phone starts with the task: the launch facts go to
+a record in the archive. `-p` must be a folder Claude Code trusts, such as a worktree of a trusted
+checkout; `wf run` refuses any other. `wf stop <id>` stops the unit, even before the session logs its
+prompt; a session can run it on itself.
 
 [`skills/delegate`](skills/delegate/SKILL.md) teaches an agent to route, launch, watch and check
 sessions through `wf`. Install it with the [Skills CLI](https://github.com/vercel-labs/skills), and

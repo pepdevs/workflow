@@ -2,7 +2,7 @@
 // header `wf run` writes into a prompt.
 import { isHarnessName, type HarnessName } from "./harnesses/index.ts";
 import { aggregateCostParts, commandBranches, computeCostUsd } from "./catalog.ts";
-import { type ModelCall, type Session, type ToolCall, type Turn } from "./model.ts";
+import { type LaunchRecord, type ModelCall, type Session, type ToolCall, type Turn } from "./model.ts";
 
 // List price from the catalog, or null when a model has no price. Aggregates
 // price each model's calls, because a harness may report its own rate card.
@@ -136,17 +136,20 @@ const SKILL_LINE = /^Use the installed \S+ skill for this task\.\s*/;
 // `wf run` puts this header on the first line of a session's prompt, so the
 // harness log records which skill the session ran for, which session launched it,
 // and the plan it worked on, as <owner/repo>#<number>. Git identity names
-// the committed starting tree when the launch directory provides it.
+// the committed starting tree when the launch directory provides it. A Remote
+// Control session keeps the same facts in a launch record instead.
 export type LaunchInfo = { skill: string | null; parent: { harness: HarnessName; id: string } | null; plan?: string | null; repo?: string; commit?: string };
 
 const LAUNCH_HEADER = /^\[wf run skill=(\S+) parent=(\S+)(?: plan=(\S+))?(?: repo=([\w.-]+\/[\w.-]+))?(?: commit=([0-9a-f]{40}|[0-9a-f]{64}))?\]/;
 
-export function launchHeader(l: LaunchInfo): string {
+export function launchHeader(l: LaunchRecord): string {
   return `[wf run skill=${l.skill ?? "-"} parent=${l.parent ? `${l.parent.harness}:${l.parent.id}` : "-"}${l.plan ? ` plan=${l.plan}` : ""}${l.repo ? ` repo=${l.repo}` : ""}${l.commit ? ` commit=${l.commit}` : ""}]`;
 }
 
+// The header's facts, or else the launch record's, read through the same header
+// so both sources accept the same values.
 export function launchOf(s: Session): LaunchInfo | null {
-  const m = LAUNCH_HEADER.exec(rootTurns(s)[0]?.promptText ?? "");
+  const m = LAUNCH_HEADER.exec(rootTurns(s)[0]?.promptText ?? "") ?? (s.launchRecord ? LAUNCH_HEADER.exec(launchHeader(s.launchRecord)) : null);
   if (!m) return null;
   const [harness, ...id] = m[2].split(":");
   return { skill: m[1] === "-" ? null : m[1], parent: isHarnessName(harness) && id.length ? { harness, id: id.join(":") } : null, ...(m[3] ? { plan: m[3] } : {}), ...(m[4] ? { repo: m[4] } : {}), ...(m[5] ? { commit: m[5] } : {}) };

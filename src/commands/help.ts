@@ -33,6 +33,7 @@ const HELP: Record<string, Help> = {
       "--remote-control --name n [--max-runtime s]  claude only: start an interactive session with Remote Control",
       "           on, named n, in user unit wf-<id>.service, in auto mode; return once its prompt is logged",
       "           with its id and Remote Control URL. --max-runtime caps the unit in seconds.",
+      "           -p must be a folder Claude Code trusts. The launch facts go to a record in the archive.",
     ],
   },
   status: {
@@ -51,7 +52,7 @@ const HELP: Record<string, Help> = {
   },
   stop: {
     group: "Launch and watch", args: "<id>", line: "stop a session's process",
-    detail: ["wf stop <id>", "Sends SIGTERM to the harness process that writes the session and its tools, and waits up to 10s.", "A session wf run --remote-control started: stops its unit wf-<id>.service without waiting.", ...ONE_SESSION],
+    detail: ["wf stop <id>", "Sends SIGTERM to the harness process that writes the session and its tools, and waits up to 10s.", "A session wf run --remote-control started: stops its unit wf-<id>.service without waiting,", "even before its first prompt is logged, given the full id.", ...ONE_SESSION],
   },
   route: {
     group: "Choose a route", args: "<skill>", line: "rank harness and model for a skill",

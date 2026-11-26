@@ -450,6 +450,10 @@
       "mode": "0644"
     },
     {
+      "path": "test/archive/launches/claude/d87437e1-d40c-4c63-aa05-9f9c3b05b112.json",
+      "mode": "0644"
+    },
+    {
       "path": "test/fixture-provenance.json",
       "mode": "0644"
     },
@@ -851,6 +855,10 @@
     },
     {
       "path": "test/golden/uc-12-remote.txt",
+      "mode": "0644"
+    },
+    {
+      "path": "test/golden/uc-11-unlogged.txt",
       "mode": "0644"
     },
     {

@@ -1,9 +1,10 @@
 $ wf models -d 2002-02-14..
-Sessions per skill and model, by the model with most calls in the root thread. Medians per session.
+Sessions per skill and model, by the model with most calls in the root thread. Medians per session. Implement rows split by peak context: S under 60k, M from 60k to under 120k, L from 120k through 200k, over above that.
 
-skill      harness  model     sessions  finished   cost     time  peak context  over 200k
----------  -------  --------  --------  --------  -----  -------  ------------  ---------
-implement  grok     grok-4.7         1         1  <$0.1  0:00:05      21k est.    unknown
+skill      band  harness  model          sessions  finished   cost     time  peak context  over 200k
+---------  ----  -------  -------------  --------  --------  -----  -------  ------------  ---------
+implement  over  claude   claude-opus-5         1         1  $10.5  2:35:03          207k          1
+implement  -     grok     grok-4.7              1         1  <$0.1  0:00:05      21k est.    unknown
 Verdicts missing (custom log roots).
 
 $ wf models -k clarify -d 2002-02-14..

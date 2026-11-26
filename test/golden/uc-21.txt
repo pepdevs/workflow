@@ -13,7 +13,7 @@ $ wf prompts -d 2002-02-14..2002-03-15
       "parent": null,
       "harness": "claude",
       "repository": null,
-      "skill": null,
+      "skill": "implement",
       "model": "claude-opus-5",
       "costUsd": 10.4857,
       "unpricedCalls": 0,
