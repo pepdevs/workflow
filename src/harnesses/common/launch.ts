@@ -8,7 +8,8 @@ import { ARCHIVE_ROOT } from "./logs.ts";
 
 // A fresh headless session. Read allows reading tools only; write bypasses
 // every permission check in the working directory the caller chose.
-export type LaunchOptions = { model: string; prompt: string; write: boolean; effort: string | null };
+// `addDirs` are extra folders the session may read, for a harness that takes them.
+export type LaunchOptions = { model: string; prompt: string; write: boolean; effort: string | null; addDirs: string[] };
 export type Launch = { command: string; args: string[] };
 // The session id and final reply from a headless run's standard output.
 export type RunResult = { id: string | null; reply: string | null };
@@ -18,7 +19,7 @@ export type RunResult = { id: string | null; reply: string | null };
 // systemd user unit, and `env` the environment the unit gets.
 export type RemoteOptions = {
   model: string; prompt: string; effort: string | null; name: string; id: string;
-  unit: string; cwd: string; env: Record<string, string>; maxSeconds: number | null;
+  unit: string; cwd: string; env: Record<string, string>; maxSeconds: number | null; addDirs: string[];
 };
 // What the session's log holds so far: whether it logged its first prompt, and
 // the Remote Control URL once the session connected.

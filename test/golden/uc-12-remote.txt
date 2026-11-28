@@ -23,8 +23,14 @@ Takes no done check
 Needs --remote-control for a name
 --name and --max-runtime go with --remote-control
 
+Needs an existing --add-dir folder
+--add-dir <worktree>/missing is not a directory
+
 Refuses a directory Claude Code has not trusted
 Claude Code has not trusted <worktree>/untrusted, so the session would wait at its trust dialog. Run it in a folder inside a trusted checkout, or open <worktree>/untrusted once in Claude Code and trust it.
 
 Starts Claude sessions only
 wf run --remote-control starts claude sessions only
+
+Takes --add-dir for Claude and Codex only
+--add-dir works with codex and claude sessions only

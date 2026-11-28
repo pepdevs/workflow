@@ -39,8 +39,11 @@ Keep conversation history out and link durable artifacts instead. Keep it under 
 ## Launch
 
 ```bash
-wf run <harness> <model> -i <capsule.md> (-k <skill> | -r <role>) -p <worktree> [--plan <owner/repo>#<number>] [--write] [-e <effort>] > <run.txt>
+wf run <harness> <model> -i <capsule.md> (-k <skill> | -r <role>) -p <worktree> [--plan <owner/repo>#<number>] [--add-dir <dir>] [--write] [-e <effort>] > <run.txt>
 ```
+
+`--add-dir <dir>`, repeatable, lets a Claude or Codex session read a folder outside `-p`, such as the run's private
+folder; other harnesses refuse it.
 
 Claude read mode exposes only `Read,Grep,Glob,WebFetch,WebSearch` and excludes configured MCP servers.
 

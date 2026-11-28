@@ -6,7 +6,7 @@ export function launchCodex(o: LaunchOptions): Launch {
   return {
     command: "codex",
     args: [
-      "exec", "--skip-git-repo-check", "--json", "-m", o.model,
+      "exec", "--skip-git-repo-check", "--json", "-m", o.model, ...o.addDirs.flatMap((d) => ["--add-dir", d]),
       ...(o.write ? ["--dangerously-bypass-approvals-and-sandbox"] : ["-s", "read-only"]),
       ...(o.effort ? ["-c", `model_reasoning_effort=${o.effort}`] : []),
       o.prompt,

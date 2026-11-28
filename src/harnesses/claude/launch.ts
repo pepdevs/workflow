@@ -3,13 +3,17 @@ import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { type Launch, type LaunchOptions, type RemoteOptions, type RunResult, inUserUnit } from "../common/launch.ts";
 
+// `--add-dir` takes every folder that follows it, so it goes before another
+// option and never last, where it would swallow the prompt.
+const addDirArgs = (dirs: string[]) => (dirs.length ? ["--add-dir", ...dirs] : []);
+
 // Print mode ends with one JSON result naming the session and its reply.
 // Read mode restricts tool availability as well as permission approvals.
 export function launchClaude(o: LaunchOptions): Launch {
   return {
     command: "claude",
     args: [
-      "-p", o.prompt, "--model", o.model, "--output-format", "json",
+      "-p", o.prompt, ...addDirArgs(o.addDirs), "--model", o.model, "--output-format", "json",
       ...(o.write ? ["--dangerously-skip-permissions"] : [
         "--tools", "Read,Grep,Glob,WebFetch,WebSearch", "--strict-mcp-config",
         "--allowedTools", "Read,Grep,Glob,WebFetch,WebSearch",
@@ -27,7 +31,7 @@ export function launchClaudeRemote(o: RemoteOptions): Launch {
   return inUserUnit(o, {
     command: "claude",
     args: [
-      "--rc", "--no-chrome", "--name", o.name, "--session-id", o.id, "--model", o.model,
+      "--rc", "--no-chrome", "--name", o.name, "--session-id", o.id, ...addDirArgs(o.addDirs), "--model", o.model,
       "--permission-mode", "auto", ...(o.effort ? ["--effort", o.effort] : []), o.prompt,
     ],
   });

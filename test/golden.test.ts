@@ -350,7 +350,7 @@ test("uc-12 done checks with a fake harness", () => {
     ADAPTERS.codex.launch = (options) => {
       if (reports) assert.equal(reports.length, prompts.length, "report each attempt before launching the next");
       prompts.push(options.prompt);
-      assert.deepEqual({ ...options, prompt: "task" }, { model: "fake-model", prompt: "task", write: true, effort: "high" });
+      assert.deepEqual({ ...options, prompt: "task" }, { model: "fake-model", prompt: "task", write: true, effort: "high", addDirs: [] });
       return { command: process.execPath, args: ["-e", `
         const fs = require('node:fs');
         if (${prompts.length} === ${finishAt}) {
@@ -448,7 +448,7 @@ test("uc-12 Remote Control start with a fake unit", () => {
     process.env.CLAUDE_CODE_OAUTH_TOKEN = "fixture-token";
     writeFileSync(join(dir, "task.md"), "Build the plan.\n");
     let polls = 0;
-    let launched: { id: string; unit: string; env: Record<string, string> } | null = null;
+    let launched: { id: string; unit: string; env: Record<string, string>; addDirs: string[] } | null = null;
     const untrusted = join(dir, "untrusted");
     mkdirSync(untrusted);
     ADAPTERS.claude.remote = {
@@ -465,10 +465,11 @@ test("uc-12 Remote Control start with a fake unit", () => {
         return { logged: polls >= 2, url: polls >= 3 ? "https://remote.example/session_fixture" : null };
       },
     };
-    const args = ["run", "claude", "fake-model", "-i", join(dir, "task.md"), "-r", "implement", "-p", dir, "-e", "high", "--plan", "fixture/workflow#17", "--remote-control", "--name", "fixture/workflow plan 0017", "--max-runtime", "7200"];
+    const args = ["run", "claude", "fake-model", "-i", join(dir, "task.md"), "-r", "implement", "-p", dir, "-e", "high", "--plan", "fixture/workflow#17", "--add-dir", dir, "--remote-control", "--name", "fixture/workflow plan 0017", "--max-runtime", "7200"];
     process.exitCode = undefined;
     const output = String(run(args));
     assert.equal(launched!.unit, `wf-${launched!.id}`);
+    assert.deepEqual(launched!.addDirs, [dir], "the added folder reaches the unit's command");
     assert.equal(launched!.env.CLAUDE_CODE_OAUTH_TOKEN, undefined, "a token login stays out of the unit");
     assert.equal(launched!.env.CLAUDE_CODE_SESSION_ID, undefined, "the parent session stays out of the unit");
     const record = join(ARCHIVE_ROOT, "launches", "claude", `${launched!.id}.json`);
@@ -480,6 +481,7 @@ test("uc-12 Remote Control start with a fake unit", () => {
       ["Needs a name", ["--remote-control"]],
       ["Takes no done check", ["--remote-control", "--name", "x", "--done-file", "REPORT.md", "--max-attempts", "2"]],
       ["Needs --remote-control for a name", ["--name", "x"]],
+      ["Needs an existing --add-dir folder", ["--add-dir", join(dir, "missing"), "--remote-control", "--name", "x"]],
     ] as const) {
       let message = "";
       try {
@@ -487,7 +489,7 @@ test("uc-12 Remote Control start with a fake unit", () => {
       } catch (error) {
         message = (error as Error).message;
       }
-      outputs.push(`${label}\n${message}\n`);
+      outputs.push(`${label}\n${message.replaceAll(dir, "<worktree>")}\n`);
     }
     let refused = "";
     const before = launched!.id;
@@ -505,6 +507,13 @@ test("uc-12 Remote Control start with a fake unit", () => {
       message = (error as Error).message;
     }
     outputs.push(`Starts Claude sessions only\n${message}\n`);
+    message = "";
+    try {
+      run(["run", "pi", "fake-model", "-i", join(dir, "task.md"), "-p", dir, "--add-dir", dir]);
+    } catch (error) {
+      message = (error as Error).message;
+    }
+    outputs.push(`Takes --add-dir for Claude and Codex only\n${message}\n`);
     const output2 = outputs.join("\n");
     if (update) writeFileSync("test/golden/uc-12-remote.txt", output2);
     assert.equal(output2, readFileSync("test/golden/uc-12-remote.txt", "utf8"));
