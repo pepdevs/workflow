@@ -74,6 +74,9 @@ a record in the archive. `-p` must be a folder Claude Code trusts, such as a wor
 checkout; `wf run` refuses any other. `wf stop <id>` stops the unit, even before the session logs its
 prompt; a session can run it on itself.
 
+`--add-dir <dir>`, repeatable, gives a Claude or Codex session another folder to read, such as a private
+folder outside the worktree; `wf run` refuses it for other harnesses.
+
 [`skills/delegate`](skills/delegate/SKILL.md) teaches an agent to route, launch, watch and check
 sessions through `wf`. Install it with the [Skills CLI](https://github.com/vercel-labs/skills), and
 its companions from [pepdevs/skills](https://github.com/pepdevs/skills):

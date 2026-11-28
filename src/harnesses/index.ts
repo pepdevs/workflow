@@ -58,6 +58,8 @@ export type Adapter = {
   // An interactive session with Remote Control in its own user unit, where the
   // harness has one; `wf run --remote-control` starts it and returns.
   remote: Remote | null;
+  // Whether `wf run --add-dir` reaches the harness; the others refuse the flag.
+  addDir: boolean;
   // Folders the harness reads skills from or keeps a session's files in, as
   // alias patterns: `~` is the home folder, `*` one folder, `{session}` the id.
   pathAliases: Record<string, string[]>;
@@ -76,13 +78,13 @@ const readOnly = (): never => {
 };
 
 export const ADAPTERS = {
-  codex: { defaultRoots: codexRoots, list: listCodex, load: withLaunchRecord("codex", loadCodex), cutFixture: cutCodexFixture, archive: { live: CODEX_LIVE, include: isCodexLog }, running: runningCodex, launch: launchCodex, result: codexResult, remote: null, pathAliases: { $skills: ["~/.codex/skills", "~/.agents/skills"] } },
-  claude: { defaultRoots: claudeRoots, list: listClaude, load: withLaunchRecord("claude", loadClaude), cutFixture: cutClaudeFixture, archive: { live: CLAUDE_LIVE, include: isClaudeLog }, running: runningClaude, launch: launchClaude, result: claudeResult, remote: { launch: launchClaudeRemote, state: claudeRemoteState, trusted: claudeTrusted }, pathAliases: { $skills: ["~/.claude/skills"], $session: ["/tmp/claude-*/*/{session}"] } },
-  pi: { defaultRoots: piRoots, list: listPi, load: withLaunchRecord("pi", loadPi), cutFixture: cutPiFixture, archive: { live: PI_LIVE, include: isPiLog }, running: runningPi, launch: launchPi, result: piResult, remote: null, pathAliases: { $skills: ["~/.pi/agent/skills", "~/.agents/skills"] } },
-  grok: { defaultRoots: grokRoots, list: listGrok, load: withLaunchRecord("grok", loadGrok), cutFixture: cutGrokFixture, archive: { live: GROK_LIVE, include: isGrokLog }, running: runningGrok, launch: launchGrok, result: grokResult, remote: null, pathAliases: { $skills: ["~/.grok/bundled/skills", "~/.grok/skills", "~/.agents/skills"] } },
-  opencode: { defaultRoots: openCodeRoots, list: listOpenCode, load: withLaunchRecord("opencode", loadOpenCode), cutFixture: cutOpenCodeFixture, archive: null, running: runningOpenCode, launch: launchOpenCode, result: openCodeResult, remote: null, pathAliases: { $skills: ["~/.config/opencode/skills", "~/.agents/skills"] } },
+  codex: { defaultRoots: codexRoots, list: listCodex, load: withLaunchRecord("codex", loadCodex), cutFixture: cutCodexFixture, archive: { live: CODEX_LIVE, include: isCodexLog }, running: runningCodex, launch: launchCodex, result: codexResult, remote: null, addDir: true, pathAliases: { $skills: ["~/.codex/skills", "~/.agents/skills"] } },
+  claude: { defaultRoots: claudeRoots, list: listClaude, load: withLaunchRecord("claude", loadClaude), cutFixture: cutClaudeFixture, archive: { live: CLAUDE_LIVE, include: isClaudeLog }, running: runningClaude, launch: launchClaude, result: claudeResult, remote: { launch: launchClaudeRemote, state: claudeRemoteState, trusted: claudeTrusted }, addDir: true, pathAliases: { $skills: ["~/.claude/skills"], $session: ["/tmp/claude-*/*/{session}"] } },
+  pi: { defaultRoots: piRoots, list: listPi, load: withLaunchRecord("pi", loadPi), cutFixture: cutPiFixture, archive: { live: PI_LIVE, include: isPiLog }, running: runningPi, launch: launchPi, result: piResult, remote: null, addDir: false, pathAliases: { $skills: ["~/.pi/agent/skills", "~/.agents/skills"] } },
+  grok: { defaultRoots: grokRoots, list: listGrok, load: withLaunchRecord("grok", loadGrok), cutFixture: cutGrokFixture, archive: { live: GROK_LIVE, include: isGrokLog }, running: runningGrok, launch: launchGrok, result: grokResult, remote: null, addDir: false, pathAliases: { $skills: ["~/.grok/bundled/skills", "~/.grok/skills", "~/.agents/skills"] } },
+  opencode: { defaultRoots: openCodeRoots, list: listOpenCode, load: withLaunchRecord("opencode", loadOpenCode), cutFixture: cutOpenCodeFixture, archive: null, running: runningOpenCode, launch: launchOpenCode, result: openCodeResult, remote: null, addDir: false, pathAliases: { $skills: ["~/.config/opencode/skills", "~/.agents/skills"] } },
   // Copilot sessions are read only: workflow neither finds its processes nor launches it.
-  copilot: { defaultRoots: copilotRoots, list: listCopilot, load: withLaunchRecord("copilot", loadCopilot), cutFixture: cutCopilotFixture, archive: { live: COPILOT_LIVE, include: isCopilotLog }, running: () => [], launch: readOnly, result: readOnly, remote: null, pathAliases: { $skills: ["~/.copilot/skills", "~/.agents/skills"], $session: ["~/.copilot/session-state/{session}"] } },
+  copilot: { defaultRoots: copilotRoots, list: listCopilot, load: withLaunchRecord("copilot", loadCopilot), cutFixture: cutCopilotFixture, archive: { live: COPILOT_LIVE, include: isCopilotLog }, running: () => [], launch: readOnly, result: readOnly, remote: null, addDir: false, pathAliases: { $skills: ["~/.copilot/skills", "~/.agents/skills"], $session: ["~/.copilot/session-state/{session}"] } },
 } satisfies Record<string, Adapter>;
 
 // Logins the harnesses hold, for reading plan usage from the providers. Codex

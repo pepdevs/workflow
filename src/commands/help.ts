@@ -15,7 +15,7 @@ const HELP: Record<string, Help> = {
   run: {
     group: "Launch and watch", args: "<harness> <model> -i <file>", line: "start a fresh headless session",
     detail: [
-      `wf run <${HARNESS_NAMES.join("|")}> <model> -i <task file> [-k skill | -r role] [-p dir] [-e effort] [--plan p] [--write | --remote-control --name n]`,
+      `wf run <${HARNESS_NAMES.join("|")}> <model> -i <task file> [-k skill | -r role] [-p dir] [-e effort] [--plan p] [--add-dir dir]... [--write | --remote-control --name n]`,
       "Runs a fresh session, waits, and prints its id, cost and reply.",
       "Add (--done-file path | --done-command command) --max-attempts count to continue until done.",
       "--done-file path      pass when a regular file exists, relative to -p",
@@ -29,6 +29,7 @@ const HELP: Record<string, Help> = {
       "-p dir     working directory, the current one by default",
       "-e effort  reasoning effort, where the harness takes one",
       "--plan p   plan the session works on, as <owner/repo>#<number>; read back by wf plan",
+      "--add-dir dir  claude and codex only: let the session read dir as well; repeatable; dir must exist",
       "--write    turn every permission check off; pass a worktree. Without it the session only reads.",
       "--remote-control --name n [--max-runtime s]  claude only: start an interactive session with Remote Control",
       "           on, named n, in user unit wf-<id>.service, in auto mode; return once its prompt is logged",

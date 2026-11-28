@@ -39,6 +39,21 @@ const sleep = (ms: number) => Atomics.wait(new Int32Array(new SharedArrayBuffer(
 // token login, which Remote Control refuses, in place of the stored login.
 const REMOTE_DROPPED = /^(CLAUDECODE|CLAUDE_CODE_.*|ANTHROPIC_API_KEY|ANTHROPIC_AUTH_TOKEN|OPENCODE|GROK_SESSION_ID|OPENCODE_PID|PI_SESSION_FILE|CODEX_THREAD_ID)$/;
 
+// `--add-dir` folders must exist, and only a harness that takes them accepts the flag.
+// A relative folder counts from the directory `wf run` was started in.
+export function parseAddDirs(values: string[]): string[] {
+  const dirs = values.map((v) => resolve(v));
+  for (const d of dirs) if (!statSync(d, { throwIfNoEntry: false })?.isDirectory()) throw new Error(`--add-dir ${d} is not a directory`);
+  return [...new Set(dirs)];
+}
+
+function checkAddDirs(harness: HarnessName, addDirs: string[]) {
+  if (addDirs.length && !ADAPTERS[harness].addDir) {
+    const takes = (Object.keys(ADAPTERS) as HarnessName[]).filter((h) => ADAPTERS[h].addDir).join(" and ");
+    throw new Error(`--add-dir works with ${takes} sessions only`);
+  }
+}
+
 export type RemoteRun = { name: string; maxSeconds: number | null };
 
 // `--remote-control` takes `--name` and an optional `--max-runtime` in seconds,
@@ -115,20 +130,21 @@ export function gitLaunchInfo(cwd: string): Pick<LaunchInfo, "repo" | "commit"> 
 
 // Runs fresh sessions until the done check passes or the attempt limit is reached.
 // Each harness keeps its logs for later commands.
-export function runCommand(harness: HarnessName, model: string, flags: Record<string, string>, write: boolean, plan: string | null = null, completion: RunCompletion | null = null, report?: (output: string) => void, remote: RemoteRun | null = null): string {
+export function runCommand(harness: HarnessName, model: string, flags: Record<string, string>, write: boolean, plan: string | null = null, completion: RunCompletion | null = null, report?: (output: string) => void, remote: RemoteRun | null = null, addDirs: string[] = []): string {
   if (!flags.i) throw new Error("wf run needs -i <file> with the task");
+  checkAddDirs(harness, addDirs);
   const input = readFileSync(flags.i, "utf8");
   const parent = parentFromEnv(process.env, (pid) => ADAPTERS.opencode.running().find((r) => r.pid === pid)?.id ?? null);
   const cwd = resolve(flags.p ?? ".");
   if (remote) {
-    const result = startRemote(harness, model, flags, plan, parent, cwd, input, remote);
+    const result = startRemote(harness, model, flags, plan, parent, cwd, input, remote, addDirs);
     if (result.failed) process.exitCode = 1;
     return result.output;
   }
   const env = { ...process.env };
   for (const v of [...SESSION_VARS, "OPENCODE", "CLAUDECODE"]) delete env[v];
   if (!completion) {
-    const result = runAttempt(harness, model, flags, write, plan, parent, cwd, env, input);
+    const result = runAttempt(harness, model, flags, write, plan, parent, cwd, env, input, addDirs);
     if (result.failed) process.exitCode = 1;
     return result.output;
   }
@@ -137,7 +153,7 @@ export function runCommand(harness: HarnessName, model: string, flags: Record<st
   let previousId: string | null = null;
   for (let attempt = 1; attempt <= completion.maxAttempts; attempt++) {
     const note = attempt === 1 ? "" : `\n\n## Continue the earlier run\n\nAttempt ${attempt}/${completion.maxAttempts}. Previous session: ${harness} ${previousId ?? "unknown"}.\nThe done check has not passed (${completion.check.kind}: ${completion.check.value}).\nContinue the same task in this directory from the saved work.\nRead the existing artifacts first and finish the task.\n`;
-    const result = runAttempt(harness, model, flags, write, plan, parent, cwd, env, input + note);
+    const result = runAttempt(harness, model, flags, write, plan, parent, cwd, env, input + note, addDirs);
     const output = `Attempt ${attempt}/${completion.maxAttempts}\n${result.output}`;
     if (report) report(output);
     else outputs.push(output);
@@ -153,7 +169,7 @@ export function runCommand(harness: HarnessName, model: string, flags: Record<st
 // session runs on after `wf run` exits; `wf stop` ends it. The operator reads
 // the prompt on the phone, so the launch facts go to a launch record and the
 // prompt starts with the task.
-function startRemote(harness: HarnessName, model: string, flags: Record<string, string>, plan: string | null, parent: LaunchInfo["parent"], cwd: string, task: string, run: RemoteRun): { failed: boolean; output: string } {
+function startRemote(harness: HarnessName, model: string, flags: Record<string, string>, plan: string | null, parent: LaunchInfo["parent"], cwd: string, task: string, run: RemoteRun, addDirs: string[]): { failed: boolean; output: string } {
   const remote = ADAPTERS[harness].remote;
   if (!remote) throw new Error(`wf run --remote-control starts ${HARNESS_WITH_REMOTE.join(", ")} sessions only`);
   if (!remote.trusted(cwd)) throw new Error(`Claude Code has not trusted ${cwd}, so the session would wait at its trust dialog. Run it in a folder inside a trusted checkout, or open ${cwd} once in Claude Code and trust it.`);
@@ -163,7 +179,7 @@ function startRemote(harness: HarnessName, model: string, flags: Record<string, 
   const prompt = `${flags.k ? `${skillLine(flags.k)}\n\n` : ""}${task}`;
   // systemd takes only names a shell could export.
   const env = Object.fromEntries(Object.entries(process.env).filter((e): e is [string, string] => e[1] !== undefined && /^[A-Za-z_]\w*$/.test(e[0]) && !REMOTE_DROPPED.test(e[0])));
-  const { command, args } = remote.launch({ model, prompt, effort: flags.e ?? null, name: run.name, id, unit, cwd, env, maxSeconds: run.maxSeconds });
+  const { command, args } = remote.launch({ model, prompt, effort: flags.e ?? null, name: run.name, id, unit, cwd, env, maxSeconds: run.maxSeconds, addDirs });
   const r = spawnSync(command, args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
   const rows: [string, string][] = [
     ["Session", `${harness} ${id}`],
@@ -202,11 +218,11 @@ function startRemote(harness: HarnessName, model: string, flags: Record<string, 
 
 const HARNESS_WITH_REMOTE = (Object.keys(ADAPTERS) as HarnessName[]).filter((h) => ADAPTERS[h].remote);
 
-function runAttempt(harness: HarnessName, model: string, flags: Record<string, string>, write: boolean, plan: string | null, parent: LaunchInfo["parent"], cwd: string, env: NodeJS.ProcessEnv, task: string): { id: string | null; failed: boolean; output: string } {
+function runAttempt(harness: HarnessName, model: string, flags: Record<string, string>, write: boolean, plan: string | null, parent: LaunchInfo["parent"], cwd: string, env: NodeJS.ProcessEnv, task: string, addDirs: string[]): { id: string | null; failed: boolean; output: string } {
   // -r records a role, such as implement, that has no installed skill to load.
   const header = launchHeader({ skill: flags.k ?? flags.r ?? null, parent, plan, ...gitLaunchInfo(cwd) });
   const prompt = `${header}\n${flags.k ? `${skillLine(flags.k)}\n\n` : ""}${task}`;
-  const { command, args } = ADAPTERS[harness].launch({ model, prompt, write, effort: flags.e ?? null });
+  const { command, args } = ADAPTERS[harness].launch({ model, prompt, write, effort: flags.e ?? null, addDirs });
   const started = Date.now();
   const r = spawnSync(command, args, { cwd, encoding: "utf8", maxBuffer: RUN_BUFFER, stdio: ["ignore", "pipe", "pipe"], env });
   const took = Date.now() - started;

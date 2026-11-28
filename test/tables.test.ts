@@ -555,7 +555,7 @@ test("onlyWrittenSince", () => {
 });
 
 test("launch", () => {
-  const o = { model: "m", prompt: "task", effort: null };
+  const o = { model: "m", prompt: "task", effort: null, addDirs: [] };
   const rows: [keyof typeof ADAPTERS, boolean, string][] = [
     ["claude", false, "claude -p task --model m --output-format json --tools Read,Grep,Glob,WebFetch,WebSearch --strict-mcp-config --allowedTools Read,Grep,Glob,WebFetch,WebSearch"],
     ["claude", true, "claude -p task --model m --output-format json --dangerously-skip-permissions"],
@@ -573,6 +573,15 @@ test("launch", () => {
     assert.equal([l.command, ...l.args].join(" "), line, `${h} ${write}`);
   }
   assert.deepEqual(ADAPTERS.grok.launch({ ...o, write: false, effort: "high" }).args.slice(-2), ["--reasoning-effort", "high"]);
+  const withDirs = { ...o, write: true, addDirs: ["/a", "/b"] };
+  const claude = ADAPTERS.claude.launch(withDirs);
+  assert.deepEqual(claude.args.slice(0, 5), ["-p", "task", "--add-dir", "/a", "/b"], "the folders sit before another option, so they never take the prompt");
+  assert.equal(claude.args[5], "--model");
+  assert.deepEqual(ADAPTERS.codex.launch(withDirs).args.slice(5, 9), ["--add-dir", "/a", "--add-dir", "/b"]);
+  const remote = ADAPTERS.claude.remote!.launch({ model: "m", prompt: "task", effort: null, name: "n", id: "i", unit: "wf-i", cwd: "/w", env: {}, maxSeconds: null, addDirs: ["/a"] });
+  const line = remote.args.join(" ");
+  assert.match(line, /'--add-dir' '\/a' '--model'/, "the unit's command holds the folder before another option");
+  assert.doesNotMatch(line, /'--add-dir'[^']*'\/a' 'task'/, "the prompt is not read as a folder");
 });
 
 test("result", () => {
@@ -841,7 +850,7 @@ test("Grok Build and Pi route against one Example Xai window", () => {
   assert.deepEqual(routes.filter((r) => r.plan === plan).map((r) => [r.harness, r.model]), [["pi", "xai/grok-4.6"], ["grok", "grok-4.6"]]);
   assert.equal(rankRoutes(routes, now)[0].model, "gpt-6.1-sol");
   assert.equal(usageCommand(usages, {}, now).match(/Example Xai\s+7d/g)?.length, 1);
-  assert.deepEqual(ADAPTERS.grok.launch({ model: routes.find((r) => r.harness === "grok")!.model, prompt: "task", write: false, effort: null }).args.slice(2, 4), ["-m", "grok-4.6"]);
+  assert.deepEqual(ADAPTERS.grok.launch({ model: routes.find((r) => r.harness === "grok")!.model, prompt: "task", write: false, effort: null, addDirs: [] }).args.slice(2, 4), ["-m", "grok-4.6"]);
 
   usages[0] = reading("xai", 100);
   const exhausted = rankRoutes(routesFrom(sessions, "implement", [], now, usages), now);

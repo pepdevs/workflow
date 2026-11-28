@@ -9,7 +9,7 @@ import { modelsCommand } from "./commands/models.ts";
 import { routeCommand } from "./commands/route.ts";
 import { usageCommand, usageJson } from "./commands/usage.ts";
 import { READINGS_FILE, readUsage, recordUsage, recordedReadings, type PlanUsage } from "./providers/index.ts";
-import { parseRemoteRun, parseRunCompletion, runCommand } from "./commands/run.ts";
+import { parseAddDirs, parseRemoteRun, parseRunCompletion, runCommand } from "./commands/run.ts";
 import { filesCommand } from "./commands/files.ts";
 import { costCommand, lsCommand, summary, timeCommand, toolsCommand, turnsCommand } from "./commands/sessions.ts";
 import { statusCommand } from "./commands/status.ts";
@@ -119,10 +119,15 @@ export function run(argv: string[], now = Date.now(), report?: (output: string) 
     const write = args.includes("--write");
     const remote = args.includes("--remote-control");
     const options: Record<string, string> = {};
+    const addDirs: string[] = [];
     const remaining: string[] = [];
     for (let i = 1; i < args.length; i++) {
       const arg = args[i];
-      if (["--plan", "--done-file", "--done-command", "--max-attempts", "--name", "--max-runtime"].includes(arg)) {
+      if (arg === "--add-dir") {
+        const value = args[++i];
+        if (!value || value.startsWith("-")) throw new Error(commandHelp(command));
+        addDirs.push(value);
+      } else if (["--plan", "--done-file", "--done-command", "--max-attempts", "--name", "--max-runtime"].includes(arg)) {
         const value = args[++i];
         if (!value || value.startsWith("-") || options[arg.slice(2)] !== undefined) throw new Error(commandHelp(command));
         options[arg.slice(2)] = value;
@@ -132,7 +137,7 @@ export function run(argv: string[], now = Date.now(), report?: (output: string) 
     const [h, model, ...rest] = words;
     if (!h || !isHarnessName(h) || !model || rest.length || Object.keys(flags).some((f) => !["i", "k", "r", "p", "e"].includes(f)) || (flags.k && flags.r)) throw new Error(commandHelp(command));
     const remoteRun = parseRemoteRun(options, remote, write);
-    return runCommand(h, model, flags, write, options.plan ?? null, remoteRun ? null : parseRunCompletion(options), report, remoteRun);
+    return runCommand(h, model, flags, write, options.plan ?? null, remoteRun ? null : parseRunCompletion(options), report, remoteRun, parseAddDirs(addDirs));
   }
   if (command === "route" && base !== null) {
     const { words, flags } = parseFlags(args.slice(1));
